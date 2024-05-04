@@ -1,0 +1,5 @@
+@SimpleAPIServer_HostAddress = http://localhost:5125
+
+GET {{SimpleAPIServer_HostAddress}}/SimpleAPI/SimpleRequest
+
+###
