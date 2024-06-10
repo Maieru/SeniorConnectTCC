@@ -449,3 +449,4 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+POCs/Firmware/conexaoComAzure/iot_configs.h
