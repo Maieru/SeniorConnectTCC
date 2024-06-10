@@ -213,26 +213,20 @@ static void initializeIoTHubClient()
   az_iot_hub_client_options options = az_iot_hub_client_options_default();
   options.user_agent = AZ_SPAN_FROM_STR(AZURE_SDK_CLIENT_USER_AGENT);
 
-  if (az_result_failed(az_iot_hub_client_init(
-          &client,
-          az_span_create((uint8_t*)host, strlen(host)),
-          az_span_create((uint8_t*)device_id, strlen(device_id)),
-          &options)))
+  if (az_result_failed(az_iot_hub_client_init(&client, az_span_create((uint8_t*)host, strlen(host)), az_span_create((uint8_t*)device_id, strlen(device_id)), &options)))
   {
     Logger.Error("Failed initializing Azure IoT Hub client");
     return;
   }
 
   size_t client_id_length;
-  if (az_result_failed(az_iot_hub_client_get_client_id(
-          &client, mqtt_client_id, sizeof(mqtt_client_id) - 1, &client_id_length)))
+  if (az_result_failed(az_iot_hub_client_get_client_id(&client, mqtt_client_id, sizeof(mqtt_client_id) - 1, &client_id_length)))
   {
     Logger.Error("Failed getting client id");
     return;
   }
 
-  if (az_result_failed(az_iot_hub_client_get_user_name(
-          &client, mqtt_username, sizeofarray(mqtt_username), NULL)))
+  if (az_result_failed(az_iot_hub_client_get_user_name(&client, mqtt_username, sizeofarray(mqtt_username), NULL)))
   {
     Logger.Error("Failed to get MQTT clientId, return code");
     return;
@@ -244,13 +238,11 @@ static void initializeIoTHubClient()
 
 static int initializeMqttClient()
 {
-#ifndef IOT_CONFIG_USE_X509_CERT
   if (sasToken.Generate(SAS_TOKEN_DURATION_IN_MINUTES) != 0)
   {
     Logger.Error("Failed generating SAS token");
     return 1;
   }
-#endif
 
   esp_mqtt_client_config_t mqtt_config;
   memset(&mqtt_config, 0, sizeof(mqtt_config));
@@ -258,14 +250,7 @@ static int initializeMqttClient()
   mqtt_config.port = mqtt_port;
   mqtt_config.client_id = mqtt_client_id;
   mqtt_config.username = mqtt_username;
-
-#ifdef IOT_CONFIG_USE_X509_CERT
-  Logger.Info("MQTT client using X509 Certificate authentication");
-  mqtt_config.client_cert_pem = IOT_CONFIG_DEVICE_CERT;
-  mqtt_config.client_key_pem = IOT_CONFIG_DEVICE_CERT_PRIVATE_KEY;
-#else // Using SAS key
   mqtt_config.password = (const char*)az_span_ptr(sasToken.Get());
-#endif
 
   mqtt_config.keepalive = 30;
   mqtt_config.disable_clean_session = 0;
@@ -312,10 +297,6 @@ static void establishConnection()
 
 static void generateTelemetryPayload()
 {
-  // You can generate the JSON using any lib you want. Here we're showing how to do it manually, for simplicity.
-  // This sample shows how to generate the payload using a syntax closer to regular delevelopment for Arduino, with
-  // String type instead of az_span as it might be done in other samples. Using az_span has the advantage of reusing the 
-  // same char buffer instead of dynamically allocating memory each time, as it is done by using the String type below.
   JSONVar jsonObject;
   jsonObject["mensagem"] = "Ola de dentro do ESP :)";
   jsonObject["msgCount"] = String(telemetry_send_count++);
@@ -330,8 +311,7 @@ static void sendTelemetry()
   // The topic could be obtained just once during setup,
   // however if properties are used the topic need to be generated again to reflect the
   // current values of the properties.
-  if (az_result_failed(az_iot_hub_client_telemetry_get_publish_topic(
-          &client, NULL, telemetry_topic, sizeof(telemetry_topic), NULL)))
+  if (az_result_failed(az_iot_hub_client_telemetry_get_publish_topic(&client, NULL, telemetry_topic, sizeof(telemetry_topic), NULL)))
   {
     Logger.Error("Failed az_iot_hub_client_telemetry_get_publish_topic");
     return;
@@ -358,7 +338,10 @@ static void sendTelemetry()
 
 // Arduino setup and loop main functions.
 
-void setup() { establishConnection(); }
+void setup() 
+{
+   establishConnection();
+}
 
 void loop()
 {
@@ -366,14 +349,12 @@ void loop()
   {
     connectToWiFi();
   }
-#ifndef IOT_CONFIG_USE_X509_CERT
   else if (sasToken.IsExpired())
   {
     Logger.Info("SAS token expired; reconnecting with a new one.");
     (void)esp_mqtt_client_destroy(mqtt_client);
     initializeMqttClient();
   }
-#endif
   else if (millis() > next_telemetry_send_time_ms)
   {
     sendTelemetry();
