@@ -159,10 +159,21 @@ void setup() {
 
     server.on("/", HTTP_POST, [](AsyncWebServerRequest* request) {
       int params = request->params();
+      Serial.println("Recebi a requisicao");
       for (int i = 0; i < params; i++) {
+        Serial.println(i + " parametros");
         AsyncWebParameter* p = request->getParam(i);
         if (p->isPost()) {
           // HTTP POST ssid value
+          Serial.println("AAAAAAAAAAAAAA");
+          Serial.println("AAAAAAAAAAAAAA");
+          Serial.println("AAAAAAAAAAAAAA");
+          Serial.println("AAAAAAAAAAAAAA");
+          Serial.println("AAAAAAAAAAAAAA");
+          Serial.println(p->name());
+          Serial.println(request->contentType());
+          Serial.println(p->value().c_str());
+
           if (p->name() == PARAM_INPUT_1) {
             ssid = p->value().c_str();
             Serial.print("SSID set to: ");
