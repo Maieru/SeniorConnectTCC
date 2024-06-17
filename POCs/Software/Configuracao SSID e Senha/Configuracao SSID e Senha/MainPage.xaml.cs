@@ -18,19 +18,19 @@ namespace Configuracao_SSID_e_Senha
             BindingContext = new ConfiguracaoWifi();
         }
 
-        private async void OnSubmit(object sender, EventArgs e)
+        private void OnSubmit(object sender, EventArgs e)
         {
             var configuracoesSelecionadas = (ConfiguracaoWifi)BindingContext;
 
             if (string.IsNullOrEmpty(configuracoesSelecionadas.SSID))
             {
-                await DisplayAlert("Erro", "SSID não pode ser vazio", "OK");
+                DisplayAlert("Erro", "SSID não pode ser vazio", "OK").Wait();
                 return;
             }
 
             if (string.IsNullOrEmpty(configuracoesSelecionadas.Password))
             {
-                await DisplayAlert("Erro", "Senha não pode ser vazia", "OK");
+                DisplayAlert("Erro", "Senha não pode ser vazia", "OK").Wait();
                 return;
             }
 
@@ -55,8 +55,6 @@ namespace Configuracao_SSID_e_Senha
                 var connectivityManager = (ConnectivityManager)Android.App.Application.Context.GetSystemService(Context.ConnectivityService);
 
                 var networkCallback = new NetworkConfigurationCallback(configuracoesSelecionadas);
-                networkCallback.OnSendConfigurationSuccess += OnConfiguracaoEnviadaComSucesso;
-                networkCallback.OnSendConfigurationFail += OnConfiguracaoFalhou;
 
                 connectivityManager.RequestNetwork(request, networkCallback);
 
