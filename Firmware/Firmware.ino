@@ -14,7 +14,16 @@
 #define RESET_BUTTON 14
 
 // Variables
+
+enum state {
+  NORMAL,
+  RESETING,
+};
+
 bool isWifiStarted = false;
+state currentState = state::NORMAL;
+unsigned long resetMilis = 0;
+const int TIME_TO_RESET = 3000;
 
 void setup() {
   Serial.begin(115200);
@@ -49,4 +58,25 @@ void setup() {
 }
 
 void loop() {
+  switch (currentState) {
+    case NORMAL:
+      if (digitalRead(RESET_BUTTON)) {
+        resetMilis = millis();
+        currentState = state::RESETING;
+      }
+
+      // Future things will be added here :)
+      break;
+
+    case RESETING:
+      if (!digitalRead(RESET_BUTTON)) {
+        currentState = state::NORMAL;
+      }
+
+      if (millis() - resetMilis > TIME_TO_RESET){
+        resetWifiConfiguration();
+        ESP.restart();
+      }
+      break;
+  }
 }

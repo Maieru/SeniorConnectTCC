@@ -109,3 +109,8 @@ void initWifiConfigurationAccessPoint() {
   server.begin();
   configurationAccessPointStarted = true;
 }
+
+void resetWifiConfiguration() {
+    LittleFS.remove(SSID_CONFIGURATION_FILE);
+    LittleFS.remove(PASSWORD_CONFIGURATION_FILE);
+}

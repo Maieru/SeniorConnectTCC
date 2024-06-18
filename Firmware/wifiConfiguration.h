@@ -9,5 +9,6 @@
 bool readWifiConfiguration();
 bool initWiFi();
 void initWifiConfigurationAccessPoint();
+void resetWifiConfiguration();
 
 #endif
