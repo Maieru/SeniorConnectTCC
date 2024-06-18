@@ -165,11 +165,6 @@ void setup() {
         AsyncWebParameter* p = request->getParam(i);
         if (p->isPost()) {
           // HTTP POST ssid value
-          Serial.println("AAAAAAAAAAAAAA");
-          Serial.println("AAAAAAAAAAAAAA");
-          Serial.println("AAAAAAAAAAAAAA");
-          Serial.println("AAAAAAAAAAAAAA");
-          Serial.println("AAAAAAAAAAAAAA");
           Serial.println(p->name());
           Serial.println(request->contentType());
           Serial.println(p->value().c_str());
