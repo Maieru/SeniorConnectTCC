@@ -15,6 +15,8 @@
 
 #define RESET_BUTTON 14
 
+#define STATUS_LED_BLINK_TIME 250
+
 // Variables
 
 enum state {
@@ -52,25 +54,21 @@ void setup() {
       isWifiStarted = true;
 
       setRGBLed(ledColor::OFF, STATUS_LED_RED, STATUS_LED_GREEN, STATUS_LED_BLUE);
-      delay(250);
+      delay(STATUS_LED_BLINK_TIME);
       setRGBLed(ledColor::CYAN, STATUS_LED_RED, STATUS_LED_GREEN, STATUS_LED_BLUE);
 
       initializeTime();
       setRGBLed(ledColor::OFF, STATUS_LED_RED, STATUS_LED_GREEN, STATUS_LED_BLUE);
-      delay(250);
+      delay(STATUS_LED_BLINK_TIME);
       setRGBLed(ledColor::CYAN, STATUS_LED_RED, STATUS_LED_GREEN, STATUS_LED_BLUE);
 
       initializeIoTHubClient();
       setRGBLed(ledColor::OFF, STATUS_LED_RED, STATUS_LED_GREEN, STATUS_LED_BLUE);
-      delay(250);
+      delay(STATUS_LED_BLINK_TIME);
       setRGBLed(ledColor::CYAN, STATUS_LED_RED, STATUS_LED_GREEN, STATUS_LED_BLUE);
 
       (void)initializeMqttClient();
-      setRGBLed(ledColor::OFF, STATUS_LED_RED, STATUS_LED_GREEN, STATUS_LED_BLUE);
-      delay(250);
-      setRGBLed(ledColor::CYAN, STATUS_LED_RED, STATUS_LED_GREEN, STATUS_LED_BLUE);
 
-      delay(250);
       setRGBLed(ledColor::GREEN, STATUS_LED_RED, STATUS_LED_GREEN, STATUS_LED_BLUE);
     } else {
       setRGBLed(ledColor::RED, STATUS_LED_RED, STATUS_LED_GREEN, STATUS_LED_BLUE);
@@ -90,6 +88,8 @@ void loop() {
       }
 
       // Future things will be added here :)
+      sendTelemetry("{status: ok}");
+      delay(60000);
       break;
 
     case RESETING:

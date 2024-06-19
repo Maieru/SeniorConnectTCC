@@ -11,6 +11,8 @@
 #define sizeofarray(a) (sizeof(a) / sizeof(a[0]))
 #define SAS_TOKEN_DURATION_IN_MINUTES 60
 #define INCOMING_DATA_BUFFER_SIZE 128
+#define MQTT_QOS1 1
+#define DO_NOT_RETAIN_MSG 0
 
 // Variables
 static az_iot_hub_client client;
@@ -23,6 +25,7 @@ static const int mqtt_port = AZ_IOT_DEFAULT_MQTT_CONNECT_PORT;
 static char mqtt_client_id[128];
 static char mqtt_username[128];
 static char mqtt_password[200];
+static char telemetry_topic[128];
 static uint8_t sas_signature_buffer[256];
 static AzIoTSasToken sasToken(&client, AZ_SPAN_FROM_STR(IOT_CONFIG_DEVICE_KEY), AZ_SPAN_FROM_BUFFER(sas_signature_buffer), AZ_SPAN_FROM_BUFFER(mqtt_password));
 static char incoming_data[INCOMING_DATA_BUFFER_SIZE];
@@ -146,5 +149,30 @@ int initializeMqttClient() {
   } else {
     Serial.println("MQTT client started");
     return 0;
+  }
+}
+
+void sendTelemetry(String telemetry_payload) {
+  Serial.println("Sending telemetry ...");
+
+  // The topic could be obtained just once during setup,
+  // however if properties are used the topic need to be generated again to reflect the
+  // current values of the properties.
+  if (az_result_failed(az_iot_hub_client_telemetry_get_publish_topic(&client, NULL, telemetry_topic, sizeof(telemetry_topic), NULL))) {
+    Serial.println("Failed az_iot_hub_client_telemetry_get_publish_topic");
+    return;
+  }
+
+  if (esp_mqtt_client_publish(
+        mqtt_client,
+        telemetry_topic,
+        (const char*)telemetry_payload.c_str(),
+        telemetry_payload.length(),
+        MQTT_QOS1,
+        DO_NOT_RETAIN_MSG)
+      == 0) {
+    Serial.println("Failed publishing");
+  } else {
+    Serial.println("Message published successfully");
   }
 }
