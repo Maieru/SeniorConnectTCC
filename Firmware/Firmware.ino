@@ -3,6 +3,8 @@
 #include "wifiConfiguration.h"
 #include "littleFSHelper.h"
 #include "rgbLedHelper.h"
+#include "ntpHelper.h"
+#include "azureHelper.h"
 
 // Defines
 #define POWER_LED 13
@@ -21,6 +23,7 @@ enum state {
 };
 
 bool isWifiStarted = false;
+bool isTimeInitialized = false;
 state currentState = state::NORMAL;
 unsigned long resetMilis = 0;
 const int TIME_TO_RESET = 3000;
@@ -47,6 +50,27 @@ void setup() {
 
     if (initWiFi()) {
       isWifiStarted = true;
+
+      setRGBLed(ledColor::OFF, STATUS_LED_RED, STATUS_LED_GREEN, STATUS_LED_BLUE);
+      delay(250);
+      setRGBLed(ledColor::CYAN, STATUS_LED_RED, STATUS_LED_GREEN, STATUS_LED_BLUE);
+
+      initializeTime();
+      setRGBLed(ledColor::OFF, STATUS_LED_RED, STATUS_LED_GREEN, STATUS_LED_BLUE);
+      delay(250);
+      setRGBLed(ledColor::CYAN, STATUS_LED_RED, STATUS_LED_GREEN, STATUS_LED_BLUE);
+
+      initializeIoTHubClient();
+      setRGBLed(ledColor::OFF, STATUS_LED_RED, STATUS_LED_GREEN, STATUS_LED_BLUE);
+      delay(250);
+      setRGBLed(ledColor::CYAN, STATUS_LED_RED, STATUS_LED_GREEN, STATUS_LED_BLUE);
+
+      (void)initializeMqttClient();
+      setRGBLed(ledColor::OFF, STATUS_LED_RED, STATUS_LED_GREEN, STATUS_LED_BLUE);
+      delay(250);
+      setRGBLed(ledColor::CYAN, STATUS_LED_RED, STATUS_LED_GREEN, STATUS_LED_BLUE);
+
+      delay(250);
       setRGBLed(ledColor::GREEN, STATUS_LED_RED, STATUS_LED_GREEN, STATUS_LED_BLUE);
     } else {
       setRGBLed(ledColor::RED, STATUS_LED_RED, STATUS_LED_GREEN, STATUS_LED_BLUE);
@@ -73,7 +97,7 @@ void loop() {
         currentState = state::NORMAL;
       }
 
-      if (millis() - resetMilis > TIME_TO_RESET){
+      if (millis() - resetMilis > TIME_TO_RESET) {
         resetWifiConfiguration();
         ESP.restart();
       }
