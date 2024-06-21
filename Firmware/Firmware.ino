@@ -122,6 +122,7 @@ void loop() {
         telemetryMessage = getTelemetryPayload(currentSensorStatus);
         Serial.println(telemetryMessage);
         sendTelemetry(telemetryMessage);
+        deactivateSchedulesOfOpenDrawners(currentSensorStatus);
       }
 
       lastSensorStatus = currentSensorStatus;

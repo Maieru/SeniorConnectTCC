@@ -86,10 +86,7 @@ std::vector<int> getActiveMedicationAlerts() {
       lastDayTriggered = (int)currentTimeConfiguration[i][LAST_TIME_ALERT_WAS_TRIGGERED_PROPERTY];
     }
 
-    int currentMinutes = timeinfo.tm_hour * 60 + timeinfo.tm_min;
-    int scheduledMinutes = scheduledHour * 60 + scheduledMinute;
-
-    if (currentMinutes >= scheduledMinutes && currentMinutes < scheduledMinutes + MINUTES_TOLERANCE) {
+    if (checkIfTimeIsBetweenScheduled(timeinfo, scheduledHour, scheduledMinute)) {
       if (lastDayTriggered != timeinfo.tm_mday) {
         activeAlerts.push_back((int)currentTimeConfiguration[i][COMPARTIMENT_NUMBER_PROPERTY]);
       }
@@ -97,4 +94,38 @@ std::vector<int> getActiveMedicationAlerts() {
   }
 
   return activeAlerts;
+}
+
+void deactivateSchedulesOfOpenDrawners(std::vector<bool> drawners) {
+  if (!isCurrentConfigurationValid || currentTimeConfiguration.length() == 0) {
+    return;
+  }
+
+  struct tm timeinfo;
+  (void)getLocalTime(&timeinfo);
+
+  for (int i = 0; i < drawners.size(); i++) {
+    if (drawners[i]) {
+      for (int j = 0; j < currentTimeConfiguration.length(); j++) {
+        if ((int)currentTimeConfiguration[j][COMPARTIMENT_NUMBER_PROPERTY] == i) {
+          int scheduledHour = (int)currentTimeConfiguration[j][HOUR_PROPERTY];
+          int scheduledMinute = (int)currentTimeConfiguration[j][MINUTE_PROPERTY];
+
+          if (checkIfTimeIsBetweenScheduled(timeinfo, scheduledHour, scheduledMinute)) {
+            currentTimeConfiguration[j][LAST_TIME_ALERT_WAS_TRIGGERED_PROPERTY] = timeinfo.tm_mday;
+            Serial.print("Detected the opening of the drawner ");
+            Serial.print(i);
+            Serial.println(" and by this reason a scheduled time was deactivated");
+          }
+        }
+      }
+    }
+  }
+}
+
+bool checkIfTimeIsBetweenScheduled(struct tm timeInfo, int scheduledHour, int scheduledMinute) {
+  int currentMinutes = timeInfo.tm_hour * 60 + timeInfo.tm_min;
+  int scheduledMinutes = scheduledHour * 60 + scheduledMinute;
+
+  return currentMinutes >= scheduledMinutes && currentMinutes < scheduledMinutes + MINUTES_TOLERANCE;
 }
