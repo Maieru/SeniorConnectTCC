@@ -7,6 +7,8 @@
 #include "azureHelper.h"
 #include "sensorHelper.h"
 #include <vector>
+#include "timeConfiguration.h"
+#include "ledSinalizationHelper.h"
 
 // Defines
 #define POWER_LED 13
@@ -35,6 +37,7 @@ state currentState = state::NORMAL;
 unsigned long resetMilis = 0;
 unsigned long lastExecutionMillis = 0;
 std::vector<bool> lastSensorStatus;
+std::vector<int> lastAlertsToBeActived;
 
 const int TIME_TO_RESET = 3000;
 
@@ -80,6 +83,7 @@ void setup() {
       setRGBLed(ledColor::CYAN, STATUS_LED_RED, STATUS_LED_GREEN, STATUS_LED_BLUE);
 
       (void)initializeMqttClient();
+      readTimeConfiguration();
 
       setRGBLed(ledColor::GREEN, STATUS_LED_RED, STATUS_LED_GREEN, STATUS_LED_BLUE);
     } else {
@@ -95,6 +99,7 @@ void loop() {
   std::vector<bool> currentSensorStatus;
   unsigned long currentMillis = millis();
   String telemetryMessage;
+  std::vector<int> currentAlertsToBeActived;
 
   switch (currentState) {
     case NORMAL:
@@ -111,10 +116,9 @@ void loop() {
 
       lastExecutionMillis = currentMillis;
 
-      // Future things will be added here :)
       currentSensorStatus = getSensorStatus();
 
-      if (!(lastSensorStatus.empty() || std::equal(currentSensorStatus.begin(), currentSensorStatus.end(), lastSensorStatus.begin()))) {
+      if (!(lastSensorStatus.empty() || vectorsAreEqual(currentSensorStatus, lastSensorStatus))) {
         telemetryMessage = getTelemetryPayload(currentSensorStatus);
         Serial.println(telemetryMessage);
         sendTelemetry(telemetryMessage);
@@ -122,6 +126,14 @@ void loop() {
 
       lastSensorStatus = currentSensorStatus;
 
+      currentAlertsToBeActived = getActiveMedicationAlerts();
+
+      if (!vectorsAreEqual(currentAlertsToBeActived, lastAlertsToBeActived)) {
+        activateLeds(currentAlertsToBeActived);        
+      }
+
+      lastAlertsToBeActived = currentAlertsToBeActived;
+      
       break;
 
     case RESETING:
@@ -136,4 +148,18 @@ void loop() {
       }
       break;
   }
+}
+
+bool vectorsAreEqual(std::vector<bool> vec1, std::vector<bool> vec2) {
+    if (vec1.size() != vec2.size()) {
+        return false;
+    }
+    return std::equal(vec1.begin(), vec1.end(), vec2.begin());
+}
+
+bool vectorsAreEqual(std::vector<int> vec1, std::vector<int> vec2) {
+    if (vec1.size() != vec2.size()) {
+        return false;
+    }
+    return std::equal(vec1.begin(), vec1.end(), vec2.begin());
 }

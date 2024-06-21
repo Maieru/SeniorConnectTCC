@@ -6,12 +6,13 @@
 #include "AzIoTSasToken.h"
 #include "iot_config.h"
 #include "wifiConfiguration.h"
+#include "timeConfiguration.h"
 
 // Defines
 #define AZURE_SDK_CLIENT_USER_AGENT "c%2F" AZ_SDK_VERSION_STRING "(ard;esp32)"
 #define sizeofarray(a) (sizeof(a) / sizeof(a[0]))
 #define SAS_TOKEN_DURATION_IN_MINUTES 60
-#define INCOMING_DATA_BUFFER_SIZE 128
+#define INCOMING_DATA_BUFFER_SIZE 32768
 #define MQTT_QOS1 1
 #define DO_NOT_RETAIN_MSG 0
 
@@ -105,7 +106,10 @@ static esp_err_t mqtt_event_handler(esp_mqtt_event_handle_t event) {
         incoming_data[i] = event->data[i];
       }
       incoming_data[i] = '\0';
+
       Serial.println("Data: " + String(incoming_data));
+      setTimeConfiguration(String(incoming_data));
+
       break;
     case MQTT_EVENT_BEFORE_CONNECT:
       Serial.println("MQTT event MQTT_EVENT_BEFORE_CONNECT");

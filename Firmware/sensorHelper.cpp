@@ -5,12 +5,12 @@
 #include <arduino.h>
 #include <vector>
 #include <Arduino_JSON.h>
+#include "hardwareConstants.h"
 
 // Defines
 #define OPEN_SENSOR_1 33
 
-#define NUMBER_OF_DRAWNERS 9
-
+#define PAYLOAD_TYPE_PROPERTY "type"
 #define PAYLOAD_YEAR_PROPERTY "year"
 #define PAYLOAD_MONTH_PROPERTY "month"
 #define PAYLOAD_DAY_PROPERTY "day"
@@ -21,6 +21,8 @@
 #define PAYLOAD_SENSOR_DATA_PROPERTY "sensorData"
 #define PAYLOAD_SENSOR_NUMBER_PROPERTY "number"
 #define PAYLOAD_SENSOR_STATE_PROPERTY "state"
+
+#define TELEMETRY_TYPE "telemetry"
 
 void initializeSensors() {
   pinMode(OPEN_SENSOR_1, INPUT);
@@ -44,6 +46,7 @@ String getTelemetryPayload(std::vector<bool> currentSensorStatus) {
   struct tm timeinfo;
   (void)getLocalTime(&timeinfo);
 
+  jsonObject[PAYLOAD_TYPE_PROPERTY] = TELEMETRY_TYPE;
   jsonObject[PAYLOAD_YEAR_PROPERTY] = timeinfo.tm_year + 1900;
   jsonObject[PAYLOAD_MONTH_PROPERTY] = timeinfo.tm_mon + 1;
   jsonObject[PAYLOAD_DAY_PROPERTY] = timeinfo.tm_mday;

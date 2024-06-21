@@ -1,0 +1,100 @@
+// Includes
+#include "timeConfiguration.h"
+#include <Arduino_JSON.h>
+#include "littleFSHelper.h"
+#include <vector>
+
+// Defines
+#define CONFIGURATION_MEDICATION_SCHEDULE_PROPERTY "medicationSchedule"
+#define LAST_TIME_ALERT_WAS_TRIGGERED_PROPERTY "lastTrigger"
+#define COMPARTIMENT_NUMBER_PROPERTY "number"
+#define HOUR_PROPERTY "hour"
+#define MINUTE_PROPERTY "minute"
+#define MINUTES_TOLERANCE 15
+
+#define TIME_CONFIGURATION_FILE "/timeConfig.txt"
+#define NEVER_TRIGGERED_VALUE -1
+
+JSONVar currentTimeConfiguration;
+bool isCurrentConfigurationValid = false;
+
+void readTimeConfiguration() {
+  String savedConfiguration = readFile(LittleFS, TIME_CONFIGURATION_FILE);
+
+  if (savedConfiguration == "") {
+    return;
+  }
+
+  currentTimeConfiguration = JSON.parse(savedConfiguration);
+
+  if (JSON.typeof(currentTimeConfiguration) != "array") {
+    Serial.println("The saved time configuration is broken");
+    return;
+  }
+
+  Serial.println(savedConfiguration);
+  isCurrentConfigurationValid = true;
+}
+
+void setTimeConfiguration(String configurationMessage) {
+  JSONVar configuration = JSON.parse(configurationMessage);
+
+  if (JSON.typeof(configuration) == "undefined") {
+    Serial.println("Received an configuration message broken");
+    return;
+  }
+
+  if (String((const char*)configuration["type"]) != "configuration") {  // Should not occour for now
+    Serial.print("Received an message that was not an configuration message. Type received: ");
+    Serial.println(String((const char*)configuration["type"]));
+    return;
+  }
+
+  JSONVar timeConfigurationArray = configuration[CONFIGURATION_MEDICATION_SCHEDULE_PROPERTY];
+  String timeConfigurationString = JSON.stringify(timeConfigurationArray);
+
+  if (JSON.typeof(timeConfigurationArray) != "array") {
+    Serial.print("Received an configuration message with an broken medication schedule. Schedule received: ");
+    Serial.println(JSON.stringify(timeConfigurationString));
+    return;
+  }
+
+  writeFile(LittleFS, TIME_CONFIGURATION_FILE, timeConfigurationString.c_str());
+
+  Serial.println("Saved new time configuration");
+  Serial.println(timeConfigurationString);
+
+  currentTimeConfiguration = timeConfigurationArray;
+}
+
+std::vector<int> getActiveMedicationAlerts() {
+  std::vector<int> activeAlerts;
+
+  if (!isCurrentConfigurationValid || currentTimeConfiguration.length() == 0) {
+    return activeAlerts;
+  }
+
+  struct tm timeinfo;
+  (void)getLocalTime(&timeinfo);
+
+  for (int i = 0; i < currentTimeConfiguration.length(); i++) {
+    int scheduledHour = (int)currentTimeConfiguration[i][HOUR_PROPERTY];
+    int scheduledMinute = (int)currentTimeConfiguration[i][MINUTE_PROPERTY];
+
+    int lastDayTriggered = NEVER_TRIGGERED_VALUE;
+    if (currentTimeConfiguration[i].hasOwnProperty(LAST_TIME_ALERT_WAS_TRIGGERED_PROPERTY)) {
+      lastDayTriggered = (int)currentTimeConfiguration[i][LAST_TIME_ALERT_WAS_TRIGGERED_PROPERTY];
+    }
+
+    int currentMinutes = timeinfo.tm_hour * 60 + timeinfo.tm_min;
+    int scheduledMinutes = scheduledHour * 60 + scheduledMinute;
+
+    if (currentMinutes >= scheduledMinutes && currentMinutes < scheduledMinutes + MINUTES_TOLERANCE) {
+      if (lastDayTriggered != timeinfo.tm_mday) {
+        activeAlerts.push_back((int)currentTimeConfiguration[i][COMPARTIMENT_NUMBER_PROPERTY]);
+      }
+    }
+  }
+
+  return activeAlerts;
+}
