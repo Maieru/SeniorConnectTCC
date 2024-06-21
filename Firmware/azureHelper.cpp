@@ -5,6 +5,7 @@
 #include <mqtt_client.h>
 #include "AzIoTSasToken.h"
 #include "iot_config.h"
+#include "wifiConfiguration.h"
 
 // Defines
 #define AZURE_SDK_CLIENT_USER_AGENT "c%2F" AZ_SDK_VERSION_STRING "(ard;esp32)"
@@ -19,7 +20,6 @@ static az_iot_hub_client client;
 static esp_mqtt_client_handle_t mqtt_client;
 static const char* host = IOT_CONFIG_IOTHUB_FQDN;
 static const char* mqtt_broker_uri = "mqtts://" IOT_CONFIG_IOTHUB_FQDN;
-static const char* device_id = IOT_CONFIG_DEVICE_ID;
 static const int mqtt_port = AZ_IOT_DEFAULT_MQTT_CONNECT_PORT;
 
 static char mqtt_client_id[128];
@@ -33,6 +33,11 @@ static char incoming_data[INCOMING_DATA_BUFFER_SIZE];
 void initializeIoTHubClient() {
   az_iot_hub_client_options options = az_iot_hub_client_options_default();
   options.user_agent = AZ_SPAN_FROM_STR(AZURE_SDK_CLIENT_USER_AGENT);
+  
+  String device_id_string = returnDeviceName();
+
+  char* device_id = new char[device_id_string.length() + 1];
+  strcpy(device_id, device_id_string.c_str());
 
   if (az_result_failed(az_iot_hub_client_init(&client, az_span_create((uint8_t*)host, strlen(host)), az_span_create((uint8_t*)device_id, strlen(device_id)), &options))) {
     Serial.println("Failed initializing Azure IoT Hub client");

@@ -62,7 +62,7 @@ void setup() {
   if (isWifiConfigured) {
     setRGBLed(ledColor::CYAN, STATUS_LED_RED, STATUS_LED_GREEN, STATUS_LED_BLUE);
 
-    if (initWiFi()) {
+    if (initWiFi() && returnDeviceName() != "") {
       isWifiStarted = true;
 
       setRGBLed(ledColor::OFF, STATUS_LED_RED, STATUS_LED_GREEN, STATUS_LED_BLUE);
@@ -117,7 +117,7 @@ void loop() {
       if (!(lastSensorStatus.empty() || std::equal(currentSensorStatus.begin(), currentSensorStatus.end(), lastSensorStatus.begin()))) {
         telemetryMessage = getTelemetryPayload(currentSensorStatus);
         Serial.println(telemetryMessage);
-        sendTelemetry(telemetryMessage);        
+        sendTelemetry(telemetryMessage);
       }
 
       lastSensorStatus = currentSensorStatus;

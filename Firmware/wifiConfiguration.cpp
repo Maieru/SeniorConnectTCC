@@ -17,14 +17,17 @@ bool configurationAccessPointStarted = false;
 // -- Wifi configuration
 String ssid;
 String pass;
+String deviceName;
 
 // -- Configuration parameters
 const char* PARAM_SSID = "ssid";
 const char* PARAM_PASSWORD = "password";
+const char* PARAM_DEVICE_NAME = "deviceName";
 
 // -- Configuration files parameters
 const char* SSID_CONFIGURATION_FILE = "/ssid.txt";
 const char* PASSWORD_CONFIGURATION_FILE = "/password.txt";
+const char* DEVICE_NAME_CONFIGURATION_FILE = "/deviceName.txt";
 
 // -- Timing variables
 const long TIMEOUT_WIFI_CONNECTION = 10000;
@@ -91,13 +94,21 @@ void initWifiConfigurationAccessPoint() {
           // Write file to save value
           writeFile(LittleFS, SSID_CONFIGURATION_FILE, ssid.c_str());
         }
-        // HTTP POST pass value
+
         if (p->name() == PARAM_PASSWORD) {
           pass = p->value().c_str();
           Serial.print("Password set to: ");
           Serial.println(pass);
           // Write file to save value
           writeFile(LittleFS, PASSWORD_CONFIGURATION_FILE, pass.c_str());
+        }
+
+        if (p->name() == PARAM_DEVICE_NAME) {
+          deviceName = p->value().c_str();
+          Serial.print("Device name set to: ");
+          Serial.println(deviceName);
+          // Write file to save value
+          writeFile(LittleFS, DEVICE_NAME_CONFIGURATION_FILE, deviceName.c_str());
         }
       }
     }
@@ -111,6 +122,11 @@ void initWifiConfigurationAccessPoint() {
 }
 
 void resetWifiConfiguration() {
-    LittleFS.remove(SSID_CONFIGURATION_FILE);
-    LittleFS.remove(PASSWORD_CONFIGURATION_FILE);
+  LittleFS.remove(SSID_CONFIGURATION_FILE);
+  LittleFS.remove(PASSWORD_CONFIGURATION_FILE);
+  LittleFS.remove(DEVICE_NAME_CONFIGURATION_FILE);
+}
+
+String returnDeviceName() {
+  return readFile(LittleFS, DEVICE_NAME_CONFIGURATION_FILE);
 }

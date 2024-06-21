@@ -40,7 +40,7 @@ namespace Configuracao_SSID_e_Senha.Business
                     // Adicionando cabeçalhos se necessário, por exemplo:
                     // httpUrlConnection.SetRequestProperty("Content-Type", "application/x-www-form-urlencoded");
 
-                    var postData = Encoding.UTF8.GetBytes($"ssid={ConfiguracoesSelecionadas.SSID}&password={ConfiguracoesSelecionadas.Password}");
+                    var postData = Encoding.UTF8.GetBytes($"ssid={ConfiguracoesSelecionadas.SSID}&password={ConfiguracoesSelecionadas.Password}&deviceName=device-teste");
 
                     using (var outputStream = httpUrlConnection.OutputStream)
                     {

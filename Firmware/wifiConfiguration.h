@@ -10,5 +10,6 @@ bool readWifiConfiguration();
 bool initWiFi();
 void initWifiConfigurationAccessPoint();
 void resetWifiConfiguration();
+String returnDeviceName();
 
 #endif
