@@ -5,5 +5,6 @@
 #include <vector>
 
 void activateLeds(std::vector<int> ledsToBeActivated);
+void initializeSinalizationLeds();
 
 #endif

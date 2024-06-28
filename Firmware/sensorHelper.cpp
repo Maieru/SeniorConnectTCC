@@ -8,8 +8,6 @@
 #include "hardwareConstants.h"
 
 // Defines
-#define OPEN_SENSOR_1 33
-
 #define PAYLOAD_TYPE_PROPERTY "type"
 #define PAYLOAD_YEAR_PROPERTY "year"
 #define PAYLOAD_MONTH_PROPERTY "month"
@@ -25,7 +23,11 @@
 #define TELEMETRY_TYPE "telemetry"
 
 void initializeSensors() {
-  pinMode(OPEN_SENSOR_1, INPUT);
+  pinMode(SENSOR_INPUT, INPUT);
+  pinMode(MULTIPLEX_SELECTOR_BIT_0, OUTPUT);
+  pinMode(MULTIPLEX_SELECTOR_BIT_1, OUTPUT);
+  pinMode(MULTIPLEX_SELECTOR_BIT_2, OUTPUT);
+  pinMode(MULTIPLEX_SELECTOR_BIT_3, OUTPUT);  
 }
 
 std::vector<bool> getSensorStatus() {

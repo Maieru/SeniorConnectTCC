@@ -9,23 +9,12 @@
 #include <vector>
 #include "timeConfiguration.h"
 #include "ledSinalizationHelper.h"
+#include "hardwareConstants.h"
 
 // Defines
-#define POWER_LED 13
-
-#define STATUS_LED_RED 12
-#define STATUS_LED_GREEN 27
-#define STATUS_LED_BLUE 26
-
-#define RESET_BUTTON 14
-
 #define STATUS_LED_BLINK_TIME 500
 
-// Defines For Debug (should be deleted after testing)
-#define INTAKE_LED_1 25
-
 // Variables
-
 enum state {
   NORMAL,
   RESETING,
@@ -53,9 +42,10 @@ void setup() {
   pinMode(STATUS_LED_BLUE, OUTPUT);
   pinMode(RESET_BUTTON, INPUT);
 
+  initializeSinalizationLeds();
+
   // Pins used for debug
   initializeSensors();
-  pinMode(INTAKE_LED_1, OUTPUT);
 
   digitalWrite(POWER_LED, HIGH);
   setRGBLed(ledColor::OFF, STATUS_LED_RED, STATUS_LED_GREEN, STATUS_LED_BLUE);
