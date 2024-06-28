@@ -96,6 +96,7 @@ void loop() {
       if (digitalRead(RESET_BUTTON)) {
         resetMilis = millis();
         currentState = state::RESETING;
+        Serial.println("Entering reset mode");
         return;
       }
 

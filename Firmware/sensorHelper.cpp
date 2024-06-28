@@ -27,16 +27,24 @@ void initializeSensors() {
   pinMode(MULTIPLEX_SELECTOR_BIT_0, OUTPUT);
   pinMode(MULTIPLEX_SELECTOR_BIT_1, OUTPUT);
   pinMode(MULTIPLEX_SELECTOR_BIT_2, OUTPUT);
-  pinMode(MULTIPLEX_SELECTOR_BIT_3, OUTPUT);  
+  pinMode(MULTIPLEX_SELECTOR_BIT_3, OUTPUT);
 }
 
 std::vector<bool> getSensorStatus() {
   std::vector<bool> outputVector;
 
-  // Should be rewriten in the future. DONT FORGET THE -1 ON THE FOR CONDITION
-  outputVector.push_back(digitalRead(OPEN_SENSOR_1));
-  for (char i = 0; i < NUMBER_OF_DRAWNERS - 1; i++) {
-    outputVector.push_back(false);
+  digitalWrite(MULTIPLEX_SELECTOR_BIT_0, LOW);
+  digitalWrite(MULTIPLEX_SELECTOR_BIT_1, LOW);
+  digitalWrite(MULTIPLEX_SELECTOR_BIT_2, LOW);
+  digitalWrite(MULTIPLEX_SELECTOR_BIT_3, LOW);
+
+  for (char i = 0; i < NUMBER_OF_DRAWNERS; i++) {
+    digitalWrite(MULTIPLEX_SELECTOR_BIT_0, bitRead(i, 0));
+    digitalWrite(MULTIPLEX_SELECTOR_BIT_1, bitRead(i, 1));
+    digitalWrite(MULTIPLEX_SELECTOR_BIT_2, bitRead(i, 2));
+    digitalWrite(MULTIPLEX_SELECTOR_BIT_3, bitRead(i, 3));
+    
+    outputVector.push_back(digitalRead(SENSOR_INPUT));
   }
 
   return outputVector;
