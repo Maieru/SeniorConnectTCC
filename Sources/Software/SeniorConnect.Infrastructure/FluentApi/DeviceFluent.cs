@@ -13,7 +13,7 @@ namespace SeniorConnect.Infrastructure.FluentApi
     {
         public void Configure(EntityTypeBuilder<Device> builder)
         {
-            builder.ToTable("tbDevice");
+            builder.ToTable("tbDispositivo");
 
             builder.Property(d => d.Id).HasColumnName("DispositivoId").IsRequired();
             builder.Property(d => d.DeviceName).HasColumnName("NomeDispositivo").IsRequired().HasMaxLength(50);

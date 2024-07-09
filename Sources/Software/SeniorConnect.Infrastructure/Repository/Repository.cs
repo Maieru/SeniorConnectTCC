@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SeniorConnect.Domain.Exceptions;
 using SeniorConnect.Domain.Interfaces;
 using SeniorConnect.Infrastructure.Context;
 using System;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace SeniorConnect.Infrastructure.Repository
 {
-    internal class Repository<TEntity> : IRepository<TEntity> where TEntity : class
+    public abstract class Repository<TEntity> : IRepository<TEntity> where TEntity : class
     {
         internal readonly DatabaseContext _context;
         internal readonly DbSet<TEntity> _dbSet;
@@ -37,10 +38,18 @@ namespace SeniorConnect.Infrastructure.Repository
                 return await SaveAsync();
             }
 
-            return 0;
+            throw new EntityNotFoundException($"No entity of type {typeof(TEntity).Name} with {id} found");
         }
 
-        public async Task<TEntity> GetByIdAsync(int id) => await _dbSet.FindAsync(id); 
+        public async Task<TEntity> GetByIdAsync(int id)
+        {
+            var entity = await _dbSet.FindAsync(id);
+
+            if (entity == null)
+                throw new EntityNotFoundException($"No entity of type {typeof(TEntity).Name} with {id} found");
+
+            return entity;
+        }
 
         public async Task<List<TEntity>> GetAllAsync(bool tracked = true)
         {
@@ -48,7 +57,7 @@ namespace SeniorConnect.Infrastructure.Repository
 
             if (!tracked)
                 query = query.AsNoTracking();
-        
+
             return await query.ToListAsync();
         }
 
@@ -79,10 +88,5 @@ namespace SeniorConnect.Infrastructure.Repository
         }
 
         public async Task<int> SaveAsync() => await _context.SaveChangesAsync();
-        
-        public void Dispose()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

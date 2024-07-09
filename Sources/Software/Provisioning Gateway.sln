@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SeniorConnect.Domain", "Sen
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SeniorConnect.Infrastructure", "SeniorConnect.Infrastructure\SeniorConnect.Infrastructure.csproj", "{A7DEC2EF-60CD-46E5-B016-968CD7040CBB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SeniorConnect.Bussiness", "SeniorConnect.Bussiness\SeniorConnect.Bussiness.csproj", "{6686E5AB-5069-4E75-B4CB-F632D588780C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{A7DEC2EF-60CD-46E5-B016-968CD7040CBB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A7DEC2EF-60CD-46E5-B016-968CD7040CBB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A7DEC2EF-60CD-46E5-B016-968CD7040CBB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6686E5AB-5069-4E75-B4CB-F632D588780C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6686E5AB-5069-4E75-B4CB-F632D588780C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6686E5AB-5069-4E75-B4CB-F632D588780C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6686E5AB-5069-4E75-B4CB-F632D588780C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SeniorConnect.Domain.Interfaces
 {
-    public interface IRepository<TEntity> : IDisposable where TEntity : class
+    public interface IRepository<TEntity> where TEntity : class
     {
         Task AddAsync(TEntity entity);
         Task<int> DeleteByIdAsync(int id);

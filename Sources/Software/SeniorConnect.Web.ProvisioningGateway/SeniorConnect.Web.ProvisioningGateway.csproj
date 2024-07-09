@@ -7,4 +7,13 @@
     <RootNamespace>Provisioning_Gateway</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.7" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SeniorConnect.Bussiness\SeniorConnect.Bussiness.csproj" />
+    <ProjectReference Include="..\SeniorConnect.Infrastructure\SeniorConnect.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>
