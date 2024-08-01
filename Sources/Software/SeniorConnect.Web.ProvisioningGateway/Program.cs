@@ -24,6 +24,8 @@ if (!builder.Environment.IsDevelopment())
 
 builder.Services.AddDbContext<DatabaseContext>(options => options.UseSqlServer(sqlServerConnectionString), ServiceLifetime.Scoped);
 builder.Services.AddScoped<DeviceRepository>();
+builder.Services.AddScoped<LogRepository>();
+builder.Services.AddScoped<LogService>();
 builder.Services.AddScoped(sp => new DeviceProvisioningService(dpsPrimaryKey, dpsIdScope));
 
 var app = builder.Build();

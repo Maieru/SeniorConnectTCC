@@ -15,11 +15,14 @@ namespace SeniorConnect.Infrastructure.Context
 
         public DbSet<Device> Devices { get; set; }
 
+        public DbSet<LogEntry> LogEntries { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.ApplyConfiguration(new DeviceFluent());
+            modelBuilder.ApplyConfiguration(new LogEntryFluent());
         }
     }
 }

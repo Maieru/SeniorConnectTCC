@@ -16,12 +16,14 @@ namespace Provisioning_Gateway.Controllers
         private readonly DatabaseContext _context;
         private readonly DeviceRepository _deviceRepository;
         private readonly DeviceProvisioningService _deviceProvisioningService;
+        private readonly LogService _logService;
 
-        public ProvisioningController(ILogger<ProvisioningController> logger, DeviceRepository deviceRepository, DeviceProvisioningService deviceProvisioningService)
+        public ProvisioningController(ILogger<ProvisioningController> logger, DeviceRepository deviceRepository, DeviceProvisioningService deviceProvisioningService, LogService logService)
         {
             _logger = logger;
             _deviceRepository = deviceRepository;
             _deviceProvisioningService = deviceProvisioningService;
+            _logService = logService;
         }
 
         [HttpPost("Create")]
@@ -40,14 +42,13 @@ namespace Provisioning_Gateway.Controllers
 
                 await _deviceRepository.AddAsync(device);
 
-                return Json(device);
+                return Ok(device);
             }
-            catch
+            catch (Exception ex)
             {
-
+                await _logService.LogException(ex, new { subscriptionId });
+                return StatusCode(StatusCodes.Status500InternalServerError);
             }
-
-            return Json(subscriptionId);
         }
     }
 }
