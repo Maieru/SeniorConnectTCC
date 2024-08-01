@@ -18,6 +18,8 @@
         "ASPNETCORE_ENVIRONMENT": "Development",
         "SqlServerDatabase": "data source=maieru\\SQLEXPRESS;initial catalog=SeniorConnect;trusted_connection=true;TrustServerCertificate=True",
         "KeyVaulUrl": "Remember to put this, please",
+        "DpsPrimaryKey": "Remember to put this, please",
+        "IdScope": "Remember to put this, please"
       }
     }
   }
