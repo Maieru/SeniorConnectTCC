@@ -17,12 +17,21 @@ namespace SeniorConnect.Infrastructure.Context
 
         public DbSet<LogEntry> LogEntries { get; set; }
 
+        public DbSet<Subscription> Subscriptions { get; set; }
+
+        public DbSet<Medicine> Medicines { get; set; }
+
+        public DbSet<MedicineDeviceAssociation> MedicineDeviceAssociations { get; set; }    
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.ApplyConfiguration(new DeviceFluent());
             modelBuilder.ApplyConfiguration(new LogEntryFluent());
+            modelBuilder.ApplyConfiguration(new SubscriptionFluent());
+            modelBuilder.ApplyConfiguration(new MedicineFluent());
+            modelBuilder.ApplyConfiguration(new MedicineDeviceAssociationFluent());
         }
     }
 }

@@ -22,13 +22,13 @@ namespace SeniorConnect.Infrastructure.Repository
             _dbSet = _context.Set<TEntity>();
         }
 
-        public async Task AddAsync(TEntity entity)
+        public virtual async Task AddAsync(TEntity entity)
         {
             await _dbSet.AddAsync(entity);
             await SaveAsync();
         }
 
-        public async Task<int> DeleteByIdAsync(int id)
+        public virtual async Task<int> DeleteByIdAsync(int id)
         {
             var entityToDelete = await _dbSet.FindAsync(id);
 
@@ -41,7 +41,7 @@ namespace SeniorConnect.Infrastructure.Repository
             throw new EntityNotFoundException($"No entity of type {typeof(TEntity).Name} with {id} found");
         }
 
-        public async Task<TEntity> GetByIdAsync(int id)
+        public virtual async Task<TEntity> GetByIdAsync(int id)
         {
             var entity = await _dbSet.FindAsync(id);
 
@@ -51,7 +51,7 @@ namespace SeniorConnect.Infrastructure.Repository
             return entity;
         }
 
-        public async Task<List<TEntity>> GetAllAsync(bool tracked = true)
+        public virtual async Task<List<TEntity>> GetAllAsync(bool tracked = true)
         {
             IQueryable<TEntity> query = _dbSet;
 
@@ -61,7 +61,7 @@ namespace SeniorConnect.Infrastructure.Repository
             return await query.ToListAsync();
         }
 
-        public async Task<List<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> filter, bool tracked = true)
+        public virtual async Task<List<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> filter, bool tracked = true)
         {
             IQueryable<TEntity> query = _dbSet;
 
@@ -71,7 +71,7 @@ namespace SeniorConnect.Infrastructure.Repository
             return await query.Where(filter).ToListAsync();
         }
 
-        public async Task<List<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> filter, int take, int skip, bool tracked = true)
+        public virtual async Task<List<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> filter, int take, int skip, bool tracked = true)
         {
             IQueryable<TEntity> query = _dbSet;
 
@@ -81,7 +81,7 @@ namespace SeniorConnect.Infrastructure.Repository
             return await query.Where(filter).Skip(skip).Take(take).ToListAsync();
         }
 
-        public async Task UpdateAsync(TEntity entity)
+        public virtual async Task UpdateAsync(TEntity entity)
         {
             _dbSet.Update(entity);
             await SaveAsync();
