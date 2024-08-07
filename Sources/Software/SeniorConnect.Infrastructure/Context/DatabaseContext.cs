@@ -23,6 +23,8 @@ namespace SeniorConnect.Infrastructure.Context
 
         public DbSet<MedicineDeviceAssociation> MedicineDeviceAssociations { get; set; }    
 
+        public DbSet<Scheduling> Scheduling { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -32,6 +34,7 @@ namespace SeniorConnect.Infrastructure.Context
             modelBuilder.ApplyConfiguration(new SubscriptionFluent());
             modelBuilder.ApplyConfiguration(new MedicineFluent());
             modelBuilder.ApplyConfiguration(new MedicineDeviceAssociationFluent());
+            modelBuilder.ApplyConfiguration(new  SchedulingFluent());
         }
     }
 }
