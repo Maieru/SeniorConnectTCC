@@ -32,23 +32,16 @@ namespace SeniorConnect.Infrastructure.Repository
         {
             var entityToDelete = await _dbSet.FindAsync(id);
 
-            if (entityToDelete != null)
-            {
-                _dbSet.Remove(entityToDelete);
-                return await SaveAsync();
-            }
+            if (entityToDelete == null)
+                throw new EntityNotFoundException($"No entity of type {typeof(TEntity).Name} with {id} found");
 
-            throw new EntityNotFoundException($"No entity of type {typeof(TEntity).Name} with {id} found");
+            _dbSet.Remove(entityToDelete);
+            return await SaveAsync();
         }
 
         public virtual async Task<TEntity> GetByIdAsync(int id)
         {
-            var entity = await _dbSet.FindAsync(id);
-
-            if (entity == null)
-                throw new EntityNotFoundException($"No entity of type {typeof(TEntity).Name} with {id} found");
-
-            return entity;
+            return await _dbSet.FindAsync(id);
         }
 
         public virtual async Task<List<TEntity>> GetAllAsync(bool tracked = true)
