@@ -18,12 +18,14 @@ namespace SeniorConnect.Bussiness.Entities_Services
         private readonly SubscriptionService _subscriptionService;
         private readonly IRepository<User> _userRepository;
         private readonly ISecretManager _secretManager;
+        private readonly BearerTokenService _bearerTokenService;
 
-        public UserService(IRepository<User> userRepository, SubscriptionService subscriptionService, ISecretManager secretManager)
+        public UserService(IRepository<User> userRepository, SubscriptionService subscriptionService, ISecretManager secretManager, BearerTokenService bearerTokenService)
         {
             _userRepository = userRepository;
             _subscriptionService = subscriptionService;
             _secretManager = secretManager;
+            _bearerTokenService = bearerTokenService;
         }
 
         public async Task<User> CreateUser(CreateUserTO userTO)
@@ -41,6 +43,9 @@ namespace SeniorConnect.Bussiness.Entities_Services
 
             if (string.IsNullOrEmpty(userTO.Name))
                 throw new ArgumentNullException(nameof(userTO.Email));
+
+            if (_userRepository.GetFirst(u => u.Username == userTO.Username) != null)
+                throw new EntryAlreadyExistsException($"User {userTO.Username} already exists");
 
             Subscription subscription;
 
@@ -72,6 +77,34 @@ namespace SeniorConnect.Bussiness.Entities_Services
             await _userRepository.AddAsync(user);
 
             return user;
+        }
+
+        public async Task<User> GetUser(string username, string password)
+        {
+            if (string.IsNullOrEmpty(username))
+                throw new ArgumentNullException(nameof(username));
+
+            if (string.IsNullOrEmpty(password))
+                throw new ArgumentNullException(nameof(password));
+
+            var user = await _userRepository.GetFirst(u => u.Username == username);
+
+            if (user == null)
+                throw new UserNotFoundException($"User {username} not found");
+
+            var encryptionService = new EncryptionService(await _secretManager.GetEncryptionSalt(), await _secretManager.GetWorkFactor());
+            var isPasswordMatch = await encryptionService.VerifyMatch(password, user.Password);
+
+            if (!isPasswordMatch)
+                throw new InvalidPasswordException("Invalid password");
+
+            return user;
+        }
+
+        public async Task<BearerTokenTO> GetToken(string username, string password)
+        {
+            var user = await GetUser(username, password);
+            return _bearerTokenService.CreateAccessToken(user);
         }
     }
 }

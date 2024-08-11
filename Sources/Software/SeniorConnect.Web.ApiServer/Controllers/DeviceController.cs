@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SeniorConnect.Bussiness.Entities_Services;
 using SeniorConnect.Domain.Entities;
 using SeniorConnect.Infrastructure.Context;
@@ -7,6 +8,7 @@ using SeniorConnect.Infrastructure.Repository;
 namespace SeniorConnect.Web.ApiServer.Controllers
 {
     [ApiController]
+    [Authorize]
     [Route("v1/[controller]")]
     public class DeviceController : ControllerBase
     {

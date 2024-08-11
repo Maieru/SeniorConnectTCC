@@ -74,6 +74,16 @@ namespace SeniorConnect.Infrastructure.Repository
             return await query.Where(filter).Skip(skip).Take(take).ToListAsync();
         }
 
+        public virtual async Task<TEntity> GetFirst(Expression<Func<TEntity, bool>> filter, bool tracked = true)
+        {
+            IQueryable<TEntity> query = _dbSet;
+
+            if (!tracked)
+                query = query.AsNoTracking();
+
+            return await query.FirstOrDefaultAsync(filter);
+        }
+
         public virtual async Task UpdateAsync(TEntity entity)
         {
             _dbSet.Update(entity);

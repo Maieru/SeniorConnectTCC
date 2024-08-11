@@ -1,10 +1,14 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using SeniorConnect.Bussiness.Entities_Services;
 using SeniorConnect.Bussiness.Services;
 using SeniorConnect.Domain.Entities;
 using SeniorConnect.Domain.Interfaces;
+using SeniorConnect.Domain.TOs.User;
 using SeniorConnect.Infrastructure.Context;
 using SeniorConnect.Infrastructure.Repository;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +25,7 @@ if (!builder.Environment.IsDevelopment())
     secretManager = new SecretManager(builder.Configuration.GetValue<string>("KeyVaulUrl"));
 
 var sqlServerConnectionString = await secretManager.GetSqlServerConnectionString();
+var tokenSigningKey = await secretManager.GetTokenSignignKey();
 
 builder.Services.AddDbContext<DatabaseContext>(options => options.UseSqlServer(sqlServerConnectionString), ServiceLifetime.Scoped);
 
@@ -31,7 +36,35 @@ builder.Services.AddScoped<IRepository<Subscription>, SubscriptionRepository>();
 builder.Services.AddScoped<SubscriptionService>();
 builder.Services.AddScoped<DeviceService>();
 builder.Services.AddScoped<UserService>();
+builder.Services.AddScoped<BearerTokenService>();
+
 builder.Services.AddSingleton<ISecretManager>(secretManager);
+builder.Services.AddSingleton<JwtTokenConfigurationOptions>(_ => new JwtTokenConfigurationOptions()
+{
+    Audience = "SeniorConnectApiServer",
+    Issuer = "SeniorConnectApiServer",
+    SigningKey = tokenSigningKey,
+    ExpirationSeconds = 3600
+});
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(opts =>
+{
+    var signingKeyBytes = Encoding.UTF8.GetBytes(tokenSigningKey);
+
+    opts.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = "SeniorConnectApiServer",
+        ValidAudience = "SeniorConnectApiServer",
+        IssuerSigningKey = new SymmetricSecurityKey(signingKeyBytes)
+    };
+});
+
+builder.Services.AddAuthentication().AddCookie();
+builder.Services.AddAuthorization();
 
 var app = builder.Build();
 

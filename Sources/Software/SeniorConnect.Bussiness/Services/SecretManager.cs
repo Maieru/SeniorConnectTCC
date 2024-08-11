@@ -12,6 +12,7 @@ namespace SeniorConnect.Bussiness.Services
         private const string DPS_ID_SCOPE_KEY = "DPSIdScope";
         private const string ENCRYPTION_SALT = "EncryptionSalt";
         private const string WORK_FACTOR = "WorkFactor";
+        private const string TOKEN_SIGNING_KEY = "TokenSigningKey";
 
         private string? _cachedEncryptionSalt;
         private int? _cachedWorkFactor;
@@ -21,6 +22,7 @@ namespace SeniorConnect.Bussiness.Services
         public async Task<string?> GetSqlServerConnectionString() => await keyVaultService.GetSecret(SQL_SERVER_CONNECTION_STRING_KEY);
         public async Task<string?> GetDpsPrimaryKey() => await keyVaultService.GetSecret(DPS_PRIMARY_KEY_KEY);
         public async Task<string?> GetDpsIdScope() => await keyVaultService.GetSecret(DPS_ID_SCOPE_KEY);
+        public async Task<string?> GetTokenSignignKey() => await keyVaultService.GetSecret(TOKEN_SIGNING_KEY);
 
         public async Task<string?> GetEncryptionSalt()
         {

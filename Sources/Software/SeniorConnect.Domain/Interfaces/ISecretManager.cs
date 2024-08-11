@@ -13,5 +13,6 @@ namespace SeniorConnect.Domain.Interfaces
         Task<string?> GetDpsIdScope();
         Task<string?> GetEncryptionSalt();
         Task<int> GetWorkFactor();
+        Task<string?> GetTokenSignignKey();
     }
 }
