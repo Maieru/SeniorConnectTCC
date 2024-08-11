@@ -15,16 +15,14 @@ namespace SeniorConnect.Bussiness.Entities_Services
 {
     public class UserService : IEntityServiceInterface<User>
     {
-        private readonly DatabaseContext _databaseContext;
         private readonly SubscriptionService _subscriptionService;
         private readonly IRepository<User> _userRepository;
         private readonly ISecretManager _secretManager;
 
-        public UserService(DatabaseContext context, ISecretManager secretManager)
+        public UserService(IRepository<User> userRepository, SubscriptionService subscriptionService, ISecretManager secretManager)
         {
-            _databaseContext = context;
-            _userRepository = new UserRepository(context);
-            _subscriptionService = new SubscriptionService(context);
+            _userRepository = userRepository;
+            _subscriptionService = subscriptionService;
             _secretManager = secretManager;
         }
 

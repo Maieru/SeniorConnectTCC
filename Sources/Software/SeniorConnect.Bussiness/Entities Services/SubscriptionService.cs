@@ -12,13 +12,11 @@ namespace SeniorConnect.Bussiness.Entities_Services
 {
     public class SubscriptionService : IEntityServiceInterface<Subscription>
     {
-        private readonly DatabaseContext _databaseContext;
         private readonly IRepository<Subscription> _repository;
 
-        public SubscriptionService(DatabaseContext context)
+        public SubscriptionService(IRepository<Subscription> subscriptionRepository)
         {
-            _databaseContext = context;
-            _repository = new SubscriptionRepository(context);
+            _repository = subscriptionRepository;
         }
 
         public async Task<Subscription> GetSubscriptionById(int subscriptionId)

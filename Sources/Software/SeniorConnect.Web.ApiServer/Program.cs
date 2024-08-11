@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using SeniorConnect.Bussiness.Entities_Services;
 using SeniorConnect.Bussiness.Services;
+using SeniorConnect.Domain.Entities;
 using SeniorConnect.Domain.Interfaces;
 using SeniorConnect.Infrastructure.Context;
 using SeniorConnect.Infrastructure.Repository;
@@ -23,6 +24,11 @@ var sqlServerConnectionString = await secretManager.GetSqlServerConnectionString
 
 builder.Services.AddDbContext<DatabaseContext>(options => options.UseSqlServer(sqlServerConnectionString), ServiceLifetime.Scoped);
 
+builder.Services.AddScoped<IRepository<Device>, DeviceRepository>();
+builder.Services.AddScoped<IRepository<User>, UserRepository>();
+builder.Services.AddScoped<IRepository<Subscription>, SubscriptionRepository>();
+
+builder.Services.AddScoped<SubscriptionService>();
 builder.Services.AddScoped<DeviceService>();
 builder.Services.AddScoped<UserService>();
 builder.Services.AddSingleton<ISecretManager>(secretManager);

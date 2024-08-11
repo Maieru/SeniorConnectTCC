@@ -10,11 +10,12 @@ namespace SeniorConnect.Bussiness.Entities_Services
     {
         private readonly DatabaseContext _databaseContext;
         private readonly IRepository<Device> _repository;
+        private readonly SubscriptionService _subscriptionService;
 
-        public DeviceService(DatabaseContext context)
+        public DeviceService(IRepository<Device> deviceRepository, SubscriptionService subscriptionService)
         {
-            _databaseContext = context;
-            _repository = new DeviceRepository(context);
+            _repository = deviceRepository;
+            _subscriptionService = subscriptionService;
         }
 
         public async Task<List<Device>> GetDevicesFromSubscription(int subscriptionId)
@@ -34,9 +35,7 @@ namespace SeniorConnect.Bussiness.Entities_Services
             if (device == null)
                 throw new ArgumentNullException(nameof(device));
 
-            var subscriptionRepository = new SubscriptionService(_databaseContext);
-
-            if (await subscriptionRepository.GetSubscriptionById(device.SubscriptionId) == null)
+            if (await _subscriptionService.GetSubscriptionById(device.SubscriptionId) == null)
                 throw new InvalidSubscriptionException($"Subscription with id {device.SubscriptionId} not found");
 
             await _repository.AddAsync(device);
@@ -47,9 +46,7 @@ namespace SeniorConnect.Bussiness.Entities_Services
             if (device == null)
                 throw new ArgumentNullException(nameof(device));
 
-            var subscriptionRepository = new SubscriptionService(_databaseContext);
-
-            if (await subscriptionRepository.GetSubscriptionById(device.SubscriptionId) == null)
+            if (await _subscriptionService.GetSubscriptionById(device.SubscriptionId) == null)
                 throw new InvalidSubscriptionException($"Subscription with id {device.SubscriptionId} not found");
 
             if (await GetDeviceById(device.Id) == null)
