@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SeniorConnect.Bussiness.Entities_Services;
+using SeniorConnect.Bussiness.Services;
 using SeniorConnect.Domain.Entities;
+using SeniorConnect.Domain.Exceptions;
 using SeniorConnect.Domain.TOs.User;
 
 namespace SeniorConnect.Web.ApiServer.Controllers
@@ -11,12 +13,12 @@ namespace SeniorConnect.Web.ApiServer.Controllers
     [Route("v1/[controller]")]
     public class UserController : ControllerBase
     {
-        private readonly ILogger<UserController> _logger;
         private readonly UserService _userService;
+        private readonly LogService _logService;
 
-        public UserController(ILogger<UserController> logger, UserService userService)
+        public UserController(LogService logService, UserService userService)
         {
-            _logger = logger;
+            _logService = logService;
             _userService = userService;
         }
 
@@ -29,9 +31,14 @@ namespace SeniorConnect.Web.ApiServer.Controllers
                 await _userService.CreateUser(userTO);
                 return Ok();
             }
-            catch (Exception ex)
+            catch (InvalidDataProvidedException ex)
             {
                 return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                await _logService.LogException(ex, userTO);
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
 
@@ -44,9 +51,14 @@ namespace SeniorConnect.Web.ApiServer.Controllers
                 var token = await _userService.GetToken(username, password);
                 return Ok(token);
             }
-            catch (Exception ex)
+            catch (InvalidDataProvidedException ex)
             {
                 return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                await _logService.LogException(ex, new { username, password });
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
     }

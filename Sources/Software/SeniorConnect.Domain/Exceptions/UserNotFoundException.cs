@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SeniorConnect.Domain.Exceptions
 {
-    public class UserNotFoundException : Exception
+    public class UserNotFoundException : InvalidDataProvidedException
     {
         public UserNotFoundException(string message) : base(message) { }
     }

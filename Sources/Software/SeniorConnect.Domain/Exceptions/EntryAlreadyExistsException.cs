@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SeniorConnect.Domain.Exceptions
 {
-    public class EntryAlreadyExistsException : Exception
+    public class EntryAlreadyExistsException : InvalidDataProvidedException
     {
         public EntryAlreadyExistsException(string message) : base(message) { }
     }

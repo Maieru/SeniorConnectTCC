@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SeniorConnect.Domain.Exceptions
 {
-    public class InvalidPasswordException : Exception
+    public class InvalidPasswordException : InvalidDataProvidedException
     {
         public InvalidPasswordException(string message) : base(message) { }
     }

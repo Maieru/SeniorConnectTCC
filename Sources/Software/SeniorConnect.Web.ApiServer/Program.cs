@@ -29,10 +29,12 @@ var tokenSigningKey = await secretManager.GetTokenSignignKey();
 
 builder.Services.AddDbContext<DatabaseContext>(options => options.UseSqlServer(sqlServerConnectionString), ServiceLifetime.Scoped);
 
+builder.Services.AddScoped<IRepository<LogEntry>, LogRepository>();
 builder.Services.AddScoped<IRepository<Device>, DeviceRepository>();
 builder.Services.AddScoped<IRepository<User>, UserRepository>();
 builder.Services.AddScoped<IRepository<Subscription>, SubscriptionRepository>();
 
+builder.Services.AddScoped<LogService>();
 builder.Services.AddScoped<SubscriptionService>();
 builder.Services.AddScoped<DeviceService>();
 builder.Services.AddScoped<UserService>();

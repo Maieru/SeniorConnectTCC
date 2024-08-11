@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SeniorConnect.Domain.Exceptions
 {
-    public class EntityNotFoundException : Exception
+    public class EntityNotFoundException : InvalidDataProvidedException
     {
         public EntityNotFoundException(string message) : base(message) { }
     }
