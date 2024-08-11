@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using SeniorConnect.Bussiness.Entities_Services;
 using SeniorConnect.Bussiness.Services;
 using SeniorConnect.Domain.Entities;
 using SeniorConnect.Domain.Interfaces;
@@ -14,20 +15,20 @@ namespace Provisioning_Gateway.Controllers
     {
         private readonly ILogger<ProvisioningController> _logger;
         private readonly DatabaseContext _context;
-        private readonly DeviceRepository _deviceRepository;
+        private readonly DeviceService _deviceService;
         private readonly DeviceProvisioningService _deviceProvisioningService;
         private readonly LogService _logService;
 
-        public ProvisioningController(ILogger<ProvisioningController> logger, DeviceRepository deviceRepository, DeviceProvisioningService deviceProvisioningService, LogService logService)
+        public ProvisioningController(ILogger<ProvisioningController> logger, DeviceService deviceService, DeviceProvisioningService deviceProvisioningService, LogService logService)
         {
             _logger = logger;
-            _deviceRepository = deviceRepository;
+            _deviceService = deviceService;
             _deviceProvisioningService = deviceProvisioningService;
             _logService = logService;
         }
 
-        [HttpPost("Create")]
-        public async Task<IActionResult> Create(int subscriptionId)
+        [HttpPost("EnrollDevice")]
+        public async Task<IActionResult> EnrollDevice(int subscriptionId)
         {
             try
             {
@@ -40,7 +41,7 @@ namespace Provisioning_Gateway.Controllers
                     ModificationDate = DateTime.UtcNow
                 };
 
-                await _deviceRepository.AddAsync(device);
+                await _deviceService.AddDevice(device);
 
                 return Ok(device);
             }

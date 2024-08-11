@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using SeniorConnect.Domain.Entities;
 using SeniorConnect.Domain.Enum;
+using SeniorConnect.Domain.Interfaces;
 using SeniorConnect.Infrastructure.Repository;
 using System;
 using System.Collections.Generic;
@@ -12,9 +13,9 @@ namespace SeniorConnect.Bussiness.Services
 {
     public class LogService
     {
-        private readonly LogRepository logRepository;
+        private readonly IRepository<LogEntry> logRepository;
 
-        public LogService(LogRepository logRepository) => this.logRepository = logRepository;
+        public LogService(IRepository<LogEntry> logRepository) => this.logRepository = logRepository;
 
         public async Task LogInformation(string message) => await Log(EnumLogCategory.Information, message);
         public async Task LogException(Exception exception, object data = null) => await Log(EnumLogCategory.Exception, exception.Message, data, exception?.StackTrace);

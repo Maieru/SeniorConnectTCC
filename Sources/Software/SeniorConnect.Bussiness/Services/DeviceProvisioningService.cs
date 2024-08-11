@@ -2,6 +2,7 @@
 using Microsoft.Azure.Devices.Provisioning.Client.Transport;
 using Microsoft.Azure.Devices.Shared;
 using SeniorConnect.Domain.Exceptions;
+using SeniorConnect.Domain.Interfaces;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -12,13 +13,11 @@ namespace SeniorConnect.Bussiness.Services
         private const string GLOBAL_ENDPOINT = "global.azure-devices-provisioning.net";
         private const string DEVICE_NAME_TEMPLATE = "seniorConnect-{0}";
 
-        private string PrimaryKey { get; }
-        private string IdScope { get; }
+        private readonly ISecretManager _secretManager;
 
-        public DeviceProvisioningService(string dpsPrimaryKey, string idScope)
+        public DeviceProvisioningService(ISecretManager secretManager)
         {
-            PrimaryKey = dpsPrimaryKey;
-            IdScope = idScope;
+            _secretManager = secretManager;
         }
 
         public async Task<string> CreateDevice()
@@ -26,12 +25,12 @@ namespace SeniorConnect.Bussiness.Services
             var guid = Guid.NewGuid();
             var deviceName = string.Format(DEVICE_NAME_TEMPLATE, guid);
 
-            var deviceKey = ComputeDerivedSymmetricKey(Convert.FromBase64String(PrimaryKey), deviceName);
+            var deviceKey = ComputeDerivedSymmetricKey(Convert.FromBase64String(await _secretManager.GetDpsPrimaryKey()), deviceName);
 
             using var security = new SecurityProviderSymmetricKey(deviceName, deviceKey, null);
             using var transportHandler = GetTransportHandler();
 
-            var provClient = ProvisioningDeviceClient.Create(GLOBAL_ENDPOINT, IdScope, security, transportHandler);
+            var provClient = ProvisioningDeviceClient.Create(GLOBAL_ENDPOINT, await _secretManager.GetDpsIdScope(), security, transportHandler);
 
             try
             {

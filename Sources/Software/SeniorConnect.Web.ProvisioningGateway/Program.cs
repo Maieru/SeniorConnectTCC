@@ -1,6 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using SeniorConnect.Bussiness.Entities_Services;
 using SeniorConnect.Bussiness.Services;
+using SeniorConnect.Domain.Entities;
+using SeniorConnect.Domain.Interfaces;
 using SeniorConnect.Infrastructure.Context;
 using SeniorConnect.Infrastructure.Repository;
 
@@ -9,24 +12,26 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-var sqlServerConnectionString = builder.Configuration.GetValue<string>("SqlServerDatabase");
-var dpsPrimaryKey = builder.Configuration.GetValue<string>("DpsPrimaryKey");
-var dpsIdScope = builder.Configuration.GetValue<string>("IdScope");
+ISecretManager secretManager = new LocalSecretManager();
 
 if (!builder.Environment.IsDevelopment())
-{
-    var vaultHelper = new SecretManager(builder.Configuration.GetValue<string>("KeyVaulUrl"));
+    secretManager = new SecretManager(builder.Configuration.GetValue<string>("KeyVaulUrl"));
 
-    sqlServerConnectionString = await vaultHelper.GetSqlServerConnectionString();
-    dpsPrimaryKey = await vaultHelper.GetDpsPrimaryKey();
-    dpsIdScope = await vaultHelper.GetDpsIdScope();
-}
+
+var sqlServerConnectionString = await secretManager.GetSqlServerConnectionString();
 
 builder.Services.AddDbContext<DatabaseContext>(options => options.UseSqlServer(sqlServerConnectionString), ServiceLifetime.Scoped);
-builder.Services.AddScoped<DeviceRepository>();
-builder.Services.AddScoped<LogRepository>();
+
+builder.Services.AddSingleton<ISecretManager>(secretManager);
+
+builder.Services.AddScoped<IRepository<Device>, DeviceRepository>();
+builder.Services.AddScoped<IRepository<Subscription>, SubscriptionRepository>();
+builder.Services.AddScoped<IRepository<LogEntry>, LogRepository>();
+
 builder.Services.AddScoped<LogService>();
-builder.Services.AddScoped(sp => new DeviceProvisioningService(dpsPrimaryKey, dpsIdScope));
+builder.Services.AddScoped<SubscriptionService>();
+builder.Services.AddScoped<DeviceService>();
+builder.Services.AddScoped<DeviceProvisioningService>();
 
 var app = builder.Build();
 
