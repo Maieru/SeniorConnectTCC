@@ -25,6 +25,8 @@ namespace SeniorConnect.Infrastructure.Context
 
         public DbSet<Scheduling> Scheduling { get; set; }
 
+        public DbSet<User> Users { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -34,7 +36,8 @@ namespace SeniorConnect.Infrastructure.Context
             modelBuilder.ApplyConfiguration(new SubscriptionFluent());
             modelBuilder.ApplyConfiguration(new MedicineFluent());
             modelBuilder.ApplyConfiguration(new MedicineDeviceAssociationFluent());
-            modelBuilder.ApplyConfiguration(new  SchedulingFluent());
+            modelBuilder.ApplyConfiguration(new SchedulingFluent());
+            modelBuilder.ApplyConfiguration(new UserFluent());
         }
     }
 }

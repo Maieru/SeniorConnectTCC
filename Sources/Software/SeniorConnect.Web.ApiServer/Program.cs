@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using SeniorConnect.Bussiness.Entities_Services;
 using SeniorConnect.Bussiness.Services;
+using SeniorConnect.Domain.Interfaces;
 using SeniorConnect.Infrastructure.Context;
 using SeniorConnect.Infrastructure.Repository;
 
@@ -13,16 +14,18 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-var sqlServerConnectionString = builder.Configuration.GetValue<string>("SqlServerDatabase");
+ISecretManager secretManager = new LocalSecretManager();
 
 if (!builder.Environment.IsDevelopment())
-{
-    var vaultHelper = new SecretManager(builder.Configuration.GetValue<string>("KeyVaulUrl"));
-    sqlServerConnectionString = await vaultHelper.GetSqlServerConnectionString();
-}
+    secretManager = new SecretManager(builder.Configuration.GetValue<string>("KeyVaulUrl"));
+
+var sqlServerConnectionString = await secretManager.GetSqlServerConnectionString();
 
 builder.Services.AddDbContext<DatabaseContext>(options => options.UseSqlServer(sqlServerConnectionString), ServiceLifetime.Scoped);
+
 builder.Services.AddScoped<DeviceService>();
+builder.Services.AddScoped<UserService>();
+builder.Services.AddSingleton<ISecretManager>(secretManager);
 
 var app = builder.Build();
 

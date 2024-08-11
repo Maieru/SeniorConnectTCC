@@ -30,19 +30,16 @@ namespace SeniorConnect.Bussiness.Entities_Services
         public async Task AddSubscription(Subscription subscription)
         {
             await _repository.AddAsync(subscription);
-            await _repository.SaveAsync();
         }
 
         public async Task UpdateSubscription(Subscription subscription)
         {
             await _repository.UpdateAsync(subscription);
-            await _repository.SaveAsync();
         }
 
         public async Task DeleteSubscription(int subscriptionId)
         {
             await _repository.DeleteByIdAsync(subscriptionId);
-            await _repository.SaveAsync();
         }
     }
 }
