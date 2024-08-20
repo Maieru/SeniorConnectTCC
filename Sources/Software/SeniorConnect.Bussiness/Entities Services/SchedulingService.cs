@@ -14,6 +14,17 @@ namespace SeniorConnect.Bussiness.Entities_Services
         private readonly IRepository<Scheduling> _repository;
         private readonly MedicineService _medicineService;
 
+        private int? _currentSubscriptionId;
+        public int? CurrentSubscriptionId 
+        {
+            get => _currentSubscriptionId;
+            set
+            {
+                _medicineService.CurrentSubscriptionId = value;
+                _currentSubscriptionId = value;
+            }
+        }
+
         public SchedulingService(IRepository<Scheduling> repository, SubscriptionService subscriptionService, MedicineService medicineService)
         {
             _repository = repository;
@@ -27,8 +38,13 @@ namespace SeniorConnect.Bussiness.Entities_Services
             if (string.IsNullOrEmpty(scheduling.DaysOfWeek))
                 throw new RequiredMemberEmptyException(nameof(scheduling.DaysOfWeek));
 
-            if (await _medicineService.GetMedicineById(scheduling.MedicineId) == null)
+            var medicine = await _medicineService.GetMedicineById(scheduling.MedicineId);
+
+            if (medicine == null)
                 throw new EntityNotFoundException($"Medicine with id {scheduling.MedicineId} not found");
+
+            if (!ValidateAccessToSubscription(medicine.SubscriptionId))
+                throw new CannotAccessSubscriptionException(medicine.SubscriptionId);
 
             if (DaysOfWeekAreValid(scheduling.DaysOfWeek))
                 throw new InvalidDataProvidedException("Days of the week was invalid");
@@ -47,6 +63,11 @@ namespace SeniorConnect.Bussiness.Entities_Services
             if (originalScheduling.MedicineId != scheduling.MedicineId)
                 throw new InvalidDataProvidedException("Medicine cannot be changed");
 
+            var medicine = await _medicineService.GetMedicineById(scheduling.MedicineId);
+
+            if (!ValidateAccessToSubscription(medicine.SubscriptionId))
+                throw new CannotAccessSubscriptionException(medicine.SubscriptionId);
+
             if (string.IsNullOrEmpty(scheduling.DaysOfWeek))
                 throw new RequiredMemberEmptyException(nameof(scheduling.DaysOfWeek));
 
@@ -60,8 +81,15 @@ namespace SeniorConnect.Bussiness.Entities_Services
 
         public async Task DeleteScheduling(int schedulingId)
         {
-            if (await GetSchedulingById(schedulingId) == null)
+            var scheduling = await GetSchedulingById(schedulingId);
+
+            if (scheduling == null)
                 throw new EntityNotFoundException($"Scheduling with id {schedulingId} not found");
+
+            var medicine = await _medicineService.GetMedicineById(scheduling.MedicineId);
+
+            if (!ValidateAccessToSubscription(medicine.SubscriptionId))
+                throw new CannotAccessSubscriptionException(medicine.SubscriptionId);
 
             await _repository.DeleteByIdAsync(schedulingId);
         }
@@ -69,11 +97,25 @@ namespace SeniorConnect.Bussiness.Entities_Services
         public async Task<Scheduling> GetSchedulingById(int schedulingId)
         {
             var scheduling = await _repository.GetByIdAsync(schedulingId);
+
+            if (scheduling != null)
+            {
+                var medicine = await _medicineService.GetMedicineById(scheduling.MedicineId);
+
+                if (!ValidateAccessToSubscription(medicine.SubscriptionId))
+                    throw new CannotAccessSubscriptionException(medicine.SubscriptionId);
+            }
+
             return scheduling;
         }
 
         public async Task<List<Scheduling>> GetSchedulingsFromMedicine(int medicineId)
         {
+            var medicine = await _medicineService.GetMedicineById(medicineId);
+
+            if (!ValidateAccessToSubscription(medicine.SubscriptionId))
+                throw new CannotAccessSubscriptionException(medicine.SubscriptionId);
+
             var schedulings = await _repository.GetAllAsync(s => s.MedicineId == medicineId);
             return schedulings;
         }
@@ -93,6 +135,14 @@ namespace SeniorConnect.Bussiness.Entities_Services
                     return false;
 
             return true;
+        }
+
+        private bool ValidateAccessToSubscription(int subscriptionId)
+        {
+            if (!CurrentSubscriptionId.HasValue)
+                return true;
+
+            return CurrentSubscriptionId.Value == subscriptionId;
         }
     }
 }

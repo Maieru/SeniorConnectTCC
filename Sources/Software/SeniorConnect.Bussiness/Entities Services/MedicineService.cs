@@ -16,6 +16,17 @@ namespace SeniorConnect.Bussiness.Entities_Services
         private readonly SubscriptionService _subscriptionService;
         private readonly DeviceService _deviceService;
 
+        private int? _currentSubscriptionId;
+        public int? CurrentSubscriptionId
+        {
+            get => _currentSubscriptionId;
+            set
+            {
+                _deviceService.CurrentSubscriptionId = value; 
+                _currentSubscriptionId = value;
+            }
+        }
+
         public MedicineService(IRepository<Medicine> medicineRepository, IRepository<MedicineDeviceAssociation> medicineAssociationRepository,
                                SubscriptionService subscriptionService, DeviceService deviceService)
         {
@@ -32,7 +43,10 @@ namespace SeniorConnect.Bussiness.Entities_Services
             if (string.IsNullOrEmpty(medicine.Name))
                 throw new RequiredMemberEmptyException(nameof(medicine.Name));
 
-            if (_subscriptionService.GetSubscriptionById(medicine.SubscriptionId) == null)
+            if (!ValidateAccessToSubscription(medicine.SubscriptionId))
+                throw new CannotAccessSubscriptionException(medicine.SubscriptionId);
+
+            if (await _subscriptionService.GetSubscriptionById(medicine.SubscriptionId) == null)
                 throw new InvalidSubscriptionException($"Subscription with id {medicine.SubscriptionId} not found");
 
             await _repository.AddAsync(medicine);
@@ -45,6 +59,9 @@ namespace SeniorConnect.Bussiness.Entities_Services
 
             if (originalMedicine == null)
                 throw new EntityNotFoundException($"Medicine with id {medicine.Id} not found");
+
+            if (!ValidateAccessToSubscription(medicine.SubscriptionId))
+                throw new CannotAccessSubscriptionException(medicine.SubscriptionId);
 
             if (await _subscriptionService.GetSubscriptionById(medicine.SubscriptionId) == null)
                 throw new InvalidSubscriptionException($"Subscription with id {medicine.SubscriptionId} not found");
@@ -62,8 +79,13 @@ namespace SeniorConnect.Bussiness.Entities_Services
 
         public async Task DeleteMedicine(int medicineId)
         {
-            if (await GetMedicineById(medicineId) == null)
+            var medicine = await GetMedicineById(medicineId);
+
+            if (medicine == null)
                 throw new EntityNotFoundException($"Medicine with id {medicineId} not found");
+
+            if (!ValidateAccessToSubscription(medicine.SubscriptionId))
+                throw new CannotAccessSubscriptionException(medicine.SubscriptionId);
 
             await _repository.DeleteByIdAsync(medicineId);
         }
@@ -71,11 +93,18 @@ namespace SeniorConnect.Bussiness.Entities_Services
         public async Task<Medicine> GetMedicineById(int medicineId)
         {
             var medicine = await _repository.GetByIdAsync(medicineId);
+
+            if (medicine != null && !ValidateAccessToSubscription(medicine.SubscriptionId))
+                throw new CannotAccessSubscriptionException(medicine.SubscriptionId);
+
             return medicine;
         }
 
         public async Task<List<Medicine>> GetMedicinesFromSubscription(int subscriptionId)
         {
+            if (!ValidateAccessToSubscription(subscriptionId))
+                throw new CannotAccessSubscriptionException(subscriptionId);
+
             var medicines = await _repository.GetAllAsync(m => m.SubscriptionId == subscriptionId);
             return medicines;
         }
@@ -92,6 +121,12 @@ namespace SeniorConnect.Bussiness.Entities_Services
                 throw new EntityNotFoundException($"Device with id {deviceId} not found");
 
             var savedAssociation = await _medicineAssociationRepository.GetFirst(m => m.DeviceId == deviceId && m.MedicineId == medicineId && m.Position == position, false);
+
+            if (!ValidateAccessToSubscription(medicine.SubscriptionId))
+                throw new CannotAccessSubscriptionException(medicine.SubscriptionId);
+
+            if (!ValidateAccessToSubscription(device.SubscriptionId))
+                throw new CannotAccessSubscriptionException(device.SubscriptionId);
 
             if (savedAssociation != null)
                 throw new EntityAlreadyExistsException("Association already exists");
@@ -117,12 +152,26 @@ namespace SeniorConnect.Bussiness.Entities_Services
             if (device == null)
                 throw new EntityNotFoundException($"Device with id {deviceId} not found");
 
+            if (!ValidateAccessToSubscription(medicine.SubscriptionId))
+                throw new CannotAccessSubscriptionException(medicine.SubscriptionId);
+
+            if (!ValidateAccessToSubscription(device.SubscriptionId))
+                throw new CannotAccessSubscriptionException(device.SubscriptionId);
+
             var association = await _medicineAssociationRepository.GetFirst(m => m.DeviceId == deviceId && m.MedicineId == medicineId && m.Position == medicinePosition, false);
 
             if (association == null)
                 throw new EntityNotFoundException($"Association not found");
 
             await _medicineAssociationRepository.DeleteByIdAsync(association.Id);
+        }
+
+        private bool ValidateAccessToSubscription(int subscriptionId)
+        {
+            if (!CurrentSubscriptionId.HasValue)
+                return true;
+
+            return CurrentSubscriptionId.Value == subscriptionId;
         }
     }
 }

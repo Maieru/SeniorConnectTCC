@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 using SeniorConnect.Bussiness.Entities_Services;
 using SeniorConnect.Bussiness.Services;
 using SeniorConnect.Domain.Entities;
@@ -7,10 +8,8 @@ using SeniorConnect.Domain.Exceptions;
 
 namespace SeniorConnect.Web.ApiServer.Controllers
 {
-    [ApiController]
-    [Authorize]
     [Route("v1/[controller]")]
-    public class MedicineController : ControllerBase
+    public class MedicineController : AuthorizeController
     {
         private readonly MedicineService _medicineService;
         private readonly LogService _logService;
@@ -19,6 +18,14 @@ namespace SeniorConnect.Web.ApiServer.Controllers
         {
             _medicineService = medicineService;
             _logService = logService;
+
+            _medicineService.CurrentSubscriptionId = LoggedUserSubscription;
+        }
+
+        public override void OnActionExecuting(ActionExecutingContext context)
+        {
+            base.OnActionExecuting(context);
+            _medicineService.CurrentSubscriptionId = LoggedUserSubscription;
         }
 
         [HttpPost("Create")]

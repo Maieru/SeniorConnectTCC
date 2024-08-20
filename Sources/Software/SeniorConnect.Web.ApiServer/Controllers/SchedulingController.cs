@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 using SeniorConnect.Bussiness.Entities_Services;
 using SeniorConnect.Bussiness.Services;
 using SeniorConnect.Domain.Entities;
@@ -7,10 +8,8 @@ using SeniorConnect.Domain.Exceptions;
 
 namespace SeniorConnect.Web.ApiServer.Controllers
 {
-    [ApiController]
-    [Authorize]
     [Route("v1/[controller]")]
-    public class SchedulingController : ControllerBase
+    public class SchedulingController : AuthorizeController
     {
         private readonly SchedulingService _schedulingService;
         private readonly LogService _logService;
@@ -19,6 +18,12 @@ namespace SeniorConnect.Web.ApiServer.Controllers
         {
             _schedulingService = schedulingService;
             _logService = logService;
+        }
+
+        public override void OnActionExecuting(ActionExecutingContext context)
+        {
+            base.OnActionExecuting(context);
+            _schedulingService.CurrentSubscriptionId = LoggedUserSubscription;
         }
 
         [HttpPost("Create")]

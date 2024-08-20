@@ -2,14 +2,12 @@
 using Microsoft.AspNetCore.Mvc;
 using SeniorConnect.Bussiness.Entities_Services;
 using SeniorConnect.Bussiness.Services;
-using SeniorConnect.Domain.Entities;
 using SeniorConnect.Domain.Exceptions;
 using SeniorConnect.Domain.TOs.User;
 
 namespace SeniorConnect.Web.ApiServer.Controllers
 {
     [ApiController]
-    [Authorize]
     [Route("v1/[controller]")]
     public class UserController : ControllerBase
     {
