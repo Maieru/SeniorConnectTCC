@@ -38,6 +38,7 @@ namespace SeniorConnect.Bussiness.Entities_Services
             if (await _subscriptionService.GetSubscriptionById(device.SubscriptionId) == null)
                 throw new InvalidSubscriptionException($"Subscription with id {device.SubscriptionId} not found");
 
+            device.ModificationDate = DateTime.UtcNow;
             await _repository.AddAsync(device);
         }
 
@@ -49,10 +50,18 @@ namespace SeniorConnect.Bussiness.Entities_Services
             if (await _subscriptionService.GetSubscriptionById(device.SubscriptionId) == null)
                 throw new InvalidSubscriptionException($"Subscription with id {device.SubscriptionId} not found");
 
-            if (await GetDeviceById(device.Id) == null)
+            var originalDevice = await GetDeviceById(device.Id);
+
+            if (originalDevice == null)
                 throw new EntityNotFoundException($"Device with id {device.Id} not found");
 
-            await _repository.UpdateAsync(device);
+            if (originalDevice.SubscriptionId != device.SubscriptionId)
+                throw new InvalidSubscriptionException("SubscriptionId cannot be changed");
+
+            originalDevice.DeviceName = device.DeviceName;
+            originalDevice.ModificationDate = DateTime.UtcNow;
+
+            await _repository.UpdateAsync(originalDevice);
         }
 
         public async Task DeleteDevice(int deviceId)

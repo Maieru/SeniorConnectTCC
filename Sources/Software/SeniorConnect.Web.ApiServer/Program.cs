@@ -33,12 +33,15 @@ builder.Services.AddScoped<IRepository<LogEntry>, LogRepository>();
 builder.Services.AddScoped<IRepository<Device>, DeviceRepository>();
 builder.Services.AddScoped<IRepository<User>, UserRepository>();
 builder.Services.AddScoped<IRepository<Subscription>, SubscriptionRepository>();
+builder.Services.AddScoped<IRepository<Medicine>, MedicineRepository>();
+builder.Services.AddScoped<IRepository<MedicineDeviceAssociation>, MedicineDeviceAssociationRepository>();
 
 builder.Services.AddScoped<LogService>();
 builder.Services.AddScoped<SubscriptionService>();
 builder.Services.AddScoped<DeviceService>();
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<BearerTokenService>();
+builder.Services.AddScoped<MedicineService>();
 
 builder.Services.AddSingleton<ISecretManager>(secretManager);
 builder.Services.AddSingleton<JwtTokenConfigurationOptions>(_ => new JwtTokenConfigurationOptions()

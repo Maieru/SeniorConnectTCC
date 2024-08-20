@@ -15,7 +15,7 @@ namespace SeniorConnect.Infrastructure.FluentApi
         {
             builder.ToTable("tbRemedio");
 
-            builder.Property(d => d.Id).HasColumnName("Id").IsRequired();
+            builder.Property(d => d.Id).HasColumnName("RemedioId").IsRequired();
             builder.Property(d => d.SubscriptionId).HasColumnName("AssinaturaId").IsRequired();
             builder.Property(d => d.Name).HasColumnName("Nome").IsRequired();
         }
