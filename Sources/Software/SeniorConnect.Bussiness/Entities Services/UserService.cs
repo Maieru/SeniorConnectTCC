@@ -45,7 +45,7 @@ namespace SeniorConnect.Bussiness.Entities_Services
                 throw new ArgumentNullException(nameof(userTO.Email));
 
             if (await _userRepository.GetFirst(u => u.Username == userTO.Username) != null)
-                throw new EntryAlreadyExistsException($"User {userTO.Username} already exists");
+                throw new EntityAlreadyExistsException($"User {userTO.Username} already exists");
 
             Subscription subscription;
 

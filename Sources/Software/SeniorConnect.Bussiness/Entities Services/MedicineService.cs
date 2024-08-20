@@ -35,11 +35,6 @@ namespace SeniorConnect.Bussiness.Entities_Services
             if (_subscriptionService.GetSubscriptionById(medicine.SubscriptionId) == null)
                 throw new InvalidSubscriptionException($"Subscription with id {medicine.SubscriptionId} not found");
 
-            var originalMedicine = await GetMedicineById(medicine.Id);
-
-            if (originalMedicine != null)
-                throw new EntityAlreadyExistsException($"Medicine with id {medicine.Id} already exists");
-
             await _repository.AddAsync(medicine);
         }
 
