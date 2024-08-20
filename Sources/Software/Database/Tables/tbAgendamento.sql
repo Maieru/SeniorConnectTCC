@@ -1,7 +1,9 @@
 ﻿CREATE TABLE [dbo].[tbAgendamento]
 (
 	[AgendamentoId]			INT	        NOT NULL PRIMARY KEY IDENTITY (1, 1),
-	[Horario]				TIME	        NOT NULL,
-	[Ativo]			        BIT	        NOT NULL,
-	[RemedioId]		        INT	        NOT NULL FOREIGN KEY REFERENCES dbo.tbRemedio(RemedioId) ON DELETE CASCADE
+	[RemedioId]		        INT	        NOT NULL FOREIGN KEY REFERENCES dbo.tbRemedio(RemedioId) ON DELETE CASCADE,
+	[Hora]					INT			NOT NULL,
+	[Minuto]				INT			NOT NULL,
+	[DiasDaSemana]			VARCHAR(20)	NOT NULL,
+	[Ativo]			        BIT	        NOT NULL
 )

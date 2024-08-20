@@ -9,8 +9,10 @@ namespace SeniorConnect.Domain.Entities
     public class Scheduling
     {
         public int Id { get; set; }
-        public DateTime Data { get; set; }
         public bool Active { get; set; }
-        public int Medicine { get; set; }
+        public int MedicineId { get; set; }
+        public int Hour { get; set; }
+        public int Minute { get; set; }
+        public string DaysOfWeek { get; set; }
     }
 }
