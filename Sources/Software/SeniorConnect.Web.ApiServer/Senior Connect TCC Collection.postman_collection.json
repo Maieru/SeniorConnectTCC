@@ -1,0 +1,653 @@
+{
+	"info": {
+		"_postman_id": "5b7efa45-09e0-488b-847f-245a53f55f31",
+		"name": "Senior Connect TCC Collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "30175118"
+	},
+	"item": [
+		{
+			"name": "Provisioning Gateway",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:7265/v1/Provisioning/EnrollDevice?subscriptionId=2",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7265",
+							"path": [
+								"v1",
+								"Provisioning",
+								"EnrollDevice"
+							],
+							"query": [
+								{
+									"key": "subscriptionId",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Api Server",
+			"item": [
+				{
+					"name": "Device",
+					"item": [
+						{
+							"name": "GetDevices",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{ApiServerBearerToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{API Server URL}}/v1/Device/GetDevices?subscriptionId=1",
+									"host": [
+										"{{API Server URL}}"
+									],
+									"path": [
+										"v1",
+										"Device",
+										"GetDevices"
+									],
+									"query": [
+										{
+											"key": "subscriptionId",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "User",
+					"item": [
+						{
+							"name": "CreateUser",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Joao\",\r\n    \"email\": \"joao@teste.com\",\r\n    \"username\": \"joao5\",\r\n    \"password\": \"teste\",\r\n    \"createNewSubscription\": true\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{API Server URL}}/v1/User/Create",
+									"host": [
+										"{{API Server URL}}"
+									],
+									"path": [
+										"v1",
+										"User",
+										"Create"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetToken",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"if (pm.response.json() != undefined && pm.response.json().token != undefined)\r",
+											"    pm.collectionVariables.set(\"ApiServerBearerToken\", pm.response.json().token);"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{API Server URL}}/v1/User/GetToken?username=joao&password=teste",
+									"host": [
+										"{{API Server URL}}"
+									],
+									"path": [
+										"v1",
+										"User",
+										"GetToken"
+									],
+									"query": [
+										{
+											"key": "username",
+											"value": "joao"
+										},
+										{
+											"key": "password",
+											"value": "teste"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Medicine",
+					"item": [
+						{
+							"name": "Get",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{ApiServerBearerToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{API Server URL}}/v1/Medicine/Get",
+									"host": [
+										"{{API Server URL}}"
+									],
+									"path": [
+										"v1",
+										"Medicine",
+										"Get"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetAllFromSubscription",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{ApiServerBearerToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{API Server URL}}/v1/Medicine/GetAllFromSubscription?subscriptionId=1",
+									"host": [
+										"{{API Server URL}}"
+									],
+									"path": [
+										"v1",
+										"Medicine",
+										"GetAllFromSubscription"
+									],
+									"query": [
+										{
+											"key": "subscriptionId",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{ApiServerBearerToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"subscriptionId\": 1,\r\n    \"name\": \"Dipirona\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{API Server URL}}/v1/Medicine/Create",
+									"host": [
+										"{{API Server URL}}"
+									],
+									"path": [
+										"v1",
+										"Medicine",
+										"Create"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{ApiServerBearerToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"id\": 1,\r\n    \"subscriptionId\": 1,\r\n    \"name\": \"Testeee\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{API Server URL}}/v1/Medicine/Update",
+									"host": [
+										"{{API Server URL}}"
+									],
+									"path": [
+										"v1",
+										"Medicine",
+										"Update"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{ApiServerBearerToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{API Server URL}}/v1/Medicine/Delete?medicineId=1",
+									"host": [
+										"{{API Server URL}}"
+									],
+									"path": [
+										"v1",
+										"Medicine",
+										"Delete"
+									],
+									"query": [
+										{
+											"key": "medicineId",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "AssociateToDevice",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{ApiServerBearerToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{API Server URL}}/v1/Medicine/AssociateToDevice?medicineId=2&deviceId=1&medicinePosition=1",
+									"host": [
+										"{{API Server URL}}"
+									],
+									"path": [
+										"v1",
+										"Medicine",
+										"AssociateToDevice"
+									],
+									"query": [
+										{
+											"key": "medicineId",
+											"value": "2"
+										},
+										{
+											"key": "deviceId",
+											"value": "1"
+										},
+										{
+											"key": "medicinePosition",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "DessasociateFromDevice",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{ApiServerBearerToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{API Server URL}}/v1/Medicine/DessasociateFromDevice?medicineId=2&deviceId=1&medicinePosition=1",
+									"host": [
+										"{{API Server URL}}"
+									],
+									"path": [
+										"v1",
+										"Medicine",
+										"DessasociateFromDevice"
+									],
+									"query": [
+										{
+											"key": "medicineId",
+											"value": "2"
+										},
+										{
+											"key": "deviceId",
+											"value": "1"
+										},
+										{
+											"key": "medicinePosition",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Scheduling",
+					"item": [
+						{
+							"name": "Get",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{ApiServerBearerToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{API Server URL}}/v1/Scheduling/Get?schedulingId=3",
+									"host": [
+										"{{API Server URL}}"
+									],
+									"path": [
+										"v1",
+										"Scheduling",
+										"Get"
+									],
+									"query": [
+										{
+											"key": "schedulingId",
+											"value": "3"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetByMedicine",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{ApiServerBearerToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{API Server URL}}/v1/Scheduling/GetByMedicine?medicineId=2",
+									"host": [
+										"{{API Server URL}}"
+									],
+									"path": [
+										"v1",
+										"Scheduling",
+										"GetByMedicine"
+									],
+									"query": [
+										{
+											"key": "medicineId",
+											"value": "2"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{ApiServerBearerToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"active\": true,\r\n    \"medicineId\": 2,\r\n    \"hour\": 12,\r\n    \"minute\": 30,\r\n    \"daysOfWeek\": \"1,2,3\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{API Server URL}}/v1/Scheduling/Create",
+									"host": [
+										"{{API Server URL}}"
+									],
+									"path": [
+										"v1",
+										"Scheduling",
+										"Create"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{ApiServerBearerToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"id\": 3,\r\n    \"active\": false,\r\n    \"medicineId\": 2,\r\n    \"hour\": 12,\r\n    \"minute\": 30,\r\n    \"daysOfWeek\": \"1,2,3\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{API Server URL}}/v1/Scheduling/Update",
+									"host": [
+										"{{API Server URL}}"
+									],
+									"path": [
+										"v1",
+										"Scheduling",
+										"Update"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{ApiServerBearerToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{API Server URL}}/v1/Scheduling/Delete?schedulingId=3",
+									"host": [
+										"{{API Server URL}}"
+									],
+									"path": [
+										"v1",
+										"Scheduling",
+										"Delete"
+									],
+									"query": [
+										{
+											"key": "schedulingId",
+											"value": "3"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "Provisioning Gateway URL",
+			"value": "https://localhost:7265",
+			"type": "string"
+		},
+		{
+			"key": "API Server URL",
+			"value": "https://localhost:7120",
+			"type": "string"
+		},
+		{
+			"key": "ApiServerBearerToken",
+			"value": "",
+			"type": "string"
+		}
+	]
+}

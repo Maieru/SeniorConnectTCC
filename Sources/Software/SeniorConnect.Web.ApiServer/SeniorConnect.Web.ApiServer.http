@@ -1,6 +1,99 @@
-@SeniorConnect.Web.ApiServer_HostAddress = http://localhost:5268
+@apiServerUrl=https://localhost:7120
 
-GET {{SeniorConnect.Web.ApiServer_HostAddress}}/weatherforecast/
-Accept: application/json
+### Api Server - Device - GetDevices
+GET {{apiServerUrl}}/v1/Device/GetDevices?subscriptionId=1
+Authorization: Bearer {{apiServerBearerToken}}
 
-###
+### Api Server - User - CreateUser
+POST {{apiServerUrl}}/v1/User/Create
+Content-Type: application/json
+{
+    "name": "Joao",
+    "email": "joao@teste.com",
+    "username": "joao5",
+    "password": "teste",
+    "createNewSubscription": true
+}
+
+### Api Server - User - GetToken
+GET {{apiServerUrl}}/v1/User/GetToken?username=joao&password=teste
+
+### Api Server - Medicine - Get
+GET {{apiServerUrl}}/v1/Medicine/Get
+Authorization: Bearer {{apiServerBearerToken}}
+
+### Api Server - Medicine - GetAllFromSubscription
+GET {{apiServerUrl}}/v1/Medicine/GetAllFromSubscription?subscriptionId=1
+Authorization: Bearer {{apiServerBearerToken}}
+
+### Api Server - Medicine - Create
+POST {{apiServerUrl}}/v1/Medicine/Create
+Content-Type: application/json
+Authorization: Bearer {{apiServerBearerToken}}
+
+{
+    "subscriptionId": 1,
+    "name": "Dipirona"
+}
+
+### Api Server - Medicine - Update
+PUT {{apiServerUrl}}/v1/Medicine/Update
+Content-Type: application/json
+Authorization: Bearer {{apiServerBearerToken}}
+
+{
+    "id": 1,
+    "subscriptionId": 1,
+    "name": "Testeee"
+}
+
+### Api Server - Medicine - Delete
+DELETE {{apiServerUrl}}/v1/Medicine/Delete?medicineId=1
+Authorization: Bearer {{apiServerBearerToken}}
+
+### Api Server - Medicine - AssociateToDevice
+POST {{apiServerUrl}}/v1/Medicine/AssociateToDevice?medicineId=2&deviceId=1&medicinePosition=1
+Authorization: Bearer {{apiServerBearerToken}}
+
+### Api Server - Medicine - DessasociateFromDevice
+POST {{apiServerUrl}}/v1/Medicine/DessasociateFromDevice?medicineId=2&deviceId=1&medicinePosition=1
+Authorization: Bearer {{apiServerBearerToken}}
+
+### Api Server - Scheduling - Get
+GET {{apiServerUrl}}/v1/Scheduling/Get?schedulingId=3
+Authorization: Bearer {{apiServerBearerToken}}
+
+### Api Server - Scheduling - GetByMedicine
+GET {{apiServerUrl}}/v1/Scheduling/GetByMedicine?medicineId=2
+Authorization: Bearer {{apiServerBearerToken}}
+
+### Api Server - Scheduling - Create
+POST {{apiServerUrl}}/v1/Scheduling/Create
+Content-Type: application/json
+Authorization: Bearer {{apiServerBearerToken}}
+
+{
+    "active": true,
+    "medicineId": 2,
+    "hour": 12,
+    "minute": 30,
+    "daysOfWeek": "1,2,3"
+}
+
+### Api Server - Scheduling - Update
+PUT {{apiServerUrl}}/v1/Scheduling/Update
+Content-Type: application/json
+Authorization: Bearer {{apiServerBearerToken}}
+
+{
+    "id": 3,
+    "active": false,
+    "medicineId": 2,
+    "hour": 12,
+    "minute": 30,
+    "daysOfWeek": "1,2,3"
+}
+
+### Api Server - Scheduling - Delete
+DELETE {{apiServerUrl}}/v1/Scheduling/Delete?schedulingId=3
+Authorization: Bearer {{apiServerBearerToken}}
