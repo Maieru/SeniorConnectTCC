@@ -2,6 +2,7 @@ name: Build and Deploy App in Development
 
 env:
   AZURE_PROVISIONING_GATEWAY_PATH: './Webapp'
+  AZURE_API_SERVER_PATH: './APIServer'
   DOTNET_VERSION: '8.0.x'
 
 on:
@@ -40,7 +41,16 @@ jobs:
 
       - name: Public Provisioning Gateway
         run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/SeniorConnect/${{env.AZURE_PROVISIONING_GATEWAY_PATH}}  ./Sources/Software/"Provisioning Gateway.sln"
-        
+
+      - name: Build API Server
+        run: dotnet build ./Sources/Software/"API Server.sln"
+
+      - name: Test API Server
+        run: dotnet test --no-build --verbosity normal ./Sources/Software/"API Server.sln"
+
+      - name: Public API Server
+        run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/SeniorConnect/${{env.AZURE_API_SERVER_PATH}}  ./Sources/Software/"API Server.sln"
+      
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
         with:
@@ -63,9 +73,17 @@ jobs:
           name: .net-app
 
       - name: Deploy Provisioning Gateway
-        id: deploy-webapp
+        id: deploy-provisioning-gateway
         uses: azure/webapps-deploy@v2
         with:
           app-name: ${{ secrets.AZURE_PROVISIONING_GATEWAY_NAME }}
           publish-profile: ${{ secrets.AZURE_PROVISIONING_GATEWAY_PUBLISH_PROFILE }}
           package: ${{ env.AZURE_PROVISIONING_GATEWAY_PATH }}
+
+      - name: Deploy API Server
+        id: deploy-api-server
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: ${{ secrets.AZURE_API_SERVER_NAME }}
+          publish-profile: ${{ secrets.AZURE_API_SERVER_PUBLISH_PROFILE }}
+          package: ${{ env.AZURE_API_SERVER_PATH }}
