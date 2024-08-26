@@ -5,7 +5,7 @@ import {Header, Footer} from './Layout';
 
 export default function ReportsScreen({ navigation }) {
 return(
-    <View style={styles.container}>
+    <View style={styles.containerMenu}>
         <Header title= "Reports" navigation={navigation}/>
     <View style={styles.content}>
 

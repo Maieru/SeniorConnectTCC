@@ -5,11 +5,11 @@ import {Header, Footer} from './Layout';
 
 export default function HomeScreen({ navigation }) {
     return (
-      <View style={styles.container}>
+      <View style={styles.containerMenu}>
         <Header title= "Home/Index" navigation={navigation}/>
-      <View style={styles.content}>
+        <View style={styles.content}>
 
-      </View>
+        </View>
         <Footer navigation={navigation}/>
       </View>
     )

@@ -2,11 +2,12 @@ import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
 import styles from './styles.js';
 
-function Header({navigation, title}){
+function HeaderReturn({navigation, title, returnPage,}){
     return(
         <View style={styles.header}>
         <View style={styles.headerImageContainer}>
-          <TouchableOpacity>
+          <TouchableOpacity 
+            onPress={() => navigation.navigate(returnPage)}>
             <Image
               source={require('./assets/Footer/arrow.png')}
               style={styles.headerImage} />
@@ -17,6 +18,18 @@ function Header({navigation, title}){
         </View>
       </View>
     )
+}
+
+function Header({title,}){
+  return(
+      <View style={styles.header}>
+      <View style={styles.headerImageContainer}>
+      </View>
+      <View style={styles.headerItem}>
+        <Text style={styles.headerText}> {title}</Text>
+      </View>
+    </View>
+  )
 }
 
 function Footer({navigation}){
@@ -63,4 +76,4 @@ function Footer({navigation}){
     )
 }
 
-export { Header, Footer };
+export { Header, Footer, HeaderReturn };

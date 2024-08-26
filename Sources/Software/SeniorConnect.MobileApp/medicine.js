@@ -5,7 +5,7 @@ import {Header, Footer} from './Layout';
 
 export default function MedicineScreen({ navigation }) {
 return(
-    <View style={styles.container}>
+    <View style={styles.containerMenu}>
       <Header title= "Medicamentos" navigation={navigation}/>
     <View style={styles.content}>
 

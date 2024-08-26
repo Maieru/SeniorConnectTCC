@@ -6,6 +6,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     backgroundColor: '#5082FE',
     paddingVertical: 25,
+    width: '100%',
   },
   headerItem:{
     alignItems: 'flex-start',
@@ -23,6 +24,12 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   container: {
+    flex: 1,
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+  },
+  containerMenu: {
     flex: 1,
     justifyContent: 'space-between',
     backgroundColor: '#fff',
@@ -53,6 +60,65 @@ const styles = StyleSheet.create({
   footerImage: {
     width: 40,
     height: 40,
+  },
+  loginContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+    backgroundColor: '#5082FE',
+  },
+  loginImage: {
+    marginBottom: 40,
+    marginHorizontal: 0,
+    width: '80%',
+    height: 150,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  senniorLogo: {
+    width: '100%',
+    height: '100%',
+    resizeMode: 'contain',
+  },
+  basicInput: {
+    height: 50,
+    backgroundColor: '#ddd',
+    borderRadius: 5,
+    paddingHorizontal: 120,
+    marginBottom: 20,
+  },
+  basicButton: {
+    width: '80%',
+    height: 50,
+    backgroundColor: 'black',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 5,
+    marginBottom: 20,
+  },
+  cadastroButton: {
+    height: 50,
+    backgroundColor: 'black',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 5,
+    marginBottom: 20,
+  },
+  basicButtonText: {
+    color: '#fff',
+    fontSize: 16,
+  },
+  basicLabel: {
+    color: '#000',
+    fontSize: 14,
+  },
+  cadastrarText: {
+    color: '#00f',
+    fontWeight: 'bold',
+  },
+  spacer:{
+    height: 20,
   },
 });
 
