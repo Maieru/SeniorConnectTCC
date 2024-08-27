@@ -36,6 +36,8 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   footer: {
     flexDirection: 'row',
@@ -65,12 +67,10 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 20,
     backgroundColor: '#5082FE',
   },
   loginImage: {
     marginBottom: 40,
-    marginHorizontal: 0,
     width: '80%',
     height: 150,
     justifyContent: 'center',
@@ -85,8 +85,19 @@ const styles = StyleSheet.create({
     height: 50,
     backgroundColor: '#ddd',
     borderRadius: 5,
-    paddingHorizontal: 120,
     marginBottom: 20,
+    fontSize: 20,
+    width: '80%',
+    textAlign: 'center',
+  },
+  cadastroInput: {
+    height: 50,
+    backgroundColor: '#ddd',
+    borderRadius: 5,
+    marginBottom: 20,
+    fontSize: 20,
+    width: 300,
+    textAlign: 'center',
   },
   basicButton: {
     width: '80%',
@@ -99,6 +110,7 @@ const styles = StyleSheet.create({
   },
   cadastroButton: {
     height: 50,
+    width: 300,
     backgroundColor: 'black',
     justifyContent: 'center',
     alignItems: 'center',
@@ -107,15 +119,16 @@ const styles = StyleSheet.create({
   },
   basicButtonText: {
     color: '#fff',
-    fontSize: 16,
+    fontSize: 20,
   },
   basicLabel: {
     color: '#000',
-    fontSize: 14,
+    fontSize: 20,
   },
   cadastrarText: {
     color: '#00f',
     fontWeight: 'bold',
+    fontSize: 20,
   },
   spacer:{
     height: 20,

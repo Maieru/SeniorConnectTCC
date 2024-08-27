@@ -7,30 +7,29 @@ export default function CadastroScreen({ navigation }) {
     return (
     <View style={styles.container}>
         <HeaderReturn title= "Cadastro" returnPage="Login" navigation={navigation}/>
-        <View style={styles.spacer}></View>
         <View style={styles.content}>
             <TextInput
-                style={styles.basicInput}
+                style={styles.cadastroInput}
                 placeholder="Usuário"
                 placeholderTextColor="#888"
             />
             <TextInput
-                style={styles.basicInput}
+                style={styles.cadastroInput}
                 placeholder="Senha"
                 placeholderTextColor="#888"
             />
             <TextInput
-                style={styles.basicInput}
+                style={styles.cadastroInput}
                 placeholder="Confirmar Senha"
                 placeholderTextColor="#888"
             />
             <TextInput
-                style={styles.basicInput}
+                style={styles.cadastroInput}
                 placeholder="E-mail"
                 placeholderTextColor="#888"
             />
             <TextInput
-                style={styles.basicInput}
+                style={styles.cadastroInput}
                 placeholder="Key de Cadastro"
                 placeholderTextColor="#888"
             />
