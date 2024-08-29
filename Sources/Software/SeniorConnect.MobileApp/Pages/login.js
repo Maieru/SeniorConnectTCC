@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
-import styles from './styles.js';
+import styles from '../styles.js';
 
 export default function LoginScreen({ navigation }) {
   return (
@@ -8,7 +8,7 @@ export default function LoginScreen({ navigation }) {
       <View style={styles.loginImage}>
         <Image 
           style={styles.senniorLogo}
-          source={require('./assets/SenniorConnect.jpeg')} 
+          source={require('../assets/SenniorConnect.jpeg')} 
         />
       </View>
 

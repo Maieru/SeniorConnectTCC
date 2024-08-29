@@ -25,9 +25,11 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
+    width: '90%',
     justifyContent: 'space-between',
     alignItems: 'center',
     backgroundColor: '#fff',
+    paddingVertical: 10,
   },
   containerMenu: {
     flex: 1,
@@ -108,6 +110,16 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginBottom: 20,
   },
+  homeButton: {
+    width: '40%',
+    height: 50,
+    backgroundColor: '#333',
+    justifyContent: 'center',
+    alignSelf: 'center',
+    alignItems: 'center',
+    borderRadius: 5,
+    marginBottom: 20,
+  },
   cadastroButton: {
     height: 50,
     width: 300,
@@ -124,6 +136,11 @@ const styles = StyleSheet.create({
   basicLabel: {
     color: '#000',
     fontSize: 20,
+    alignSelf: 'center',
+  },
+  homeTitle: {
+    color: '#000',
+    fontSize: 40,
   },
   cadastrarText: {
     color: '#00f',
@@ -132,6 +149,44 @@ const styles = StyleSheet.create({
   },
   spacer:{
     height: 20,
+  },
+  sectionContainer: {
+    width: '100%',
+    marginBottom: 20,
+    backgroundColor: '#f0f0f0',
+    borderRadius: 10,
+    padding: 15,
+  },
+  homeMedicineContainer: {
+    backgroundColor: '#ccc',
+    padding: 10,
+    borderRadius: 5,
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  homeMedicineText: {
+    fontSize: 20,
+    color: '#000',
+  },
+  homeItemImage: {
+    width: 40,
+    height: 40,
+    marginRight: 10,
+  },
+  basicCheckbox: {
+    alignSelf: 'center',
+    marginRight: 10,
+  },
+  mensalidadeHome:{
+    width: '70%',
+    backgroundColor: '#7DDA58',
+    paddingVertical: 7,
+    alignSelf: 'center',
+  },
+  basicScroll: {
+    width: '100%',
+
   },
 });
 

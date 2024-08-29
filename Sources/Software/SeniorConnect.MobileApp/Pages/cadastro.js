@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
-import styles from './styles.js';
-import {HeaderReturn} from './Layout';
+import styles from '../styles.js';
+import {HeaderReturn} from '../Layout.js';
 
 export default function CadastroScreen({ navigation }) {
     return (
