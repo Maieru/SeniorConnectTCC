@@ -5,7 +5,7 @@ import {HeaderReturn} from '../Layout.js';
 
 export default function CadastroScreen({ navigation }) {
     return (
-    <View style={styles.container}>
+    <View style={styles.containerMenu}>
         <HeaderReturn title= "Cadastro" returnPage="Login" navigation={navigation}/>
         <View style={styles.content}>
             <TextInput
