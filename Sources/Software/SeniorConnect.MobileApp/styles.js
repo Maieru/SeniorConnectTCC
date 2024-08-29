@@ -61,9 +61,20 @@ const styles = StyleSheet.create({
     color: 'black',
     fontSize: 25,
   },
+  medicineIcons: {
+    width: 40,
+    height: 40,
+    alignSelf: 'flex-end',
+    marginStart: 10,
+  },
   footerImage: {
     width: 40,
     height: 40,
+  },
+  medicineActionsImage: {
+    width: 40,
+    height: 40,
+    marginStart: 8,
   },
   loginContainer: {
     flex: 1,
@@ -113,12 +124,25 @@ const styles = StyleSheet.create({
   homeButton: {
     width: '40%',
     height: 50,
-    backgroundColor: '#333',
+    backgroundColor: '#9C9EA7',
     justifyContent: 'center',
     alignSelf: 'center',
     alignItems: 'center',
     borderRadius: 5,
     marginBottom: 20,
+  },
+  medicineButton: {
+    width: 'auto',
+    height: 50,
+    backgroundColor: '#9C9EA7',
+    justifyContent: 'center',
+    alignSelf: 'flex-start',
+    alignItems: 'center',
+    borderRadius: 5,
+    marginBottom: 10,
+    marginStart: 15,
+    marginTop: 15,
+    padding: 10,
   },
   cadastroButton: {
     height: 50,
@@ -164,6 +188,23 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 10,
+  },
+  remediosMedicineContainer: {
+    backgroundColor: '#ccc',
+    padding: 10,
+    borderRadius: 5,
+    flexDirection: 'row',
+    marginBottom: 10,
+  },
+  medicineScrollContainerStart: {
+    justifyContent: 'flex-start',
+    flexDirection: 'row',
+  },
+  medicineScrollContainerEnd: {
+    justifyContent: 'flex-end',
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
   },
   homeMedicineText: {
     fontSize: 20,

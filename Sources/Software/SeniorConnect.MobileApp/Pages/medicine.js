@@ -1,15 +1,30 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView } from 'react-native';
 import styles from '../styles.js';
-import {Header, Footer} from '../Layout.js';
+import { Header, Footer, RemediosMedicine } from '../Layout.js';
 
 export default function MedicineScreen({ navigation }) {
-return(
+  return (
     <View style={styles.containerMenu}>
-      <Header title= "Medicamentos" navigation={navigation}/>
-    <View style={styles.content}>
-
+      <Header title="Medicamentos" navigation={navigation} />
+      <View style={styles.content}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('Home')} //Mudar Caminho
+          style={styles.medicineButton}>
+          <Text style={styles.basicButtonText}>Novo Medicamento</Text>
+        </TouchableOpacity>
+        <ScrollView style={styles.basicScroll}>
+            <View style={styles.sectionContainer}>
+              <RemediosMedicine nome="Medicamento 1" horario="1" />
+              <RemediosMedicine nome="Medicamento 2" horario="2" />
+              <RemediosMedicine nome="Medicamento 3" horario="3" />
+              <RemediosMedicine nome="Medicamento 4" horario="4" />
+              <RemediosMedicine nome="Medicamento 5" horario="5" />
+              <RemediosMedicine nome="Medicamento 6" horario="6" />
+            </View>
+          </ScrollView>
+      </View>
+      <Footer navigation={navigation} />
     </View>
-      <Footer navigation={navigation}/>
-    </View>
-)}
+  )
+}

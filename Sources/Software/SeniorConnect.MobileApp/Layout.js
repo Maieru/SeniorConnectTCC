@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Image,} from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Image, } from 'react-native';
 import CheckBox from 'expo-checkbox';
 import styles from './styles.js';
 
@@ -33,7 +33,7 @@ function Header({ title, }) {
   )
 }
 
-function MedicineHome({ nome, horario, }) {
+function RemediosHome({ nome, horario, }) {
   return (<View style={styles.homeMedicineContainer}>
     <Image
       source={require('./assets/medication.png')}
@@ -47,6 +47,32 @@ function MedicineHome({ nome, horario, }) {
     <Text style={styles.homeMedicineText}>{nome}  </Text>
     <Text style={styles.homeMedicineText}>{horario}</Text>
   </View>
+  )
+}
+
+function RemediosMedicine({ nome, id, }) {
+  return (
+    <View style={styles.remediosMedicineContainer}>
+      <Image
+        source={require('./assets/medication.png')}
+        style={styles.homeItemImage}
+      />
+      <View style={styles.medicineScrollContainerStart}>
+        <Text style={styles.homeMedicineText}>{nome}  </Text>
+      </View>
+      <View style={styles.medicineScrollContainerEnd}>
+        <TouchableOpacity style={styles.medicineActionsImage}>
+          <Image
+            source={require('./assets/edit.png')}
+            style={styles.footerImage} />
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.medicineActionsImage}>
+          <Image
+            source={require('./assets/delete.png')}
+            style={styles.footerImage} />
+        </TouchableOpacity>
+      </View>
+    </View>
   )
 }
 
@@ -94,4 +120,4 @@ function Footer({ navigation }) {
   )
 }
 
-export { Header, Footer, HeaderReturn, MedicineHome };
+export { Header, Footer, HeaderReturn, RemediosHome, RemediosMedicine };

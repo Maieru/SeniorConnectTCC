@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView } from 'react-native';
 import styles from '../styles.js';
-import { Header, Footer, MedicineHome } from '../Layout.js';
+import { Header, Footer, RemediosHome } from '../Layout.js';
 
 nomePlaceholder = "Usuário" //Linha apenas para questão de teste, deve ser substituido após integração das APIs
 
@@ -15,11 +15,11 @@ export default function HomeScreen({ navigation }) {
           <Text style={styles.basicLabel}>Próximas Dosagens</Text>
           <ScrollView style={styles.basicScroll}>
             <View style={styles.sectionContainer}>
-              <MedicineHome nome="Medicamento 1" horario="1:00" />
-              <MedicineHome nome="Medicamento 2" horario="2:00" />
-              <MedicineHome nome="Medicamento 3" horario="3:00" />
-              <MedicineHome nome="Medicamento 4" horario="4:00" />
-              <MedicineHome nome="Medicamento 5" horario="5:00" />
+              <RemediosHome nome="Medicamento 1" horario="1:00" />
+              <RemediosHome nome="Medicamento 2" horario="2:00" />
+              <RemediosHome nome="Medicamento 3" horario="3:00" />
+              <RemediosHome nome="Medicamento 4" horario="4:00" />
+              <RemediosHome nome="Medicamento 5" horario="5:00" />
             </View>
           </ScrollView>
         </View>
