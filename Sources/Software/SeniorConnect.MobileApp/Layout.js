@@ -76,6 +76,28 @@ function RemediosMedicine({ nome, id, }) {
   )
 }
 
+function HorariosMedicine({ horario, }) {
+  return (
+    <View style={styles.remediosMedicineContainer}>
+      <Text style={styles.horarioMedicine}>{horario}</Text>
+      <View style={styles.HorarioMedicineContainer}>
+        <Text style={styles.timeMedicine}>S</Text>
+        <Text style={styles.timeMedicine}>T</Text>
+        <Text style={styles.timeMedicine}>Q</Text>
+        <Text style={styles.timeMedicine}>Q</Text>
+        <Text style={styles.timeMedicine}>S</Text>
+        <Text style={styles.timeMedicine}>S</Text>
+        <Text style={styles.timeMedicine}>D</Text>
+        <TouchableOpacity style={styles.medicineActionsImage}>
+          <Image
+            source={require('./assets/edit.png')}
+            style={styles.editHorario} />
+        </TouchableOpacity>
+      </View>
+    </View>
+  )
+}
+
 function Footer({ navigation }) {
   return (
     <View style={styles.footer}>
@@ -120,4 +142,4 @@ function Footer({ navigation }) {
   )
 }
 
-export { Header, Footer, HeaderReturn, RemediosHome, RemediosMedicine };
+export { Header, Footer, HeaderReturn, RemediosHome, RemediosMedicine, HorariosMedicine };
