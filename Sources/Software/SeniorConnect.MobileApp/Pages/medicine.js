@@ -9,20 +9,20 @@ export default function MedicineScreen({ navigation }) {
       <Header title="Medicamentos" navigation={navigation} />
       <View style={styles.content}>
         <TouchableOpacity
-          onPress={() => navigation.navigate('Home')} //Mudar Caminho
+          onPress={() => navigation.navigate('NewMedicine')}
           style={styles.medicineButton}>
           <Text style={styles.basicButtonText}>Novo Medicamento</Text>
         </TouchableOpacity>
         <ScrollView style={styles.basicScroll}>
-            <View style={styles.sectionContainer}>
-              <RemediosMedicine nome="Medicamento 1" horario="1" />
-              <RemediosMedicine nome="Medicamento 2" horario="2" />
-              <RemediosMedicine nome="Medicamento 3" horario="3" />
-              <RemediosMedicine nome="Medicamento 4" horario="4" />
-              <RemediosMedicine nome="Medicamento 5" horario="5" />
-              <RemediosMedicine nome="Medicamento 6" horario="6" />
-            </View>
-          </ScrollView>
+          <View style={styles.sectionContainer}>
+            <RemediosMedicine nome="Medicamento 1" />
+            <RemediosMedicine nome="Medicamento 2" />
+            <RemediosMedicine nome="Medicamento 3" />
+            <RemediosMedicine nome="Medicamento 4" />
+            <RemediosMedicine nome="Medicamento 5" />
+            <RemediosMedicine nome="Medicamento 6" />
+          </View>
+        </ScrollView>
       </View>
       <Footer navigation={navigation} />
     </View>

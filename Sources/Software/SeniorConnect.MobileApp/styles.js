@@ -180,6 +180,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#f0f0f0',
     borderRadius: 10,
     padding: 15,
+    height: '100%',
+    alignItems: 'center',
   },
   homeMedicineContainer: {
     backgroundColor: '#ccc',

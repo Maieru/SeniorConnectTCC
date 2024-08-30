@@ -9,6 +9,7 @@ import StatusScreen from './Pages/status.js';
 import ReportsScreen from './Pages/reports.js';
 import LoginScreen from './Pages/login.js';
 import CadastroScreen from './Pages/cadastro.js';
+import NewMedicineScreen from './Pages/newMedicine.js';
 
 const Stack = createNativeStackNavigator();
 
@@ -22,6 +23,7 @@ export default function App() {
           <Stack.Screen name="Reports" component={ReportsScreen} options={{ headerShown: false }}/>
           <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }}/>
           <Stack.Screen name="Cadastro" component={CadastroScreen} options={{ headerShown: false }}/>
+          <Stack.Screen name="NewMedicine" component={NewMedicineScreen} options={{ headerShown: false }}/>
         </Stack.Navigator>
     </NavigationContainer>
     
