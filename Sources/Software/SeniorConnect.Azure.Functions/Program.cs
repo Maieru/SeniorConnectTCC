@@ -20,8 +20,10 @@ var host = new HostBuilder()
             secretManager = new SecretManager(Environment.GetEnvironmentVariable("KeyVaulUrl"));
 
         var sqlServerConnectionString = secretManager.GetSqlServerConnectionString().Result;
+        var storageConnectionString = secretManager.GetStorageConnectionString().Result;
 
         services.AddDbContext<DatabaseContext>(options => options.UseSqlServer(sqlServerConnectionString), ServiceLifetime.Scoped);
+        services.AddScoped<StorageService>(secretManager => new StorageService(storageConnectionString));
 
         services.AddScoped<IRepository<LogEntry>, LogRepository>();
         services.AddScoped<IRepository<Device>, DeviceRepository>();
@@ -30,6 +32,7 @@ var host = new HostBuilder()
         services.AddScoped<IRepository<Medicine>, MedicineRepository>();
         services.AddScoped<IRepository<MedicineDeviceAssociation>, MedicineDeviceAssociationRepository>();
         services.AddScoped<IRepository<Scheduling>, SchedulingRepository>();
+        services.AddScoped<IRepository<Telemetry>, TelemetryRepository>();
 
         services.AddScoped<LogService>();
         services.AddScoped<SubscriptionService>();
@@ -37,6 +40,7 @@ var host = new HostBuilder()
         services.AddScoped<UserService>();
         services.AddScoped<MedicineService>();
         services.AddScoped<SchedulingService>();
+        services.AddScoped<TelemetryService>();
 
         services.AddApplicationInsightsTelemetryWorkerService();
         services.ConfigureFunctionsApplicationInsights();

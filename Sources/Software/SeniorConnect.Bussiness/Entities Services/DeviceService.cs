@@ -92,6 +92,16 @@ namespace SeniorConnect.Bussiness.Entities_Services
             await _repository.DeleteByIdAsync(deviceId);
         }
 
+        public async Task<Device> GetDeviceByName(string deviceName)
+        {
+            var device = await _repository.GetFirst(d => d.DeviceName == deviceName);
+
+            if (device != null && !ValidateAccessToSubscription(device.SubscriptionId))
+                throw new CannotAccessSubscriptionException(device.SubscriptionId);
+
+            return device;
+        }
+
         private bool ValidateAccessToSubscription(int subscriptionId)
         {
             if (!CurrentSubscriptionId.HasValue)
