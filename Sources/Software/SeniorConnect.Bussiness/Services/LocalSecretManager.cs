@@ -21,5 +21,6 @@ namespace SeniorConnect.Bussiness.Services
 
         public async Task<string?> GetTokenSignignKey() => "TokenSignignKey94af5112-fd21-4a80-a405-9631c1d10846";
 
+        public async Task<string?> GetStorageConnectionString() => Environment.GetEnvironmentVariable("AzureWebJobsStorage");
     }
 }

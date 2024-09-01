@@ -20,8 +20,10 @@ var host = new HostBuilder()
             secretManager = new SecretManager(Environment.GetEnvironmentVariable("KeyVaulUrl"));
 
         var sqlServerConnectionString = secretManager.GetSqlServerConnectionString().Result;
+        var storageConnectionString = secretManager.GetStorageConnectionString().Result;
 
         services.AddDbContext<DatabaseContext>(options => options.UseSqlServer(sqlServerConnectionString), ServiceLifetime.Scoped);
+        services.AddScoped<StorageService>(secretManager => new StorageService(storageConnectionString));
 
         services.AddScoped<IRepository<LogEntry>, LogRepository>();
         services.AddScoped<IRepository<Device>, DeviceRepository>();

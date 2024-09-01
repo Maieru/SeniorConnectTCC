@@ -14,11 +14,13 @@ namespace SeniorConnect.Azure.Functions
     {
         private readonly LogService _logger;
         private readonly TelemetryService _telemetryService;
+        private readonly StorageService _storageService;
 
-        public BigDataProcessingFunction(LogService logService, TelemetryService telemetryService)
+        public BigDataProcessingFunction(LogService logService, TelemetryService telemetryService, StorageService storageService)
         {
             _logger = logService;
             _telemetryService = telemetryService;
+            _storageService = storageService;
         }
 
         [Function(nameof(BigDataProcessingFunction))]
@@ -27,6 +29,7 @@ namespace SeniorConnect.Azure.Functions
         {
             using var blobStreamReader = new StreamReader(stream);
             var content = await blobStreamReader.ReadToEndAsync();
+            var processedWithSuccess = true;
 
             if (content == null)
             {
@@ -36,15 +39,22 @@ namespace SeniorConnect.Azure.Functions
 
             var lines = content.Split(Environment.NewLine);
 
-            foreach (var line in lines)
-                await ProcessLine(line);
 
-            Console.WriteLine(content);
+            foreach (var line in lines)
+            {
+                var processedLineWithSuccess = await ProcessLine(line);
+
+                if (!processedLineWithSuccess)
+                    processedWithSuccess = false;
+            }
+
+            if (processedWithSuccess)
+                await _storageService.DeleteBlob("iotmessages", FormatBlobName(iotHub, partition, year, mounth, day, hour, minute));
         }
 
         private string FormatBlobName(string iotHub, string partition, string year, string mounth, string day, string hour, string minute)
         {
-            return $"iotmessages/{iotHub}/{partition}/{year}/{mounth}/{day}/{hour}/{minute}";
+            return $"{iotHub}/{partition}/{year}/{mounth}/{day}/{hour}/{minute}";
         }
 
         private async Task<bool> ProcessLine(string line)
