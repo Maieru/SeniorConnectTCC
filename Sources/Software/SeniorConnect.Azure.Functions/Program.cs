@@ -30,6 +30,7 @@ var host = new HostBuilder()
         services.AddScoped<IRepository<Medicine>, MedicineRepository>();
         services.AddScoped<IRepository<MedicineDeviceAssociation>, MedicineDeviceAssociationRepository>();
         services.AddScoped<IRepository<Scheduling>, SchedulingRepository>();
+        services.AddScoped<IRepository<Telemetry>, TelemetryRepository>();
 
         services.AddScoped<LogService>();
         services.AddScoped<SubscriptionService>();
@@ -37,6 +38,7 @@ var host = new HostBuilder()
         services.AddScoped<UserService>();
         services.AddScoped<MedicineService>();
         services.AddScoped<SchedulingService>();
+        services.AddScoped<TelemetryService>();
 
         services.AddApplicationInsightsTelemetryWorkerService();
         services.ConfigureFunctionsApplicationInsights();

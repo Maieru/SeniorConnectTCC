@@ -21,11 +21,13 @@ namespace SeniorConnect.Infrastructure.Context
 
         public DbSet<Medicine> Medicines { get; set; }
 
-        public DbSet<MedicineDeviceAssociation> MedicineDeviceAssociations { get; set; }    
+        public DbSet<MedicineDeviceAssociation> MedicineDeviceAssociations { get; set; }
 
         public DbSet<Scheduling> Scheduling { get; set; }
 
         public DbSet<User> Users { get; set; }
+
+        public DbSet<Telemetry> Telemetry { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -38,6 +40,7 @@ namespace SeniorConnect.Infrastructure.Context
             modelBuilder.ApplyConfiguration(new MedicineDeviceAssociationFluent());
             modelBuilder.ApplyConfiguration(new SchedulingFluent());
             modelBuilder.ApplyConfiguration(new UserFluent());
+            modelBuilder.ApplyConfiguration(new TelemetryFluent());
         }
     }
 }
