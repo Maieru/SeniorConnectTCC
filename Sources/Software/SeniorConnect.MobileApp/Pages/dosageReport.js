@@ -21,7 +21,7 @@ export default function DosageReportScreen({ navigation }) {
     return (
         <View style={styles.containerMenu}>
             {/* HeaderReturn component with back navigation to Reports screen */}
-            <HeaderReturn returnPage="Reports" navigation={navigation} />
+            <HeaderReturn title="Voltar" returnPage="Reports" navigation={navigation} />
             <View style={styles.content}>
                 <ScrollView
                     horizontal

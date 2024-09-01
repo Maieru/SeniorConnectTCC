@@ -20,10 +20,12 @@ export default function ReportsScreen({ navigation }) {
                 </View>
                 <View style={styles.container}>
                     <View style={styles.sectionContainer}>
-                        <Text style={styles.basicLabel}>Relatório de Adesão</Text>
-                        <Text style={styles.basicLabel}>
-                            Relatório responsável pela adesão total dos medicamentos do último mês, levando em conta cada medicamento individual
-                        </Text>
+                        <TouchableOpacity onPress={() => navigation.navigate('AdherenceReport')}>
+                            <Text style={styles.basicLabel}>Relatório de Adesão</Text>
+                            <Text style={styles.basicLabel}>
+                                Relatório responsável pela adesão total dos medicamentos do último mês, levando em conta cada medicamento individual
+                            </Text>
+                        </TouchableOpacity>
                     </View>
                 </View>
             </View>
