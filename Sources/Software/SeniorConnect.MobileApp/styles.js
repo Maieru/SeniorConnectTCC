@@ -229,7 +229,6 @@ const styles = StyleSheet.create({
   },
   basicScroll: {
     width: '100%',
-
   },
   gridContainer: {
     flexDirection: 'row',
@@ -237,7 +236,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     padding: 10,
   },
-
   gridItem: {
     width: '30%',
     height: 100,
@@ -247,83 +245,55 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 10,
   },
-
   gridItemImage: {
     width: 40,
     height: 40,
     marginBottom: 5,
   },
-
   gridItemText: {
     fontSize: 16,
     textAlign: 'center',
     color: '#000',
+    position: 'absolute', // To overlay the text on the image
+    backgroundColor: 'rgba(255, 255, 255, 0.8)', // Semi-transparent background for text readability
+    paddingHorizontal: 5,
+    borderRadius: 5,
+  },
+  blurredItem: {
+    opacity: 0.3, // Reduces opacity to blur the item
+    pointerEvents: 'none', // Disables interaction with blurred components
   },
 
+  balloon: {
+    position: 'absolute',
+    bottom: 110, // Positioning the balloon above the medicine
+    left: '50%',
+    transform: [{ translateX: -50 }], // Centers the balloon horizontally
+    backgroundColor: 'rgba(0, 0, 0, 0.7)', // Semi-transparent background for the balloon
+    padding: 5,
+    borderRadius: 5,
+    zIndex: 1,
+  },
+  balloonText: {
+    color: '#fff',
+    fontSize: 14,
+  },
   statusContainer: {
     marginTop: 20,
-    alignItems: 'center',
+    alignItems: 'flex-start',
+    width: '100%',
+    paddingHorizontal: 10,
   },
-
   statusText: {
     fontSize: 16,
     color: '#000',
     marginBottom: 5,
+    textAlign: 'left',
+    width: '100%',
   },
-
   statusConnected: {
     color: 'green',
   },
-  gridContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'center',
-    padding: 10,
-  },
-
-  gridItem: {
-    width: '30%',
-    height: 100,
-    margin: 5,
-    backgroundColor: '#ccc',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 10,
-  },
-
-  gridItemImage: {
-    width: 40,
-    height: 40,
-    marginBottom: 5,
-  },
-
-  gridItemText: {
-    fontSize: 16,
-    textAlign: 'center',
-    color: '#000',
-  },
-
-  statusContainer: {
-    marginTop: 20,
-    alignItems: 'flex-start', // This aligns items to the start of the container
-    width: '100%', // Ensures the container takes full width
-    paddingHorizontal: 10, // Optional: Adds padding for better layout
-  },
-
-  statusText: {
-    fontSize: 16,
-    color: '#000',
-    marginBottom: 5,
-    marginLeft: 10,
-    textAlign: 'left', // Aligns the text to the left
-    width: '100%', // Makes sure the text takes the full width of the container
-  },
-
-
-  statusConnected: {
-    color: 'green',
-  },
-
 });
 
 export default styles;
