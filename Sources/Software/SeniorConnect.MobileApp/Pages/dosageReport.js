@@ -1,29 +1,45 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView } from 'react-native';
+import React from 'react';
+import { Text, View, ScrollView, Dimensions } from 'react-native';
+import { HeaderReturn, Footer } from '../Layout.js';
 import styles from '../styles.js';
-import { Header, Footer } from '../Layout.js';
+
+
+const { width, height } = Dimensions.get('window');
 
 export default function DosageReportScreen({ navigation }) {
+
+    const days = [
+        { day: "Segunda", medications: [{ name: "[Medicamento 1]", dosage: "HH:MM" }, { name: "[Medicamento 2]", dosage: "HH:MM" }] },
+        { day: "Terça", medications: [{ name: "[Medicamento 1]", dosage: "HH:MM" }, { name: "[Medicamento 2]", dosage: "HH:MM" }] },
+        { day: "Quarta", medications: [{ name: "[Medicamento 1]", dosage: "HH:MM" }, { name: "[Medicamento 2]", dosage: "HH:MM" }] },
+        { day: "Quinta", medications: [{ name: "[Medicamento 1]", dosage: "HH:MM" }, { name: "[Medicamento 2]", dosage: "HH:MM" }] },
+        { day: "Sexta", medications: [{ name: "[Medicamento 1]", dosage: "HH:MM" }, { name: "[Medicamento 2]", dosage: "HH:MM" }] },
+        { day: "Sábado", medications: [{ name: "[Medicamento 1]", dosage: "HH:MM" }, { name: "[Medicamento 2]", dosage: "HH:MM" }] },
+        { day: "Domingo", medications: [{ name: "[Medicamento 1]", dosage: "HH:MM" }, { name: "[Medicamento 2]", dosage: "HH:MM" }] },
+    ];
+
     return (
         <View style={styles.containerMenu}>
-            <Header title="Relatório de Dosagem" navigation={navigation} returnPage="Reports" />
+            {/* HeaderReturn component with back navigation to Reports screen */}
+            <HeaderReturn returnPage="Reports" navigation={navigation} />
             <View style={styles.content}>
-                <ScrollView style={styles.basicScroll}>
-                    <View style={styles.gridContainer}>
-                        {["Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado", "Domingo"].map((day, index) => (
-                            <View key={index} style={styles.dayContainer}>
-                                <Text style={styles.dayLabel}>{day}</Text>
-                                <View style={styles.medicineSlot}>
-                                    <Text style={styles.medicineInfo}>[Medicamento 1]</Text>
-                                    <Text style={styles.medicineInfo}>Dosagem: HH:MM</Text>
+                <ScrollView
+                    horizontal
+                    pagingEnabled
+                    showsHorizontalScrollIndicator={false}
+                    contentContainerStyle={styles.scrollContainer}
+                >
+                    {days.map((dayData, index) => (
+                        <View key={index} style={[styles.dayBlock, { width: width * 0.85, height: height * 0.6 }]}>
+                            <Text style={styles.dayLabel}>{dayData.day}</Text>
+                            {dayData.medications.map((medication, idx) => (
+                                <View key={idx} style={styles.medicineSlot}>
+                                    <Text style={styles.medicineInfo}>{medication.name}</Text>
+                                    <Text style={styles.medicineInfo}>Dosagem: {medication.dosage}</Text>
                                 </View>
-                                <View style={styles.medicineSlot}>
-                                    <Text style={styles.medicineInfo}>[Medicamento 2]</Text>
-                                    <Text style={styles.medicineInfo}>Dosagem: HH:MM</Text>
-                                </View>
-                            </View>
-                        ))}
-                    </View>
+                            ))}
+                        </View>
+                    ))}
                 </ScrollView>
             </View>
             <Footer navigation={navigation} />

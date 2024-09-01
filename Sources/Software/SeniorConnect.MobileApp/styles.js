@@ -1,4 +1,7 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
+
+// Get screen dimensions
+const { width, height } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   header: {
@@ -254,22 +257,21 @@ const styles = StyleSheet.create({
     fontSize: 16,
     textAlign: 'center',
     color: '#000',
-    position: 'absolute', // To overlay the text on the image
-    backgroundColor: 'rgba(255, 255, 255, 0.8)', // Semi-transparent background for text readability
+    position: 'absolute',
+    backgroundColor: 'rgba(255, 255, 255, 0.8)',
     paddingHorizontal: 5,
     borderRadius: 5,
   },
   blurredItem: {
-    opacity: 0.3, // Reduces opacity to blur the item
-    pointerEvents: 'none', // Disables interaction with blurred components
+    opacity: 0.3,
+    pointerEvents: 'none',
   },
-
   balloon: {
     position: 'absolute',
-    bottom: 110, // Positioning the balloon above the medicine
+    bottom: 110,
     left: '50%',
-    transform: [{ translateX: -50 }], // Centers the balloon horizontally
-    backgroundColor: 'rgba(0, 0, 0, 0.7)', // Semi-transparent background for the balloon
+    transform: [{ translateX: -50 }],
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
     padding: 5,
     borderRadius: 5,
     zIndex: 1,
@@ -294,48 +296,42 @@ const styles = StyleSheet.create({
   statusConnected: {
     color: 'green',
   },
-  gridContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
-    padding: 10,
+  scrollContainer: {
+    alignItems: 'center',
+    paddingHorizontal: 0,
+    justifyContent: 'center',
   },
-
-  dayContainer: {
-    width: '45%', // Adjust to fit better, allowing for proper spacing
-    marginBottom: 15,
-    backgroundColor: '#ccc',
-    padding: 15, // Increased padding for better spacing
+  dayBlock: {
+    width: width * 0.85,
+    height: height * 0.6,
+    marginHorizontal: (width - width * 0.85) / 2,
+    backgroundColor: '#f0f0f0',
+    paddingVertical: 20,
+    paddingHorizontal: 15,
     borderRadius: 10,
     alignItems: 'center',
-    minHeight: 150, // Increased height for better content layout
+    justifyContent: 'center',
   },
-
   dayLabel: {
-    fontSize: 18, // Increased font size for better readability
+    fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 8,
+    marginBottom: 20,
     textAlign: 'center',
   },
-
   medicineSlot: {
-    width: '100%',
-    backgroundColor: '#eee',
-    paddingVertical: 10, // Adds vertical padding for spacing
-    paddingHorizontal: 5, // Adds horizontal padding for spacing
-    marginBottom: 10, // Adds space between slots
-    justifyContent: 'center',
-    alignItems: 'center',
+    width: '95%',
+    backgroundColor: '#ccc',
+    padding: 15,
     borderRadius: 5,
+    marginBottom: 15,
+    alignItems: 'center',
   },
-
   medicineInfo: {
-    fontSize: 16, // Increased font size for readability
+    fontSize: 20,
     color: '#000',
     textAlign: 'center',
   },
-
-
 });
 
 export default styles;
+

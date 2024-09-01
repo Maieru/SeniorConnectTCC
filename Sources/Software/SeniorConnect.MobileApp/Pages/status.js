@@ -5,21 +5,17 @@ import styles from '../styles.js';
 import { Header, Footer } from '../Layout.js';
 
 export default function StatusScreen({ navigation }) {
-    // State to track the selected medicine index
-    const [selectedIndex, setSelectedIndex] = useState(null);
 
-    // Dummy data for medicine names
+    const [selectedIndex, setSelectedIndex] = useState(null);
     const medicines = Array.from({ length: 9 }).map((_, index) => `Medicamento ${index + 1}`);
 
-    // Function to handle outside click and reset the selection
     const handleOutsideClick = () => {
         setSelectedIndex(null);
     };
 
     return (
         <View style={styles.containerMenu}>
-            <Header title="Status" navigation={navigation} />
-            {/* Wrapping TouchableOpacity to detect outside clicks */}
+            <Header navigation={navigation} />
             <TouchableOpacity
                 style={styles.content}
                 activeOpacity={1}
@@ -35,8 +31,8 @@ export default function StatusScreen({ navigation }) {
                                 selectedIndex !== null && selectedIndex !== index ? styles.blurredItem : {},
                             ]}
                             onPress={(e) => {
-                                e.stopPropagation(); // Prevent triggering the outside click
-                                setSelectedIndex(index); // Set the clicked item as selected
+                                e.stopPropagation();
+                                setSelectedIndex(index);
                             }}
                         >
                             <Image
