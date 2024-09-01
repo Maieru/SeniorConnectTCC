@@ -1,24 +1,24 @@
-import { StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
-  header:{
+  header: {
     flexDirection: 'row',
     justifyContent: 'space-around',
     backgroundColor: '#5082FE',
     paddingVertical: 25,
     width: '100%',
   },
-  headerItem:{
+  headerItem: {
     alignItems: 'flex-start',
     width: '69%',
     justifyContent: 'flex-end',
   },
-  headerImageContainer:{
+  headerImageContainer: {
     width: '30%',
     alignItems: 'center',
     justifyContent: 'flex-end',
   },
-  headerImage:{
+  headerImage: {
     width: 40,
     height: 40,
     justifyContent: 'flex-end',
@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
     borderWidth: 15,
     borderColor: '#fff',
     padding: 4,
-    borderRadius: 8, 
+    borderRadius: 8,
     backgroundColor: '#fff',
   },
   headerText: {
@@ -171,7 +171,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 20,
   },
-  spacer:{
+  spacer: {
     height: 20,
   },
   sectionContainer: {
@@ -221,7 +221,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     marginRight: 10,
   },
-  mensalidadeHome:{
+  mensalidadeHome: {
     width: '70%',
     backgroundColor: '#7DDA58',
     paddingVertical: 7,
@@ -231,6 +231,99 @@ const styles = StyleSheet.create({
     width: '100%',
 
   },
+  gridContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    padding: 10,
+  },
+
+  gridItem: {
+    width: '30%',
+    height: 100,
+    margin: 5,
+    backgroundColor: '#ccc',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 10,
+  },
+
+  gridItemImage: {
+    width: 40,
+    height: 40,
+    marginBottom: 5,
+  },
+
+  gridItemText: {
+    fontSize: 16,
+    textAlign: 'center',
+    color: '#000',
+  },
+
+  statusContainer: {
+    marginTop: 20,
+    alignItems: 'center',
+  },
+
+  statusText: {
+    fontSize: 16,
+    color: '#000',
+    marginBottom: 5,
+  },
+
+  statusConnected: {
+    color: 'green',
+  },
+  gridContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    padding: 10,
+  },
+
+  gridItem: {
+    width: '30%',
+    height: 100,
+    margin: 5,
+    backgroundColor: '#ccc',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 10,
+  },
+
+  gridItemImage: {
+    width: 40,
+    height: 40,
+    marginBottom: 5,
+  },
+
+  gridItemText: {
+    fontSize: 16,
+    textAlign: 'center',
+    color: '#000',
+  },
+
+  statusContainer: {
+    marginTop: 20,
+    alignItems: 'flex-start', // This aligns items to the start of the container
+    width: '100%', // Ensures the container takes full width
+    paddingHorizontal: 10, // Optional: Adds padding for better layout
+  },
+
+  statusText: {
+    fontSize: 16,
+    color: '#000',
+    marginBottom: 5,
+    marginLeft: 10,
+    textAlign: 'left', // Aligns the text to the left
+    width: '100%', // Makes sure the text takes the full width of the container
+  },
+
+
+  statusConnected: {
+    color: 'green',
+  },
+
 });
 
 export default styles;
