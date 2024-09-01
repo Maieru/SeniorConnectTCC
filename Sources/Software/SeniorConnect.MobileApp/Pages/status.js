@@ -1,7 +1,9 @@
+// status.js
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
+import { Text, View, TouchableOpacity, Image } from 'react-native';
 import { useState } from 'react';
-import styles from '../styles.js';
+import styles from '../styles.js'; // Importa os estilos comuns
+import stylesStatus from '../stylesStatus.js'; // Importa os estilos específicos
 import { Header, Footer } from '../Layout.js';
 
 export default function StatusScreen({ navigation }) {
@@ -21,14 +23,13 @@ export default function StatusScreen({ navigation }) {
                 activeOpacity={1}
                 onPress={handleOutsideClick}
             >
-                <View style={styles.gridContainer}>
+                <View style={stylesStatus.gridContainer}>
                     {medicines.map((name, index) => (
                         <TouchableOpacity
                             key={index}
                             style={[
-                                styles.gridItem,
-                                // Apply blur effect only when an item is selected and it is not the clicked one
-                                selectedIndex !== null && selectedIndex !== index ? styles.blurredItem : {},
+                                stylesStatus.gridItem,
+                                selectedIndex !== null && selectedIndex !== index ? stylesStatus.blurredItem : {},
                             ]}
                             onPress={(e) => {
                                 e.stopPropagation();
@@ -37,27 +38,25 @@ export default function StatusScreen({ navigation }) {
                         >
                             <Image
                                 source={require('../assets/medication.png')}
-                                style={styles.gridItemImage}
+                                style={stylesStatus.gridItemImage}
                             />
                             {selectedIndex === index && (
-                                <View style={styles.balloon}>
-                                    <Text style={styles.balloonText}>{name}</Text>
+                                <View style={stylesStatus.balloon}>
+                                    <Text style={stylesStatus.balloonText}>{name}</Text>
                                 </View>
                             )}
                         </TouchableOpacity>
                     ))}
                 </View>
-                {/* Blur the status section when an item is selected */}
-                <View style={selectedIndex !== null ? [styles.statusContainer, styles.blurredItem] : styles.statusContainer}>
-                    <Text style={styles.statusText}>
-                        Status: <Text style={styles.statusConnected}>Conectado</Text>
+                <View style={selectedIndex !== null ? [stylesStatus.statusContainer, stylesStatus.blurredItem] : stylesStatus.statusContainer}>
+                    <Text style={stylesStatus.statusText}>
+                        Status: <Text style={stylesStatus.statusConnected}>Conectado</Text>
                     </Text>
-                    <Text style={styles.statusText}>Última Comunicação: XX/XX/XXXX XX:XX:XX</Text>
-                    <Text style={styles.statusText}>Próximo Alerta: XX/XX/XXXX XX:XX:XX</Text>
+                    <Text style={stylesStatus.statusText}>Última Comunicação: XX/XX/XXXX XX:XX:XX</Text>
+                    <Text style={stylesStatus.statusText}>Próximo Alerta: XX/XX/XXXX XX:XX:XX</Text>
                 </View>
             </TouchableOpacity>
-            {/* Blur the footer when an item is selected */}
-            <Footer navigation={navigation} style={selectedIndex !== null ? styles.blurredItem : {}} />
+            <Footer navigation={navigation} style={selectedIndex !== null ? stylesStatus.blurredItem : {}} />
         </View>
     );
 }
