@@ -4,7 +4,6 @@ import styles from '../styles.js'; // Import the styles
 import { HeaderReturn, Footer } from '../Layout.js'; // Import Header with return button and footer
 import stylesAdherenceReport from '../stylesAdherenceReport.js';
 
-
 export default function AdherenceReportScreen({ navigation }) {
     return (
         <View style={styles.containerMenu}>
@@ -41,7 +40,6 @@ export default function AdherenceReportScreen({ navigation }) {
                     </ScrollView>
                 </View>
 
-                {/* Export Button */}
                 <TouchableOpacity style={styles.exportButton} onPress={() => { /* Add export functionality here */ }}>
                     <Text style={styles.exportButtonText}>Exportar</Text>
                 </TouchableOpacity>

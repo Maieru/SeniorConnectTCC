@@ -4,8 +4,6 @@ import { HeaderReturn, Footer } from '../Layout.js';
 import styles from '../styles.js';
 import stylesDosageReport from '../stylesDosageReport.js';
 
-
-
 const { width, height } = Dimensions.get('window');
 
 export default function DosageReportScreen({ navigation }) {
