@@ -294,6 +294,48 @@ const styles = StyleSheet.create({
   statusConnected: {
     color: 'green',
   },
+  gridContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    padding: 10,
+  },
+
+  dayContainer: {
+    width: '45%', // Adjust to fit better, allowing for proper spacing
+    marginBottom: 15,
+    backgroundColor: '#ccc',
+    padding: 15, // Increased padding for better spacing
+    borderRadius: 10,
+    alignItems: 'center',
+    minHeight: 150, // Increased height for better content layout
+  },
+
+  dayLabel: {
+    fontSize: 18, // Increased font size for better readability
+    fontWeight: 'bold',
+    marginBottom: 8,
+    textAlign: 'center',
+  },
+
+  medicineSlot: {
+    width: '100%',
+    backgroundColor: '#eee',
+    paddingVertical: 10, // Adds vertical padding for spacing
+    paddingHorizontal: 5, // Adds horizontal padding for spacing
+    marginBottom: 10, // Adds space between slots
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 5,
+  },
+
+  medicineInfo: {
+    fontSize: 16, // Increased font size for readability
+    color: '#000',
+    textAlign: 'center',
+  },
+
+
 });
 
 export default styles;
