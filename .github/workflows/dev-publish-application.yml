@@ -87,19 +87,3 @@ jobs:
           app-name: ${{ secrets.AZURE_API_SERVER_NAME_DEV }}
           publish-profile: ${{ secrets.AZURE_API_DEV_SERVER_PUBLISH_PROFILE }}
           package: ${{ env.AZURE_API_SERVER_PATH }}
-
-      - name: Deploy Provisioning Gateway Development
-        id: deploy-provisioning-gateway
-        uses: azure/webapps-deploy@v2
-        with:
-          app-name: ${{ secrets.AZURE_PROVISIONING_GATEWAY_NAME }}
-          publish-profile: ${{ secrets.AZURE_PROVISIONING_GATEWAY_PUBLISH_PROFILE }}
-          package: ${{ env.AZURE_PROVISIONING_GATEWAY_PATH }}
-
-      - name: Deploy API Server
-        id: deploy-api-server
-        uses: azure/webapps-deploy@v2
-        with:
-          app-name: ${{ secrets.AZURE_API_SERVER_NAME }}
-          publish-profile: ${{ secrets.AZURE_API_SERVER_PUBLISH_PROFILE }}
-          package: ${{ env.AZURE_API_SERVER_PATH }}
