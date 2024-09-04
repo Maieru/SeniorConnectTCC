@@ -1,4 +1,9 @@
+
 import { StyleSheet } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
+
+// Get screen dimensions
+const { width, height } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   header: {
@@ -264,7 +269,21 @@ const styles = StyleSheet.create({
   },
   basicScroll: {
     width: '100%',
+  },
+  exportButton: {
+    backgroundColor: '#ddd',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+    alignItems: 'center',
+    marginTop: 10,
+    marginHorizontal: '20%',
+    marginBottom: 30, // Aumenta o espaço inferior para evitar que o botão fique colado ao footer
+  },
 
+  exportButtonText: {
+    fontSize: 18,
+    color: '#000',
   },
 });
 
