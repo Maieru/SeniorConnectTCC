@@ -1,5 +1,3 @@
-
-import { StyleSheet } from 'react-native';
 import { StyleSheet, Dimensions } from 'react-native';
 
 // Get screen dimensions
@@ -93,8 +91,8 @@ const styles = StyleSheet.create({
   },
   loginImage: {
     marginBottom: 40,
-    width: '80%',
-    height: 150,
+    width: '100%',
+    height: 250,
     justifyContent: 'center',
     alignItems: 'center',
   },

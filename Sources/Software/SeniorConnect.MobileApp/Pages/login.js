@@ -8,7 +8,7 @@ export default function LoginScreen({ navigation }) {
       <View style={styles.loginImage}>
         <Image 
           style={styles.senniorLogo}
-          source={require('../assets/SenniorConnect.jpeg')} 
+          source={require('../assets/LogoConnect.png')} 
         />
       </View>
 

@@ -11,14 +11,6 @@ const medicamentos = [
   { id: 4, nome: 'Medicamento 4', horario: '20:00' },
   { id: 5, nome: 'Medicamento 5', horario: '22:00' },
   { id: 6, nome: 'Medicamento 6', horario: '23:00' },
-  { id: 7, nome: 'Medicamento 7', horario: '00:00' },
-  { id: 8, nome: 'Medicamento 7', horario: '00:00' },
-  { id: 9, nome: 'Medicamento 7', horario: '00:00' },
-  { id: 10, nome: 'Medicamento 7', horario: '00:00' },
-  { id: 11, nome: 'Medicamento 7', horario: '00:00' },
-  { id: 12, nome: 'Medicamento 7', horario: '00:00' },
-  { id: 13, nome: 'Medicamento 7', horario: '00:00' },
-  { id: 14, nome: 'Medicamento 7', horario: '00:00' },
 ];
 
 
