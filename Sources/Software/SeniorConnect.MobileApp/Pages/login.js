@@ -1,15 +1,14 @@
 import React from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import styles from '../styles.js';
-import apiService from '../services/apiService.js';
 
 export default function LoginScreen({ navigation }) {
   return (
     <View style={styles.loginContainer}>
       <View style={styles.loginImage}>
-        <Image
+        <Image 
           style={styles.senniorLogo}
-          source={require('../assets/SenniorConnect.jpeg')}
+          source={require('../assets/LogoConnect.png')} 
         />
       </View>
 
@@ -26,7 +25,7 @@ export default function LoginScreen({ navigation }) {
         secureTextEntry={true}
       />
 
-      <TouchableOpacity
+      <TouchableOpacity 
         onPress={() => navigation.navigate('Home')}
         style={styles.basicButton}>
         <Text style={styles.basicButtonText}>Entrar</Text>

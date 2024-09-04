@@ -74,6 +74,10 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
   },
+  editHorario: {
+    width: 20,
+    height: 20,
+  },
   medicineActionsImage: {
     width: 40,
     height: 40,
@@ -87,8 +91,8 @@ const styles = StyleSheet.create({
   },
   loginImage: {
     marginBottom: 40,
-    width: '80%',
-    height: 150,
+    width: '100%',
+    height: 250,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -147,6 +151,37 @@ const styles = StyleSheet.create({
     marginTop: 15,
     padding: 10,
   },
+  newMedicineButton: {
+    width: 'auto',
+    height: 50,
+    backgroundColor: '#9C9EA7',
+    justifyContent: 'center',
+    alignSelf: 'center',
+    alignItems: 'center',
+    borderRadius: 5,
+    marginBottom: 10,
+    marginStart: 15,
+    marginTop: 15,
+    padding: 10,
+  },
+  timeMedicine: {
+    fontSize: 16,
+    color: '#333',
+    marginHorizontal: 2,
+
+  },
+  HorarioMedicineContainer: {
+    flexDirection: 'row',
+    flex: 1,
+    paddingStart: 10,
+    alignItems: 'stretch',
+    justifyContent:'space-around',
+  },
+  horarioMedicine:{
+    fontSize: 15,
+    alignSelf: 'left',
+    color: '#333',
+  },
   cadastroButton: {
     height: 50,
     width: 300,
@@ -196,10 +231,10 @@ const styles = StyleSheet.create({
   },
   remediosMedicineContainer: {
     backgroundColor: '#ccc',
-    padding: 10,
+    padding: 4,
     borderRadius: 5,
     flexDirection: 'row',
-    marginBottom: 10,
+    width: '100%',
   },
   medicineScrollContainerStart: {
     justifyContent: 'flex-start',

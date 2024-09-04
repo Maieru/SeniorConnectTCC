@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView, TextInput } from 'react-native';
 import styles from '../styles.js';
-import { HeaderReturn, Footer } from '../Layout.js';
+import { HeaderReturn, Footer, HorariosMedicine } from '../Layout.js';
 
 export default function MedicineScreen({ navigation }) {
     return (
@@ -29,8 +29,18 @@ export default function MedicineScreen({ navigation }) {
                 </View>
                 <View style={styles.container}>
                     <View style={styles.sectionContainer}>
-
-
+                        <Text style={styles.basicLabel}>Horários</Text>
+                        <TouchableOpacity
+                            onPress={() => navigation.navigate('NewMedicine')}
+                            style={styles.newMedicineButton}>
+                            <Text style={styles.basicButtonText}>Novo Horário/Dosagem</Text>
+                        </TouchableOpacity>
+                        <ScrollView style={styles.basicScroll}>
+                            <HorariosMedicine horario={"12:00"} />
+                            <HorariosMedicine horario={"13:00"} />
+                            <HorariosMedicine horario={"14:00"} />
+                            <HorariosMedicine horario={"15:00"} />
+                        </ScrollView>
                     </View>
                 </View>
             </View>
