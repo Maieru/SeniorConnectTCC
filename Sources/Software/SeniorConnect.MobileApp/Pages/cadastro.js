@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Alert } from 'react-native';
 import styles from '../styles.js';
 import { HeaderReturn } from '../Layout.js';
 import { useState } from 'react';
@@ -12,15 +12,31 @@ export default function CadastroScreen({ navigation }) {
     const [email, setEmail] = useState('');
 
     async function salva() {
+        // TODO 
         let objUsuario = {
             username: usuario,
             password: senha,
             email: email,
             name: usuario,
             createNewSubscription: true
-        } 
+        }
 
-        await apiClient.post('/v1/User/Create', objUsuario, true).then(response => { console.log(response) }).catch(error => { console.log(error) });
+        await apiClient.post('/v1/User/Create', objUsuario, true)
+            .then(response => {
+                if (response.status === 200) {
+                    Alert.alert('Usuário cadastrado com sucesso!');
+                    navigation.navigate('Login');
+                    return;
+                }
+            })
+            .catch(error => {
+                if (error.status === 400) {
+                    Alert.alert(error.response.data);
+                    return;
+                }
+
+                Alert.alert('Erro ao cadastrar usuário');
+            });
     }
 
     return (
@@ -38,12 +54,14 @@ export default function CadastroScreen({ navigation }) {
                     placeholder="Senha"
                     placeholderTextColor="#888"
                     onChangeText={text => setSenha(text)}
+                    secureTextEntry={true}
                 />
                 <TextInput
                     style={styles.cadastroInput}
                     placeholder="Confirmar Senha"
                     placeholderTextColor="#888"
                     onChangeText={text => setConfirmarSenha(text)}
+                    secureTextEntry={true}
                 />
                 <TextInput
                     style={styles.cadastroInput}

@@ -3,12 +3,16 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'reac
 import styles from '../styles.js';
 
 export default function LoginScreen({ navigation }) {
+  async function login() {
+    
+  }
+
   return (
     <View style={styles.loginContainer}>
       <View style={styles.loginImage}>
-        <Image 
+        <Image
           style={styles.senniorLogo}
-          source={require('../assets/LogoConnect.png')} 
+          source={require('../assets/LogoConnect.png')}
         />
       </View>
 
@@ -25,7 +29,7 @@ export default function LoginScreen({ navigation }) {
         secureTextEntry={true}
       />
 
-      <TouchableOpacity 
+      <TouchableOpacity
         onPress={() => navigation.navigate('Home')}
         style={styles.basicButton}>
         <Text style={styles.basicButtonText}>Entrar</Text>
