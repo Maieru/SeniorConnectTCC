@@ -3,7 +3,7 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'reac
 import styles from '../styles.js';
 import { HeaderReturn } from '../Layout.js';
 import { useState } from 'react';
-import apiService from '../services/apiService.js';
+import apiClient from '../services/apiService.js';
 
 export default function CadastroScreen({ navigation }) {
     const [usuario, setUsuario] = useState('');
@@ -20,7 +20,7 @@ export default function CadastroScreen({ navigation }) {
             createNewSubscription: true
         } 
 
-        await apiService.post('/v1/User/Create', objUsuario, false).then(response => { console.log(response) }).catch(error => { console.log(error.toJSON()) });
+        await apiClient.post('/v1/User/Create', objUsuario, true).then(response => { console.log(response) }).catch(error => { console.log(error) });
     }
 
     return (
@@ -52,7 +52,7 @@ export default function CadastroScreen({ navigation }) {
                     onChangeText={text => setEmail(text)}
                 />
                 <TouchableOpacity
-                    onPress={() => salva()}
+                    onPress={async () => await salva()}
                     style={styles.cadastroButton}>
                     <Text style={styles.basicButtonText}>Salvar</Text>
                 </TouchableOpacity>

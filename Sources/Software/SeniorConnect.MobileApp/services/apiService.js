@@ -6,13 +6,14 @@ class ApiService {
         this.axiousService = axios.create({
             baseURL: this.baseURL
         });
+        console.log(this.axiosService);
     }
 
     setCredentials(username, password) {
         this.username = username;
         this.password = password;
     }
-
+ 
     async getToken() {
         if (!this.username || !this.password) {
             return;
@@ -32,7 +33,6 @@ class ApiService {
             });
         }
 
-        console.log(this.token);
         return this.token;
     }
 
@@ -40,25 +40,29 @@ class ApiService {
         return {
             headers: { Authorization: `Bearer ${token}` }
         }
-    } 
+    }
 
     async get(url, anonymous = false) {
         if (!anonymous) {
             let token = await this.getToken();
-            return await axios.get(url, this.getTokenConfiguration(token));
+            return await this.axiousService.get(url, this.getTokenConfiguration(token));
         }
 
-        return await axios.get(url);
+        return await this.axiousService.get(url);
     }
 
     async post(url, data, anonymous = false) {
         if (!anonymous) {
             let token = await this.getToken();
-            return await axios.post(url, data, this.getTokenConfiguration(token));
+            return await this.axiousService.post(url, data, this.getTokenConfiguration(token));
         }
 
-        return axios.post(url, data);
+        console.log(data);
+        console.log(this.axiousService);
+        return await this.axiousService.post(url, data);
     }
 }
 
-export default new ApiService('https://dev-seniorconnect-apiserver.azurewebsites.net');
+const apiClient = new ApiService('https://dev-seniorconnect-apiserver.azurewebsites.net'); 
+
+export default apiClient;
