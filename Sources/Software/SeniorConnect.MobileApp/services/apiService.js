@@ -10,6 +10,8 @@ class ApiService {
     }
 
     setCredentials(username, password) {
+        this.token = undefined;
+        this.expires = undefined;
         this.username = username;
         this.password = password;
     }
@@ -32,7 +34,7 @@ class ApiService {
                 console.log(error);
             });
         }
-
+        console.log(this.token);
         return this.token;
     }
 
