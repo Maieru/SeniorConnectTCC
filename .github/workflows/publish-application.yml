@@ -3,6 +3,7 @@ name: Build and Deploy App in Development
 env:
   AZURE_PROVISIONING_GATEWAY_PATH: './Webapp'
   AZURE_API_SERVER_PATH: './APIServer'
+  AZURE_FUNCTION_PATH: './Function'
   DOTNET_VERSION: '8.0.x'
 
 on:
@@ -50,6 +51,15 @@ jobs:
 
       - name: Public API Server
         run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/SeniorConnect/${{env.AZURE_API_SERVER_PATH}}  ./Sources/Software/"API Server.sln"
+
+      - name: Build Functions
+        run: dotnet build ./Sources/Software/Functions.sln
+
+      - name: Test Functions
+        run: dotnet test --no-build --verbosity normal ./Sources/Software/Functions.sln
+
+      - name: Public Functions
+        run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/SeniorConnect/${{env.AZURE_FUNCTION_PATH}}  ./Sources/Software/Functions.sln
       
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
@@ -87,3 +97,11 @@ jobs:
           app-name: ${{ secrets.AZURE_API_SERVER_NAME }}
           publish-profile: ${{ secrets.AZURE_API_SERVER_PUBLISH_PROFILE }}
           package: ${{ env.AZURE_API_SERVER_PATH }}
+          
+      - name: Deploy Azure Functions
+        uses: Azure/functions-action@v1
+        id: fa
+        with:
+          app-name: ${{ secrets.AZURE_FUNCTION_NAME }}
+          package: '${{ env.AZURE_FUNCTION_PATH }}'
+          publish-profile: ${{ secrets.AZURE_FUNCTION_PUBLISH_PROFILE }}
