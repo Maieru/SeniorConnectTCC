@@ -26,8 +26,11 @@ if (!builder.Environment.IsDevelopment())
 
 var sqlServerConnectionString = await secretManager.GetSqlServerConnectionString();
 var tokenSigningKey = await secretManager.GetTokenSignignKey();
+var storageConnectionString = secretManager.GetStorageConnectionString().Result;
 
 builder.Services.AddDbContext<DatabaseContext>(options => options.UseSqlServer(sqlServerConnectionString), ServiceLifetime.Scoped);
+builder.Services.AddScoped<IStorageService, StorageService>(secretManager => new StorageService(storageConnectionString));
+builder.Services.AddScoped<IConfigurationChangeRegisterService, ConfigurationChangeRegisterService>();
 
 builder.Services.AddScoped<IRepository<LogEntry>, LogRepository>();
 builder.Services.AddScoped<IRepository<Device>, DeviceRepository>();

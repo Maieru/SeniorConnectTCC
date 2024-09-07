@@ -1,14 +1,11 @@
 ﻿using SeniorConnect.Domain.Entities;
 using SeniorConnect.Domain.Exceptions;
 using SeniorConnect.Domain.Interfaces;
-using SeniorConnect.Infrastructure.Context;
-using SeniorConnect.Infrastructure.Repository;
 
 namespace SeniorConnect.Bussiness.Entities_Services
 {
     public class DeviceService : IEntityServiceInterface<Device>
     {
-        private readonly DatabaseContext _databaseContext;
         private readonly IRepository<Device> _repository;
         private readonly SubscriptionService _subscriptionService;
 

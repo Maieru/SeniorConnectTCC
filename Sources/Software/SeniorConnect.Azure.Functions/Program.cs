@@ -24,7 +24,8 @@ var host = new HostBuilder()
         var iotHubConnectionString = secretManager.GetIoTHubConnectionString().Result;
 
         services.AddDbContext<DatabaseContext>(options => options.UseSqlServer(sqlServerConnectionString), ServiceLifetime.Scoped);
-        services.AddScoped<StorageService>(secretManager => new StorageService(storageConnectionString));
+        services.AddScoped<IStorageService, StorageService>(secretManager => new StorageService(storageConnectionString));
+        services.AddScoped<IConfigurationChangeRegisterService, ConfigurationChangeRegisterService>();
 
         services.AddScoped<IRepository<LogEntry>, LogRepository>();
         services.AddScoped<IRepository<Device>, DeviceRepository>();

@@ -25,7 +25,7 @@ namespace SeniorConnect.Bussiness.Entities_Services
             }
         }
 
-        public SchedulingService(IRepository<Scheduling> repository, SubscriptionService subscriptionService, MedicineService medicineService)
+        public SchedulingService(IRepository<Scheduling> repository, MedicineService medicineService)
         {
             _repository = repository;
             _medicineService = medicineService;
@@ -50,6 +50,7 @@ namespace SeniorConnect.Bussiness.Entities_Services
                 throw new InvalidDataProvidedException("Days of the week was invalid");
 
             await _repository.AddAsync(scheduling);
+            await _medicineService.NotifyMedicineChange(medicine.Id);
         }
 
         public async Task UpdateScheduling(Scheduling scheduling)
@@ -77,6 +78,7 @@ namespace SeniorConnect.Bussiness.Entities_Services
             originalScheduling.Active = scheduling.Active;
 
             await _repository.UpdateAsync(originalScheduling);
+            await _medicineService.NotifyMedicineChange(medicine.Id);
         }
 
         public async Task DeleteScheduling(int schedulingId)
@@ -92,6 +94,7 @@ namespace SeniorConnect.Bussiness.Entities_Services
                 throw new CannotAccessSubscriptionException(medicine.SubscriptionId);
 
             await _repository.DeleteByIdAsync(schedulingId);
+            await _medicineService.NotifyMedicineChange(medicine.Id);
         }
 
         public async Task<Scheduling> GetSchedulingById(int schedulingId)

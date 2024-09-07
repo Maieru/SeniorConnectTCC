@@ -15,6 +15,7 @@ namespace SeniorConnect.Bussiness.Entities_Services
         private readonly IRepository<MedicineDeviceAssociation> _medicineAssociationRepository;
         private readonly SubscriptionService _subscriptionService;
         private readonly DeviceService _deviceService;
+        private readonly IConfigurationChangeRegisterService _configurationChangeRegisterService;
 
         private int? _currentSubscriptionId;
         public int? CurrentSubscriptionId
@@ -28,12 +29,13 @@ namespace SeniorConnect.Bussiness.Entities_Services
         }
 
         public MedicineService(IRepository<Medicine> medicineRepository, IRepository<MedicineDeviceAssociation> medicineAssociationRepository,
-                               SubscriptionService subscriptionService, DeviceService deviceService)
+                               SubscriptionService subscriptionService, DeviceService deviceService, IConfigurationChangeRegisterService configurationChangeRegisterService)
         {
             _subscriptionService = subscriptionService;
             _repository = medicineRepository;
             _deviceService = deviceService;
             _medicineAssociationRepository = medicineAssociationRepository;
+            _configurationChangeRegisterService = configurationChangeRegisterService;
         }
 
         public async Task AddMedicine(Medicine medicine)
@@ -139,6 +141,7 @@ namespace SeniorConnect.Bussiness.Entities_Services
             };
 
             await _medicineAssociationRepository.AddAsync(association);
+            await _configurationChangeRegisterService.RegisterConfigurationChangeRequest(medicine.SubscriptionId, device.DeviceName);
         }
 
         public async Task DessasociateMedicineToDevice(int medicineId, int deviceId, int medicinePosition)
@@ -164,11 +167,23 @@ namespace SeniorConnect.Bussiness.Entities_Services
                 throw new EntityNotFoundException($"Association not found");
 
             await _medicineAssociationRepository.DeleteByIdAsync(association.Id);
+            await _configurationChangeRegisterService.RegisterConfigurationChangeRequest(medicine.SubscriptionId, device.DeviceName);
         }
 
         public async Task<List<MedicineDeviceAssociation>> GetMedicinesAssociatedToDevice(int deviceId)
         {
             return await _medicineAssociationRepository.GetAllAsync(m => m.DeviceId == deviceId);
+        }
+
+        public async Task NotifyMedicineChange(int medicine)
+        {
+            var medicineDeviceAssociations = await _medicineAssociationRepository.GetAllAsync(m => m.MedicineId == medicine);
+            
+            foreach(var association in medicineDeviceAssociations)
+            {
+                var device = await _deviceService.GetDeviceById(association.DeviceId);
+                await _configurationChangeRegisterService.RegisterConfigurationChangeRequest(device.SubscriptionId, device.DeviceName);
+            }
         }
 
         private bool ValidateAccessToSubscription(int subscriptionId)
