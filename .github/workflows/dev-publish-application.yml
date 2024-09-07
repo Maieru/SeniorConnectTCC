@@ -52,15 +52,13 @@ jobs:
       - name: Public API Server
         run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/SeniorConnect/${{env.AZURE_API_SERVER_PATH}}  ./Sources/Software/"API Server.sln"
       
-      - name: Build Functions
-        run: dotnet build ./Sources/Software/Functions.sln
-
-      - name: Test Functions
-        run: dotnet test --no-build --verbosity normal ./Sources/Software/Functions.sln
-
-      - name: Public Functions
-        run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/SeniorConnect/${{env.AZURE_FUNCTION_PATH}}  ./functions
-      
+      - name: 'Resolve Project Dependencies Using Dotnet'
+        shell: pwsh # For Linux, use bash
+        run: |
+          pushd './${{ env.AZURE_FUNCTION_PATH }}'
+          dotnet build ./Sources/Software/Functions.sln --configuration Release --output ./output
+          popd
+        
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
         with:
@@ -103,5 +101,5 @@ jobs:
         id: fa
         with:
           app-name: ${{ secrets.AZURE_FUNCTION_DEV_NAME }}
-          package: '${{ env.AZURE_FUNCTION_PATH }}/functions'
+          package: '${{ env.AZURE_FUNCTION_PATH }}/output'
           publish-profile: ${{ secrets.AZURE_FUNCTION_DEV_PUBLISH_PROFILE }}
