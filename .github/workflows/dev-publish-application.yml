@@ -3,6 +3,7 @@ name: Build and Deploy App in Development
 env:
   AZURE_PROVISIONING_GATEWAY_PATH: './Webapp'
   AZURE_API_SERVER_PATH: './APIServer'
+  AZURE_FUNCTION_PATH: './Function'
   DOTNET_VERSION: '8.0.x'
 
 on:
