@@ -20,7 +20,7 @@ namespace SeniorConnect.Azure.Functions
             _configurationChangeService = configurationChangeService;
         }
 
-        //[Function(nameof(ConfigurationChangeProcessingFunction))]
+        [Function(nameof(ConfigurationChangeProcessingFunction))]
         public async Task Run([QueueTrigger("configurationchangequeue")] QueueMessage message)
         {
             if (message == null || message.Body == null)
