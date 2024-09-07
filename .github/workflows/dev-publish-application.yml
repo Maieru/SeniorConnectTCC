@@ -3,7 +3,7 @@ name: Build and Deploy App in Development
 env:
   AZURE_PROVISIONING_GATEWAY_PATH: './Webapp'
   AZURE_API_SERVER_PATH: './APIServer'
-  AZURE_FUNCTION_PATH: '.'
+  AZURE_FUNCTION_PATH: './Function'
   DOTNET_VERSION: '8.0.x'
 
 on:
@@ -53,12 +53,11 @@ jobs:
         run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/SeniorConnect/${{env.AZURE_API_SERVER_PATH}}  ./Sources/Software/"API Server.sln"
       
       - name: 'Resolve Project Dependencies Using Dotnet'
-        shell: pwsh # For Linux, use bash
+        shell: pwsh
         run: |
-          pushd './${{ env.AZURE_FUNCTION_PATH }}'
-          dotnet build ./Sources/Software/Functions.sln --configuration Release --output ./output
+          dotnet build ./Sources/Software/Functions.sln --configuration Release --output ./${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/output
           popd
-        
+          
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
         with:
