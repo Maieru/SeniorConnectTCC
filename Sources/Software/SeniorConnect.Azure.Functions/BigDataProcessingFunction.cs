@@ -23,7 +23,7 @@ namespace SeniorConnect.Azure.Functions
             _storageService = storageService;
         }
 
-        [Function(nameof(BigDataProcessingFunction))]
+        //[Function(nameof(BigDataProcessingFunction))]
         public async Task Run([BlobTrigger("iotmessages/{iothub}/{partition}/{year}/{mounth}/{day}/{hour}/{minute}")] Stream stream,
             string iotHub, string minute, string partition, string year, string mounth, string day, string hour)
         {

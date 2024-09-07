@@ -1,4 +1,4 @@
-name: Build and Deploy App in Development
+name: Build and Deploy App in Production
 
 env:
   AZURE_PROVISIONING_GATEWAY_PATH: './Webapp'
