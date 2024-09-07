@@ -59,7 +59,7 @@ jobs:
         run: dotnet test --no-build --verbosity normal ./Sources/Software/Functions.sln
 
       - name: Public Functions
-        run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/SeniorConnect/${{env.AZURE_FUNCTION_PATH}}  ./Sources/Software/Functions.sln
+        run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/SeniorConnect/${{env.AZURE_FUNCTION_PATH}}  ./functions
       
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
@@ -103,5 +103,5 @@ jobs:
         id: fa
         with:
           app-name: ${{ secrets.AZURE_FUNCTION_DEV_NAME }}
-          package: '${{ env.AZURE_FUNCTION_PATH }}'
+          package: '${{ env.AZURE_FUNCTION_PATH }}/functions'
           publish-profile: ${{ secrets.AZURE_FUNCTION_DEV_PUBLISH_PROFILE }}
