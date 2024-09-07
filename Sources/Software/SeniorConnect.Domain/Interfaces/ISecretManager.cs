@@ -14,6 +14,7 @@ namespace SeniorConnect.Domain.Interfaces
         Task<string?> GetEncryptionSalt();
         Task<int> GetWorkFactor();
         Task<string?> GetTokenSignignKey();
-        Task<string?> GetStorageConnectionString();        
+        Task<string?> GetStorageConnectionString();
+        Task<string?> GetIoTHubConnectionString();
     }
 }

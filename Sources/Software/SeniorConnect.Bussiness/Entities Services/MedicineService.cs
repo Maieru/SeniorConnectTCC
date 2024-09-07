@@ -22,7 +22,7 @@ namespace SeniorConnect.Bussiness.Entities_Services
             get => _currentSubscriptionId;
             set
             {
-                _deviceService.CurrentSubscriptionId = value; 
+                _deviceService.CurrentSubscriptionId = value;
                 _currentSubscriptionId = value;
             }
         }
@@ -164,6 +164,11 @@ namespace SeniorConnect.Bussiness.Entities_Services
                 throw new EntityNotFoundException($"Association not found");
 
             await _medicineAssociationRepository.DeleteByIdAsync(association.Id);
+        }
+
+        public async Task<List<MedicineDeviceAssociation>> GetMedicinesAssociatedToDevice(int deviceId)
+        {
+            return await _medicineAssociationRepository.GetAllAsync(m => m.DeviceId == deviceId);
         }
 
         private bool ValidateAccessToSubscription(int subscriptionId)

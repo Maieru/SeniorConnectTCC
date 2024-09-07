@@ -21,6 +21,7 @@ var host = new HostBuilder()
 
         var sqlServerConnectionString = secretManager.GetSqlServerConnectionString().Result;
         var storageConnectionString = secretManager.GetStorageConnectionString().Result;
+        var iotHubConnectionString = secretManager.GetIoTHubConnectionString().Result;
 
         services.AddDbContext<DatabaseContext>(options => options.UseSqlServer(sqlServerConnectionString), ServiceLifetime.Scoped);
         services.AddScoped<StorageService>(secretManager => new StorageService(storageConnectionString));
@@ -41,6 +42,9 @@ var host = new HostBuilder()
         services.AddScoped<MedicineService>();
         services.AddScoped<SchedulingService>();
         services.AddScoped<TelemetryService>();
+
+        services.AddScoped<IIotHubMessageService, IoTHubMessageService>(iotHub => new IoTHubMessageService(iotHubConnectionString));
+        services.AddScoped<IConfigurationChangeService, ConfigurationChangeService>();
 
         services.AddApplicationInsightsTelemetryWorkerService();
         services.ConfigureFunctionsApplicationInsights();
