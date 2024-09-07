@@ -13,12 +13,10 @@ namespace SeniorConnect.Bussiness.Services
     public class StorageService : IStorageService
     {
         private readonly string _connectionString;
-        private readonly LogService _logService;
-
-        public StorageService(string connectionString, LogService logService)
+        
+        public StorageService(string connectionString)
         {
-            _connectionString = connectionString;
-            _logService = logService;
+            _connectionString = connectionString;            
         }
 
         public async Task<bool> CreateEntryInQueue(string message)
@@ -32,7 +30,6 @@ namespace SeniorConnect.Bussiness.Services
             }
             catch (Exception ex)
             {
-                await _logService.LogException(ex, new { _connectionString, message });
                 return false;
             }
         }
@@ -48,7 +45,6 @@ namespace SeniorConnect.Bussiness.Services
             }
             catch (Exception ex)
             {
-                await _logService.LogException(ex, new { _connectionString, containerName, blobName });
                 return false;
             }
         }
