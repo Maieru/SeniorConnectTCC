@@ -30,12 +30,17 @@ class ApiService {
             }).then(response => {
                 this.token = response.data.token;
                 this.expires = response.data.expiration;
+                this.subscription = 3; 
             }).catch(error => {
                 console.log(error);
             });
         }
         console.log(this.token);
         return this.token;
+    }
+
+    getSubscription(){
+        return this.subscription;
     }
 
     getTokenConfiguration(token) {

@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Image, } from 'react-native';
 import CheckBox from 'expo-checkbox';
 import styles from './styles.js';
+import apiClient from './services/apiService.js';
 
 function HeaderReturn({ navigation, title, returnPage, }) {
   return (
@@ -66,7 +67,9 @@ function RemediosMedicine({ nome, id, }) {
             source={require('./assets/edit.png')}
             style={styles.footerImage} />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.medicineActionsImage}>
+        <TouchableOpacity 
+        style={styles.medicineActionsImage}
+        onPress={async () => await apiClient.post("/v1/Medicine/Delete", "medicineId=${id}")}>
           <Image
             source={require('./assets/delete.png')}
             style={styles.footerImage} />

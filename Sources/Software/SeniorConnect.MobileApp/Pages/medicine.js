@@ -2,19 +2,27 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView } from 'react-native';
 import styles from '../styles.js';
 import { Header, Footer, RemediosMedicine } from '../Layout.js';
+import apiClient from '../services/apiService.js';
+import { useEffect, useState } from 'react';
 
-//apenas para teste da tela, em um futuro, medicamentos deve ser preenchido por uma requisição da api x 
-const medicamentos = [
-  { id: 1, nome: 'Medicamento 1', horario: '08:00' },
-  { id: 2, nome: 'Medicamento 2', horario: '12:00' },
-  { id: 3, nome: 'Medicamento 3', horario: '18:00' },
-  { id: 4, nome: 'Medicamento 4', horario: '20:00' },
-  { id: 5, nome: 'Medicamento 5', horario: '22:00' },
-  { id: 6, nome: 'Medicamento 6', horario: '23:00' },
-];
+export default function MedicineScreen({ navigation }) {  
+  const [medicamentos, setMedicamentos] = useState([]);
 
+  async function listaMedicamentos() {
+    const response = await apiClient.get("/v1/Medicine/GetAllFromSubscription?subscriptionId="+ apiClient.getSubscription());
+    setMedicamentos(response.data);
+  }
 
-export default function MedicineScreen({ navigation }) {
+  useEffect( () => {
+    const fetchData = async () => {
+      await listaMedicamentos();
+    }
+    fetchData();
+
+    return() =>{}; //É feio, é estranho.... mas funciona. Juro que tirando isso morre
+  },[]
+  ) 
+
   return (
     <View style={styles.containerMenu}>
       <Header title="Medicamentos" navigation={navigation} />
@@ -29,8 +37,7 @@ export default function MedicineScreen({ navigation }) {
             {medicamentos.map(med => (
               <RemediosMedicine
                 key={med.id}
-                nome={med.nome}
-                horario={med.horario}
+                nome={med.name}
               />
             ))}
           </View>
