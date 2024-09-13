@@ -15,7 +15,7 @@ class ApiService {
         this.username = username;
         this.password = password;
     }
- 
+
     async getToken() {
         if (!this.username || !this.password) {
             return;
@@ -30,7 +30,7 @@ class ApiService {
             }).then(response => {
                 this.token = response.data.token;
                 this.expires = response.data.expiration;
-                this.subscription = 3; 
+                this.subscription = 3;
             }).catch(error => {
                 console.log(error);
             });
@@ -39,7 +39,7 @@ class ApiService {
         return this.token;
     }
 
-    getSubscription(){
+    getSubscription() {
         return this.subscription;
     }
 
@@ -64,12 +64,29 @@ class ApiService {
             return await this.axiousService.post(url, data, this.getTokenConfiguration(token));
         }
 
-        console.log(data);
-        console.log(this.axiousService);
         return await this.axiousService.post(url, data);
+    }
+
+
+    async delete(url, anonymous = false) {
+        if (!anonymous) {
+            let token = await this.getToken();
+            return await this.axiousService.delete(url, this.getTokenConfiguration(token));
+        }
+
+        return await this.axiousService.delete(url);
+    }
+
+    async put(url, data, anonymous = false) {
+        if (!anonymous) {
+            let token = await this.getToken();
+            return await this.axiousService.put(url, data, this.getTokenConfiguration(token));
+        }
+
+        return await this.axiousService.put(url, data);
     }
 }
 
-const apiClient = new ApiService('https://dev-seniorconnect-apiserver.azurewebsites.net'); 
+const apiClient = new ApiService('https://dev-seniorconnect-apiserver.azurewebsites.net');
 
 export default apiClient;
