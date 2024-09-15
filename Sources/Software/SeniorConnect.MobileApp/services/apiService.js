@@ -2,6 +2,7 @@ import axios from 'axios';
 
 class ApiService {
     constructor(baseURL) {
+        global.Buffer = require('buffer').Buffer;
         this.baseURL = baseURL;
         this.axiousService = axios.create({
             baseURL: this.baseURL
@@ -31,12 +32,18 @@ class ApiService {
                 this.token = response.data.token;
                 this.expires = response.data.expiration;
                 this.subscription = 3;
+                this.setSubscription(this.token);
             }).catch(error => {
                 console.log(error);
             });
         }
-        console.log(this.token);
+
         return this.token;
+    }
+
+    setSubscription(jwtToken) {
+        var tokenObject = JSON.parse(Buffer.from(jwtToken.split('.')[1], 'base64').toString())
+        this.subscription = tokenObject.subscription;
     }
 
     getSubscription() {
