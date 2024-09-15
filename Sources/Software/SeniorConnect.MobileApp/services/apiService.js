@@ -3,11 +3,13 @@ import axios from 'axios';
 class ApiService {
     constructor(baseURL) {
         global.Buffer = require('buffer').Buffer;
+
         this.baseURL = baseURL;
         this.axiousService = axios.create({
             baseURL: this.baseURL
         });
-        console.log(this.axiosService);
+
+        this.debug = false;
     }
 
     setCredentials(username, password) {
@@ -31,11 +33,8 @@ class ApiService {
             }).then(response => {
                 this.token = response.data.token;
                 this.expires = response.data.expiration;
-                this.subscription = 3;
                 this.setSubscription(this.token);
-            }).catch(error => {
-                console.log(error);
-            });
+            }).catch(error => { this.trataErro(error) });
         }
 
         return this.token;
@@ -59,7 +58,7 @@ class ApiService {
     async get(url, anonymous = false) {
         if (!anonymous) {
             let token = await this.getToken();
-            return await this.axiousService.get(url, this.getTokenConfiguration(token));
+            return await this.axiousService.get(url, this.getTokenConfiguration(token)).catch(error => { this.trataErro(error) });
         }
 
         return await this.axiousService.get(url);
@@ -68,17 +67,16 @@ class ApiService {
     async post(url, data, anonymous = false) {
         if (!anonymous) {
             let token = await this.getToken();
-            return await this.axiousService.post(url, data, this.getTokenConfiguration(token));
+            return await this.axiousService.post(url, data, this.getTokenConfiguration(token)).catch(error => { this.trataErro(error) });
         }
 
         return await this.axiousService.post(url, data);
     }
 
-
     async delete(url, anonymous = false) {
         if (!anonymous) {
             let token = await this.getToken();
-            return await this.axiousService.delete(url, this.getTokenConfiguration(token));
+            return await this.axiousService.delete(url, this.getTokenConfiguration(token)).catch(error => { this.trataErro(error) });
         }
 
         return await this.axiousService.delete(url);
@@ -87,10 +85,23 @@ class ApiService {
     async put(url, data, anonymous = false) {
         if (!anonymous) {
             let token = await this.getToken();
-            return await this.axiousService.put(url, data, this.getTokenConfiguration(token));
+            return await this.axiousService.put(url, data, this.getTokenConfiguration(token)).catch(error => { this.trataErro(error) });
         }
 
         return await this.axiousService.put(url, data);
+    }
+
+    trataErro(erro) {
+        var mensagemErro = ''
+        mensagemErro += erro.toString();
+
+        if (erro.response)
+            mensagemErro += ' - ' + erro.response.data;
+
+        if (this.debug && erro.request)
+            mensagemErro += ' ---- Detalhes da Requisição ---- ' + JSON.stringify(erro.request);
+
+        console.log(mensagemErro);
     }
 }
 
