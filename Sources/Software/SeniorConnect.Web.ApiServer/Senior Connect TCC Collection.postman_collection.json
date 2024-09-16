@@ -15,12 +15,10 @@
 						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "https://localhost:7265/v1/Provisioning/EnrollDevice?subscriptionId=2",
-							"protocol": "https",
+							"raw": "{{Provisioning Gateway URL}}/v1/Provisioning/EnrollDevice?subscriptionId=3",
 							"host": [
-								"localhost"
+								"{{Provisioning Gateway URL}}"
 							],
-							"port": "7265",
 							"path": [
 								"v1",
 								"Provisioning",
@@ -29,7 +27,7 @@
 							"query": [
 								{
 									"key": "subscriptionId",
-									"value": "2"
+									"value": "3"
 								}
 							]
 						}
@@ -60,7 +58,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{API Server URL}}/v1/Device/GetDevices?subscriptionId=1",
+									"raw": "{{API Server URL}}/v1/Device/GetDevices?subscriptionId=2",
 									"host": [
 										"{{API Server URL}}"
 									],
@@ -72,7 +70,7 @@
 									"query": [
 										{
 											"key": "subscriptionId",
-											"value": "1"
+											"value": "2"
 										}
 									]
 								}
@@ -91,7 +89,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"name\": \"Joao\",\r\n    \"email\": \"joao@teste.com\",\r\n    \"username\": \"joao5\",\r\n    \"password\": \"teste\",\r\n    \"createNewSubscription\": true\r\n}",
+									"raw": "{\r\n    \"name\": \"Kauan\",\r\n    \"email\": \"joao@teste.com\",\r\n    \"username\": \"kauanmb\",\r\n    \"password\": \"123456\",\r\n    \"createNewSubscription\": true\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -131,7 +129,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{API Server URL}}/v1/User/GetToken?username=joao&password=teste",
+									"raw": "{{API Server URL}}/v1/User/GetToken?username=kauanmb&password=123456",
 									"host": [
 										"{{API Server URL}}"
 									],
@@ -143,11 +141,11 @@
 									"query": [
 										{
 											"key": "username",
-											"value": "joao"
+											"value": "kauanmb"
 										},
 										{
 											"key": "password",
-											"value": "teste"
+											"value": "123456"
 										}
 									]
 								}
@@ -204,7 +202,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{API Server URL}}/v1/Medicine/GetAllFromSubscription?subscriptionId=1",
+									"raw": "{{API Server URL}}/v1/Medicine/GetAllFromSubscription?subscriptionId=2",
 									"host": [
 										"{{API Server URL}}"
 									],
@@ -216,7 +214,7 @@
 									"query": [
 										{
 											"key": "subscriptionId",
-											"value": "1"
+											"value": "2"
 										}
 									]
 								}
@@ -240,7 +238,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"subscriptionId\": 1,\r\n    \"name\": \"Dipirona\"\r\n}",
+									"raw": "{\r\n    \"subscriptionId\": 3,\r\n    \"name\": \"Eu sou um remedio novo\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -350,7 +348,7 @@
 								"method": "POST",
 								"header": [],
 								"url": {
-									"raw": "{{API Server URL}}/v1/Medicine/AssociateToDevice?medicineId=2&deviceId=1&medicinePosition=1",
+									"raw": "{{API Server URL}}/v1/Medicine/AssociateToDevice?medicineId=1&deviceId=1&medicinePosition=1",
 									"host": [
 										"{{API Server URL}}"
 									],
@@ -362,7 +360,7 @@
 									"query": [
 										{
 											"key": "medicineId",
-											"value": "2"
+											"value": "1"
 										},
 										{
 											"key": "deviceId",
@@ -413,6 +411,41 @@
 										},
 										{
 											"key": "medicinePosition",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetMedicinesAssociatedToDevice",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{ApiServerBearerToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{API Server URL}}/v1/Medicine/GetMedicinesAssociatedToDevice?deviceId=1",
+									"host": [
+										"{{API Server URL}}"
+									],
+									"path": [
+										"v1",
+										"Medicine",
+										"GetMedicinesAssociatedToDevice"
+									],
+									"query": [
+										{
+											"key": "deviceId",
 											"value": "1"
 										}
 									]
@@ -512,7 +545,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"active\": true,\r\n    \"medicineId\": 2,\r\n    \"hour\": 12,\r\n    \"minute\": 30,\r\n    \"daysOfWeek\": \"1,2,3\"\r\n}",
+									"raw": "{\r\n    \"active\": true,\r\n    \"medicineId\": 2,\r\n    \"hour\": 18,\r\n    \"minute\": 30,\r\n    \"daysOfWeek\": \"1,2,3\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -616,7 +649,6 @@
 			"listen": "prerequest",
 			"script": {
 				"type": "text/javascript",
-				"packages": {},
 				"exec": [
 					""
 				]
@@ -626,7 +658,6 @@
 			"listen": "test",
 			"script": {
 				"type": "text/javascript",
-				"packages": {},
 				"exec": [
 					""
 				]
