@@ -51,10 +51,10 @@ function RemediosHome({ nome, horario, }) {
   )
 }
 
-function RemediosMedicine({ nome, id, navigation, medicine}) {
+function RemediosMedicine({ nome, id, navigation, medicine }) {
   return (
     <View style={styles.remediosMedicineContainer}>
-      <Image  
+      <Image
         source={require('./assets/medication.png')}
         style={styles.homeItemImage}
       />
@@ -63,7 +63,7 @@ function RemediosMedicine({ nome, id, navigation, medicine}) {
       </View>
       <View style={styles.medicineScrollContainerEnd}>
         <TouchableOpacity
-          onPress={async () => await navigation.navigate('NewMedicine', {medicine})}
+          onPress={async () => await navigation.navigate('NewMedicine', { medicine })}
           style={styles.medicineActionsImage}>
           <Image
             source={require('./assets/edit.png')}
@@ -81,18 +81,14 @@ function RemediosMedicine({ nome, id, navigation, medicine}) {
   )
 }
 
-function HorariosMedicine({ horario, }) {
+function HorariosMedicine({ horario, diasSemana }) {
   return (
     <View style={styles.remediosMedicineContainer}>
       <Text style={styles.horarioMedicine}>{horario}</Text>
       <View style={styles.HorarioMedicineContainer}>
-        <Text style={styles.timeMedicine}>S</Text>
-        <Text style={styles.timeMedicine}>T</Text>
-        <Text style={styles.timeMedicine}>Q</Text>
-        <Text style={styles.timeMedicine}>Q</Text>
-        <Text style={styles.timeMedicine}>S</Text>
-        <Text style={styles.timeMedicine}>S</Text>
-        <Text style={styles.timeMedicine}>D</Text>
+        {diasSemana.split('').map((dia, index) => (
+          <Text key={index} style={styles.timeMedicine}>{dia}</Text>
+        ))}
         <TouchableOpacity style={styles.medicineActionsImage}>
           <Image
             source={require('./assets/edit.png')}

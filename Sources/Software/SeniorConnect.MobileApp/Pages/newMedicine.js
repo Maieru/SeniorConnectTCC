@@ -10,17 +10,23 @@ export default function MedicineScreen({ navigation, route }) {
     const [medicamentoNome, setMedicamentoNome] = useState();
     const [medicamentoDesc, setMedicamentoDesc] = useState();
 
+    const [horarios, setHorarios] = useState([]);
+
+    async function listaHorarios() {
+        const response = await apiClient.get("/v1/Scheduling/GetByMedicine?medicineId=" + medicine.id);
+        setHorarios(response.data);
+    }
+
     let medicine = {};
     const [entidadeCarregada, setEntidadeCarregada] = useState(false);
     useEffect(() => {
         medicine = route.params.medicine;
         if (!entidadeCarregada) {
             constroiMedicamento();
+            listaHorarios();
+
             setEntidadeCarregada(true);
         }
-
-        console.log(medicine.name);
-
         return () => { };
     }, []
     )
@@ -74,6 +80,20 @@ export default function MedicineScreen({ navigation, route }) {
         }
     }
 
+    function formatarDiasSemana(daysOfWeek) {
+        const diasSemanaMap = {
+            '1': 'S',
+            '2': 'T',
+            '3': 'Q',
+            '4': 'Q',
+            '5': 'S',
+            '6': 'S',
+            '7': 'D',
+        };
+
+        return daysOfWeek.split(',').map(dia => diasSemanaMap[dia]).join(' ');
+    }
+
     return (
         <View style={styles.containerMenu}>
             <HeaderReturn title="Novo Medicamento" navigation={navigation} returnPage={"Medicine"} />
@@ -103,10 +123,13 @@ export default function MedicineScreen({ navigation, route }) {
                             <Text style={styles.basicButtonText}>Novo Horário/Dosagem</Text>
                         </TouchableOpacity>
                         <ScrollView style={styles.basicScroll}>
-                            <HorariosMedicine horario={"12:00"} />
-                            <HorariosMedicine horario={"13:00"} />
-                            <HorariosMedicine horario={"14:00"} />
-                            <HorariosMedicine horario={"15:00"} />
+                            {horarios.map(horario => (
+                                <HorariosMedicine
+                                    key={horario.id}
+                                    horario={`${horario.hour}:${horario.minute < 10 ? '0' + horario.minute : horario.minute}`}
+                                    diasSemana={formatarDiasSemana(horario.daysOfWeek)}
+                                />
+                            ))}
                         </ScrollView>
                     </View>
                 </View>
