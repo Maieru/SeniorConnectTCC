@@ -5,6 +5,7 @@ using SeniorConnect.Bussiness.Entities_Services;
 using SeniorConnect.Bussiness.Services;
 using SeniorConnect.Domain.Entities;
 using SeniorConnect.Domain.Exceptions;
+using SeniorConnect.Domain.TOs.Medicine;
 
 namespace SeniorConnect.Web.ApiServer.Controllers
 {
@@ -155,6 +156,40 @@ namespace SeniorConnect.Web.ApiServer.Controllers
             catch (Exception ex)
             {
                 await _logService.LogException(ex, new { medicineId, deviceId });
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpGet("GetMedicinesAssociatedToDevice")]
+        public async Task<IActionResult> GetMedicinesAssociatedToDevice(int deviceId)
+        {
+            try
+            {
+                var returnList = new List<MedicineAssociationTO>();
+                var deviceAssociations = await _medicineService.GetMedicinesAssociatedToDevice(deviceId);
+
+                foreach (var association in deviceAssociations)
+                {
+                    var associatedMedicine = await _medicineService.GetMedicineById(association.MedicineId);
+                    returnList.Add(new MedicineAssociationTO()
+                    {
+                        Id = association.Id,
+                        Name = associatedMedicine.Name,
+                        Position = association.Position,
+                        SubscriptionId = associatedMedicine.SubscriptionId,
+                        DeviceId = association.DeviceId
+                    });
+                }
+
+                return Ok(returnList);
+            }
+            catch (InvalidDataProvidedException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                await _logService.LogException(ex, new { deviceId });
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }

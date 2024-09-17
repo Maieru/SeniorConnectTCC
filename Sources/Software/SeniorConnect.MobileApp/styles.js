@@ -283,6 +283,42 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: '#000',
   },
+  dropdownContainer: {
+    position: 'absolute',
+    bottom: 110, 
+    left: '50%',
+    transform: [{ translateX: -50 }],
+    backgroundColor: '#fff',
+    borderRadius: 5,
+    padding: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 5,
+    elevation: 5,
+    maxHeight: 150, 
+    zIndex: 1, 
+},
+dropdownItem: {
+    padding: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ccc',
+},
+dropdownItemText: {
+    fontSize: 14,
+    color: '#333',
+},
+statusExcluirButton: {
+  backgroundColor: '#ff4d4d',
+  padding: 10,
+  borderRadius: 5,
+  marginTop: 10,
+},
+statusExcluirButtonText: {
+  color: '#fff',
+  textAlign: 'center',
+  fontWeight: 'bold',
+},
 });
 
 export default styles;

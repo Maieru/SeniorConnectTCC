@@ -11,6 +11,8 @@ namespace SeniorConnect.Bussiness.Entities_Services
 {
     public class MedicineService : IEntityServiceInterface<Medicine>
     {
+        private const int MAX_POSITION = 8;
+
         private readonly IRepository<Medicine> _repository;
         private readonly IRepository<MedicineDeviceAssociation> _medicineAssociationRepository;
         private readonly SubscriptionService _subscriptionService;
@@ -115,6 +117,9 @@ namespace SeniorConnect.Bussiness.Entities_Services
         {
             var medicine = await GetMedicineById(medicineId);
             var device = await _deviceService.GetDeviceById(deviceId);
+
+            if (position > MAX_POSITION)
+                throw new InvalidDataProvidedException("Position cannot be greater than 8");
 
             if (medicine == null)
                 throw new EntityNotFoundException($"Medicine with id {medicineId} not found");

@@ -51,7 +51,7 @@ function RemediosHome({ nome, horario, }) {
   )
 }
 
-function RemediosMedicine({ nome, id, }) {
+function RemediosMedicine({ nome, id, navigation, medicine }) {
   return (
     <View style={styles.remediosMedicineContainer}>
       <Image
@@ -62,14 +62,16 @@ function RemediosMedicine({ nome, id, }) {
         <Text style={styles.homeMedicineText}>{nome}  </Text>
       </View>
       <View style={styles.medicineScrollContainerEnd}>
-        <TouchableOpacity style={styles.medicineActionsImage}>
+        <TouchableOpacity
+          onPress={async () => await navigation.navigate('NewMedicine', { medicine })}
+          style={styles.medicineActionsImage}>
           <Image
             source={require('./assets/edit.png')}
             style={styles.footerImage} />
         </TouchableOpacity>
-        <TouchableOpacity 
-        style={styles.medicineActionsImage}
-        onPress={async () => await apiClient.post("/v1/Medicine/Delete", "medicineId=${id}")}>
+        <TouchableOpacity
+          style={styles.medicineActionsImage}
+          onPress={async () => await apiClient.delete("/v1/Medicine/Delete?medicineId=" + id)}>
           <Image
             source={require('./assets/delete.png')}
             style={styles.footerImage} />
@@ -79,18 +81,14 @@ function RemediosMedicine({ nome, id, }) {
   )
 }
 
-function HorariosMedicine({ horario, }) {
+function HorariosMedicine({ horario, diasSemana }) {
   return (
     <View style={styles.remediosMedicineContainer}>
       <Text style={styles.horarioMedicine}>{horario}</Text>
       <View style={styles.HorarioMedicineContainer}>
-        <Text style={styles.timeMedicine}>S</Text>
-        <Text style={styles.timeMedicine}>T</Text>
-        <Text style={styles.timeMedicine}>Q</Text>
-        <Text style={styles.timeMedicine}>Q</Text>
-        <Text style={styles.timeMedicine}>S</Text>
-        <Text style={styles.timeMedicine}>S</Text>
-        <Text style={styles.timeMedicine}>D</Text>
+        {diasSemana.split('').map((dia, index) => (
+          <Text key={index} style={styles.timeMedicine}>{dia}</Text>
+        ))}
         <TouchableOpacity style={styles.medicineActionsImage}>
           <Image
             source={require('./assets/edit.png')}
