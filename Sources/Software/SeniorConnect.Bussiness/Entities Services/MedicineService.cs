@@ -127,7 +127,7 @@ namespace SeniorConnect.Bussiness.Entities_Services
             if (device == null)
                 throw new EntityNotFoundException($"Device with id {deviceId} not found");
 
-            var savedAssociation = await _medicineAssociationRepository.GetFirst(m => m.DeviceId == deviceId && m.MedicineId == medicineId && m.Position == position, false);
+            var savedAssociation = await _medicineAssociationRepository.GetFirst(m => m.DeviceId == deviceId && m.Position == position, false);
 
             if (!ValidateAccessToSubscription(medicine.SubscriptionId))
                 throw new CannotAccessSubscriptionException(medicine.SubscriptionId);
@@ -136,7 +136,13 @@ namespace SeniorConnect.Bussiness.Entities_Services
                 throw new CannotAccessSubscriptionException(device.SubscriptionId);
 
             if (savedAssociation != null)
-                throw new EntityAlreadyExistsException("Association already exists");
+            {
+                if (savedAssociation.MedicineId == medicineId)
+                    throw new EntityAlreadyExistsException("Association already exists");
+
+                await _medicineAssociationRepository.DeleteByIdAsync(savedAssociation.Id);
+            }
+
 
             var association = new MedicineDeviceAssociation()
             {
@@ -183,8 +189,8 @@ namespace SeniorConnect.Bussiness.Entities_Services
         public async Task NotifyMedicineChange(int medicine)
         {
             var medicineDeviceAssociations = await _medicineAssociationRepository.GetAllAsync(m => m.MedicineId == medicine);
-            
-            foreach(var association in medicineDeviceAssociations)
+
+            foreach (var association in medicineDeviceAssociations)
             {
                 var device = await _deviceService.GetDeviceById(association.DeviceId);
                 await _configurationChangeRegisterService.RegisterConfigurationChangeRequest(device.SubscriptionId, device.DeviceName);
