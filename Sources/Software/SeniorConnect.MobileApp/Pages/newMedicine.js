@@ -118,7 +118,7 @@ export default function MedicineScreen({ navigation, route }) {
                     <View style={styles.sectionContainer}>
                         <Text style={styles.basicLabel}>Horários</Text>
                         <TouchableOpacity
-                            onPress={() => navigation.navigate('NewMedicine')}
+                            onPress={() => navigation.navigate('HorariosMedicine')}
                             style={styles.newMedicineButton}>
                             <Text style={styles.basicButtonText}>Novo Horário/Dosagem</Text>
                         </TouchableOpacity>

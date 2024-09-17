@@ -12,6 +12,7 @@ import CadastroScreen from './Pages/cadastro.js';
 import NewMedicineScreen from './Pages/newMedicine.js';
 import DosageReportScreen from './Pages/dosageReport.js';
 import AdherenceReportScreen from './Pages/adherenceReport.js';
+import HorariosMedicineScreen from './Pages/newScheduling.js';
 
 const Stack = createNativeStackNavigator();
 
@@ -28,8 +29,8 @@ export default function App() {
         <Stack.Screen name="NewMedicine" component={NewMedicineScreen} options={{ headerShown: false }} />
         <Stack.Screen name="DosageReport" component={DosageReportScreen} options={{ headerShown: false }} />
         <Stack.Screen name="AdherenceReport" component={AdherenceReportScreen} options={{ headerShown: false }} />
-
-
+        <Stack.Screen name="HorariosMedicine" component={HorariosMedicineScreen} options={{ headerShown: false }} />
+        
       </Stack.Navigator>
     </NavigationContainer>
 
