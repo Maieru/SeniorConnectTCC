@@ -119,7 +119,7 @@ namespace SeniorConnect.Bussiness.Entities_Services
             var device = await _deviceService.GetDeviceById(deviceId);
 
             if (position > MAX_POSITION)
-                throw new InvalidDataProvidedException("Position cannot be greater than 8");
+                throw new InvalidDataProvidedException($"Position cannot be greater than {MAX_POSITION}");
 
             if (medicine == null)
                 throw new EntityNotFoundException($"Medicine with id {medicineId} not found");

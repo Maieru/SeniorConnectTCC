@@ -177,7 +177,8 @@ namespace SeniorConnect.Web.ApiServer.Controllers
                         Name = associatedMedicine.Name,
                         Position = association.Position,
                         SubscriptionId = associatedMedicine.SubscriptionId,
-                        DeviceId = association.DeviceId
+                        DeviceId = association.DeviceId,
+                        MedicineId = association.MedicineId
                     });
                 }
 
