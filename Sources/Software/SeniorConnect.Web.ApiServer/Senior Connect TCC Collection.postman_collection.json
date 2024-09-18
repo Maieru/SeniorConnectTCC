@@ -348,7 +348,7 @@
 								"method": "POST",
 								"header": [],
 								"url": {
-									"raw": "{{API Server URL}}/v1/Medicine/AssociateToDevice?medicineId=1&deviceId=1&medicinePosition=1",
+									"raw": "{{API Server URL}}/v1/Medicine/AssociateToDevice?medicineId=1002&deviceId=1&medicinePosition=2",
 									"host": [
 										"{{API Server URL}}"
 									],
@@ -360,7 +360,7 @@
 									"query": [
 										{
 											"key": "medicineId",
-											"value": "1"
+											"value": "1002"
 										},
 										{
 											"key": "deviceId",
@@ -368,7 +368,7 @@
 										},
 										{
 											"key": "medicinePosition",
-											"value": "1"
+											"value": "2"
 										}
 									]
 								}
@@ -509,7 +509,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{API Server URL}}/v1/Scheduling/GetByMedicine?medicineId=2",
+									"raw": "{{API Server URL}}/v1/Scheduling/GetByMedicine?medicineId=1002",
 									"host": [
 										"{{API Server URL}}"
 									],
@@ -521,7 +521,7 @@
 									"query": [
 										{
 											"key": "medicineId",
-											"value": "2"
+											"value": "1002"
 										}
 									]
 								}
@@ -633,6 +633,46 @@
 										{
 											"key": "schedulingId",
 											"value": "3"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Report",
+					"item": [
+						{
+							"name": "GetWeeklySchedulesReport",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{ApiServerBearerToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{API Server URL}}/v1/Report/GetWeeklySchedulesReport?subscriptionId=2",
+									"host": [
+										"{{API Server URL}}"
+									],
+									"path": [
+										"v1",
+										"Report",
+										"GetWeeklySchedulesReport"
+									],
+									"query": [
+										{
+											"key": "subscriptionId",
+											"value": "2"
 										}
 									]
 								}

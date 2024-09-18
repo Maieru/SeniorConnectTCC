@@ -47,6 +47,7 @@ builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<BearerTokenService>();
 builder.Services.AddScoped<MedicineService>();
 builder.Services.AddScoped<SchedulingService>();
+builder.Services.AddScoped<ReportService>();
 
 builder.Services.AddSingleton<ISecretManager>(secretManager);
 builder.Services.AddSingleton<JwtTokenConfigurationOptions>(_ => new JwtTokenConfigurationOptions()
