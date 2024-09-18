@@ -137,13 +137,6 @@ export default function StatusScreen({ navigation }) {
                         </TouchableOpacity>
                     ))}
                 </View>
-                <View style={selectedIndex !== null ? [style.statusContainer, style.blurredItem] : style.statusContainer}>
-                    <Text style={style.statusText}>
-                        Status: <Text style={style.statusConnected}>Conectado</Text>
-                    </Text>
-                    <Text style={style.statusText}>Última Comunicação: XX/XX/XXXX XX:XX:XX</Text>
-                    <Text style={style.statusText}>Próximo Alerta: XX/XX/XXXX XX:XX:XX</Text>
-                </View>
             </TouchableOpacity>
             <Footer navigation={navigation} style={selectedIndex !== null ? style.blurredItem : {}} />
         </View>
