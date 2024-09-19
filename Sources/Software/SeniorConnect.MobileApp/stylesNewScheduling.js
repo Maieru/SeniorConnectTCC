@@ -8,12 +8,13 @@ const stylesNewScheduling = StyleSheet.create({
         marginBottom: 20,
     },
     timeInput: {
-        width: 60,
+        width: 80,
         height: 60,
         backgroundColor: '#ddd',
         textAlign: 'center',
         fontSize: 40,
         marginHorizontal: 5,
+        marginVertical: 15,
         borderRadius: 5,
     },
     timeSeparator: {
@@ -37,7 +38,7 @@ const stylesNewScheduling = StyleSheet.create({
         borderRadius: 5,
     },
     checkboxSelected: {
-        backgroundColor: '#333',
+        backgroundColor: '#000',
     },
     dayLabel: {
         fontSize: 18,
@@ -54,7 +55,7 @@ const stylesNewScheduling = StyleSheet.create({
     saveButton: {
         width: '50%',
         height: 50,
-        backgroundColor: '#ccc',
+        backgroundColor: '#000',
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 5,

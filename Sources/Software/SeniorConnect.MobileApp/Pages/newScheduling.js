@@ -126,16 +126,17 @@ export default function HorariosMedicineScreen({ navigation, route }) {
                     <View style={stylesScheduling.timeContainer}>
                         <TextInput
                             style={stylesScheduling.timeInput}
-                            placeholder="XX"
+                            placeholder="HH"
                             value={hora}
                             keyboardType="numeric"
                             maxLength={2}
                             onChangeText={setHora}
+                            
                         />
                         <Text style={stylesScheduling.timeSeparator}>:</Text>
                         <TextInput
                             style={stylesScheduling.timeInput}
-                            placeholder="XX"
+                            placeholder="MM"
                             value={minuto}
                             keyboardType="numeric"
                             maxLength={2}

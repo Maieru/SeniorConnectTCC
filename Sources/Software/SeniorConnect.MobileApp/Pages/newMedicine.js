@@ -83,13 +83,13 @@ export default function MedicineScreen({ navigation, route }) {
 
     function formatarDiasSemana(daysOfWeek) {
         const diasSemanaMap = {
-            '1': 'S',
-            '2': 'T',
+            '0': 'S',
+            '1': 'T',
+            '2': 'Q',
             '3': 'Q',
-            '4': 'Q',
+            '4': 'S',
             '5': 'S',
-            '6': 'S',
-            '7': 'D',
+            '6': 'D',
         };
 
         return daysOfWeek.split(',').map(dia => diasSemanaMap[dia]).join(' ');
