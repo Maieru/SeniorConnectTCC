@@ -9,6 +9,7 @@ namespace SeniorConnect.Domain.TOs.Medicine
     public class MedicineAssociationTO
     {
         public int Id { get; set; }
+        public int MedicineId { get; set; }
         public int SubscriptionId { get; set; }
         public required string Name { get; set; }
         public int Position { get; set; }

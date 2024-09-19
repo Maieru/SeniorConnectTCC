@@ -19,8 +19,6 @@ namespace SeniorConnect.Web.ApiServer.Controllers
         {
             _medicineService = medicineService;
             _logService = logService;
-
-            _medicineService.CurrentSubscriptionId = LoggedUserSubscription;
         }
 
         public override void OnActionExecuting(ActionExecutingContext context)
@@ -177,7 +175,8 @@ namespace SeniorConnect.Web.ApiServer.Controllers
                         Name = associatedMedicine.Name,
                         Position = association.Position,
                         SubscriptionId = associatedMedicine.SubscriptionId,
-                        DeviceId = association.DeviceId
+                        DeviceId = association.DeviceId,
+                        MedicineId = association.MedicineId
                     });
                 }
 

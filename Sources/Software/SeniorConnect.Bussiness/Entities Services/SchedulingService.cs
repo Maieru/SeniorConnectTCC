@@ -123,6 +123,20 @@ namespace SeniorConnect.Bussiness.Entities_Services
             return schedulings;
         }
 
+        public async Task<List<Scheduling>> GetSchedulingsFromSubscription(int subscriptionId)
+        {
+            if (!ValidateAccessToSubscription(subscriptionId))
+                throw new CannotAccessSubscriptionException(subscriptionId);
+
+            var medicinesFromSubscription = await _medicineService.GetMedicinesFromSubscription(subscriptionId);
+            var schedulings = new List<Scheduling>();
+
+            foreach(var medicine in medicinesFromSubscription)
+                schedulings.AddRange(await _repository.GetAllAsync(s => s.MedicineId == medicine.Id));
+
+            return schedulings;
+        }
+
         private bool DaysOfWeekAreValid(string daysOfWeek)
         {
             if (string.IsNullOrEmpty(daysOfWeek))
