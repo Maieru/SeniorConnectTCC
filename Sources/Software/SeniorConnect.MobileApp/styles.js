@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
   medicineActionsImage: {
     width: 40,
     height: 40,
-    marginStart: 8,
+    marginStart: 2,
   },
   loginContainer: {
     flex: 1,

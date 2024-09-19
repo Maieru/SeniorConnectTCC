@@ -41,6 +41,7 @@ export default function MedicineScreen({ navigation }) {
           <View style={styles.sectionContainer}>
             {medicamentos.map(med => {
               return (<RemediosMedicine
+                key={med.id}
                 id={med.id}
                 nome={med.name}
                 navigation={navigation}

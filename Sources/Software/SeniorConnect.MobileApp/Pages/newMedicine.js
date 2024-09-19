@@ -9,7 +9,6 @@ export default function MedicineScreen({ navigation, route }) {
     const [medicamentoId, setMedicamentoId] = useState();
     const [medicamentoNome, setMedicamentoNome] = useState();
     const [medicamentoDesc, setMedicamentoDesc] = useState();
-
     const [horarios, setHorarios] = useState([]);
 
     async function listaHorarios() {
@@ -43,6 +42,7 @@ export default function MedicineScreen({ navigation, route }) {
     };
 
     function salvaMedicamento() {
+        console.log("medicamentoId: " + medicamentoId);
         if (medicamentoId == null) {
             console.log("Criando Medicamento.")
             apiClient.post('/v1/Medicine/Create', createMedicamentoModel)
@@ -77,6 +77,7 @@ export default function MedicineScreen({ navigation, route }) {
         if (medicine != undefined) {
             setMedicamentoId(medicine.id)
             setMedicamentoNome(medicine.name)
+            console.log("Id: " + medicine.id);
         }
     }
 
@@ -118,7 +119,7 @@ export default function MedicineScreen({ navigation, route }) {
                     <View style={styles.sectionContainer}>
                         <Text style={styles.basicLabel}>Horários</Text>
                         <TouchableOpacity
-                            onPress={() => navigation.navigate('HorariosMedicine')}
+                            onPress={() => navigation.navigate('HorariosMedicine', {medicine: medicamentoId})}
                             style={styles.newMedicineButton}>
                             <Text style={styles.basicButtonText}>Novo Horário/Dosagem</Text>
                         </TouchableOpacity>
@@ -128,6 +129,9 @@ export default function MedicineScreen({ navigation, route }) {
                                     key={horario.id}
                                     horario={`${horario.hour}:${horario.minute < 10 ? '0' + horario.minute : horario.minute}`}
                                     diasSemana={formatarDiasSemana(horario.daysOfWeek)}
+                                    id ={horario.id}
+                                    medicamentoId={medicamentoId}
+                                    navigation={navigation}
                                 />
                             ))}
                         </ScrollView>
