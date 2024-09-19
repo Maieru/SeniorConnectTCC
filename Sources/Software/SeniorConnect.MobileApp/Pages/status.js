@@ -2,8 +2,8 @@
 import { StatusBar } from 'expo-status-bar';
 import { Text, View, TouchableOpacity, Image, Modal, FlatList } from 'react-native';
 import { useState, useEffect } from 'react';
-import styles from '../styles.js'; // Importa os estilos comuns
-import style from '../stylesStatus.js'; // Importa os estilos específicos
+import styles from '../styles.js';
+import style from '../stylesStatus.js';
 import { Header, Footer } from '../Layout.js';
 import apiClient from '../services/apiService.js';
 
@@ -15,13 +15,14 @@ export default function StatusScreen({ navigation }) {
     const [showDropdown, setShowDropdown] = useState(false);
 
     async function listaMedicamentos() {
-        const response = await apiClient.get("/v1/Medicine/GetMedicinesAssociatedToDevice?deviceId=2");
-        const medicamentosAssociados = response.data;
+        const responseGetAllAssociated = await apiClient.get("/v1/Medicine/GetMedicinesAssociatedToDevice?deviceId=2");
+        const medicamentosAssociados = responseGetAllAssociated.data;
 
-        const response2 = await apiClient.get("/v1/Medicine/GetAllFromSubscription?subscriptionId=" + apiClient.getSubscription());
-        setMedicamentos(response2.data);
+        const responseGetMedicine = await apiClient.get("/v1/Medicine/GetAllFromSubscription?subscriptionId=" + apiClient.getSubscription());
+        setMedicamentos(responseGetMedicine.data);
 
         const newGridData = [...gridData];
+
         medicamentosAssociados.forEach(medicamento => {
             if (medicamento.position !== null && medicamento.position <= 9) {
                 newGridData[medicamento.position - 1] = medicamento;
@@ -46,7 +47,7 @@ export default function StatusScreen({ navigation }) {
     }, []
     )
 
-    const selecionarMedicamento = (medicamento) => {
+    async function selecionarMedicamento(medicamento) {
         const position = selectedIndex + 1;
         const newGridData = [...gridData];
         const objetoMedicamento = criarObjetoMedicamento(medicamento, position);
@@ -57,7 +58,9 @@ export default function StatusScreen({ navigation }) {
 
         newGridData[selectedIndex] = medicamento;
         setGridData(newGridData);
-    };
+        await listaMedicamentos();
+    }
+
 
     const criarObjetoMedicamento = (medicamento, position) => {
         const deviceId = 2;
@@ -68,8 +71,19 @@ export default function StatusScreen({ navigation }) {
         };
     };
 
-    const removerAssociacao = async (medicamento, position) => {
-        const objetoMedicamento = criarObjetoMedicamento(medicamento, position);
+    const criarObjetoMedicamentoRemoverAssociacao = (medicamento, position) => {
+        const deviceId = 2;
+        return {
+            medicineId: medicamento.medicineId,
+            deviceId: deviceId,
+            medicinePosition: position
+        };
+    };
+
+    const removerAssociacao = async (medicamento) => {
+        const position = selectedIndex + 1;
+        const objetoMedicamento = criarObjetoMedicamentoRemoverAssociacao(medicamento, position);
+        console.log(objetoMedicamento);
         const response = await apiClient.post(`/v1/Medicine/DessasociateFromDevice?medicineId=${objetoMedicamento.medicineId}&deviceId=${objetoMedicamento.deviceId}&medicinePosition=${objetoMedicamento.medicinePosition}`);
         console.log("Associação removida:", response.data);
 
@@ -116,7 +130,7 @@ export default function StatusScreen({ navigation }) {
                                         renderItem={({ item }) => (
                                             <TouchableOpacity
                                                 style={styles.dropdownItem}
-                                                onPress={() => selecionarMedicamento(item, index)}
+                                                onPress={() => selecionarMedicamento(item)}
                                             >
                                                 <Text style={styles.dropdownItemText}>
                                                     {item.name}
@@ -127,7 +141,7 @@ export default function StatusScreen({ navigation }) {
                                     {gridData[selectedIndex] && (
                                         <TouchableOpacity
                                             style={style.statusExcluirButton}
-                                            onPress={() => removerAssociacao(gridData[selectedIndex], selectedIndex + 1)}
+                                            onPress={() => removerAssociacao(gridData[selectedIndex])}
                                         >
                                             <Text style={style.statusExcluirButtonText}>Excluir Associação</Text>
                                         </TouchableOpacity>
