@@ -1,9 +1,10 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView, Alert } from 'react-native';
 import styles from '../styles.js';
+import { useFocusEffect } from '@react-navigation/native';
 import { Header, Footer, RemediosMedicine } from '../Layout.js';
 import apiClient from '../services/apiService.js';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 export default function MedicineScreen({ navigation }) {
   const [medicamentos, setMedicamentos] = useState([]);
@@ -38,6 +39,15 @@ export default function MedicineScreen({ navigation }) {
     return () => { }; //É feio, é estranho.... mas funciona. Juro que tirando isso morre
   }, []
   )
+
+  useFocusEffect(
+    React.useCallback(() => {
+      const fetchMedicamentos = async () => {
+        await listaMedicamentos();
+      };
+      fetchMedicamentos();
+    }, [])
+  );
 
   return (
     <View style={styles.containerMenu}>
