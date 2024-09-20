@@ -53,7 +53,7 @@ function RemediosHome({ nome, horario, }) {
   )
 }
 
-function RemediosMedicine({ nome, id, navigation, medicine }) {
+function RemediosMedicine({ nome, id, navigation, medicine, onDelete }) {
   return (
     <View style={styles.remediosMedicineContainer}>
       <Image
@@ -73,7 +73,8 @@ function RemediosMedicine({ nome, id, navigation, medicine }) {
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.medicineActionsImage}
-          onPress={async () => await apiClient.delete("/v1/Medicine/Delete?medicineId=" + id)}>
+          onPress={async () => onDelete(id)}
+        >
           <Image
             source={require('./assets/delete.png')}
             style={styles.footerImage} />

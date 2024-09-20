@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView, Alert } from 'react-native';
 import styles from '../styles.js';
 import { Header, Footer, RemediosMedicine } from '../Layout.js';
 import apiClient from '../services/apiService.js';
@@ -17,6 +17,17 @@ export default function MedicineScreen({ navigation }) {
     id: null,
     name: '',
   };
+
+  async function deleteMedicamento(id) {
+    try {
+      await apiClient.delete("/v1/Medicine/Delete?medicineId=" + id);
+      await listaMedicamentos();
+
+      Alert.alert("Sucesso", "Medicamento excluído com sucesso.");
+    } catch (error) {
+      Alert.alert("Erro", "Não foi possível excluir o medicamento.");
+    }
+  }
 
   useEffect(() => {
     const fetchData = async () => {
@@ -40,12 +51,14 @@ export default function MedicineScreen({ navigation }) {
         <ScrollView style={styles.basicScroll}>
           <View style={styles.sectionContainer}>
             {medicamentos.map(med => {
-              return (<RemediosMedicine
+              return (
+              <RemediosMedicine
                 key={med.id}
                 id={med.id}
                 nome={med.name}
                 navigation={navigation}
                 medicine={med}
+                onDelete={deleteMedicamento}
               />
               )
             })}
