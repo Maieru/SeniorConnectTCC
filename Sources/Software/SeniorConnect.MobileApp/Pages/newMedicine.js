@@ -2,8 +2,9 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView, TextInput, Alert } from 'react-native';
 import styles from '../styles.js';
 import { HeaderReturn, Footer, HorariosMedicine } from '../Layout.js';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import apiClient from '../services/apiService.js';
+import { useFocusEffect } from '@react-navigation/native';
 
 export default function MedicineScreen({ navigation, route }) {
     const [medicamentoId, setMedicamentoId] = useState();
@@ -20,6 +21,15 @@ export default function MedicineScreen({ navigation, route }) {
             console.log("Por algum motivo, essa api demora, mas não da problema...");
         }
     }
+
+    useFocusEffect(
+        React.useCallback(() => {
+          const fetchHorarios = async () => {
+            await listaHorarios();
+          };
+          fetchHorarios();
+        }, [])
+      );
 
     let medicine = {};
     const [entidadeCarregada, setEntidadeCarregada] = useState(false);
