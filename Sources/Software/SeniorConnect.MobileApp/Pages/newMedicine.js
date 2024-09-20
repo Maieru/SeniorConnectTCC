@@ -13,7 +13,12 @@ export default function MedicineScreen({ navigation, route }) {
 
     async function listaHorarios() {
         const response = await apiClient.get("/v1/Scheduling/GetByMedicine?medicineId=" + medicine.id);
-        setHorarios(response.data);
+        
+        if (response && response.data) {
+            setHorarios(response.data);
+        } else {
+            console.log("Por algum motivo, essa api demora, mas não da problema...");
+        }
     }
 
     let medicine = {};
