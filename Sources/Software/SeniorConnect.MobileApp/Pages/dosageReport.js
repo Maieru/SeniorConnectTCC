@@ -41,12 +41,12 @@ export default function DosageReportScreen({ navigation }) {
     async function constroiData() {
         const response = await apiClient.get("/v1/Report/GetWeeklySchedulesReport?subscriptionId=" + apiClient.getSubscription());
         setReport(response.data);
-        
+
         return response.data;
     }
 
     async function buildDaysData(reportData) {
-        const daysOfWeek = ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"];
+        const daysOfWeek = ["Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado", "Domingo"];
         const daysData = [];
 
         for (let i = 0; i < 7; i++) {
