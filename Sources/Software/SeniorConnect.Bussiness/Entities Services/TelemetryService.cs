@@ -17,13 +17,15 @@ namespace SeniorConnect.Bussiness.Entities_Services
         private readonly DeviceService _deviceService;
         private readonly MedicineService _medicineService;
         private readonly SchedulingService _schedulingService;
+        private readonly AdministrationService _administrationService;
 
-        public TelemetryService(IRepository<Telemetry> repository, DeviceService deviceService, MedicineService medicineService, SchedulingService schedulingService)
+        public TelemetryService(IRepository<Telemetry> repository, DeviceService deviceService, MedicineService medicineService, SchedulingService schedulingService, AdministrationService administrationService)
         {
             _repository = repository;
             _deviceService = deviceService;
             _medicineService = medicineService;
             _schedulingService = schedulingService;
+            _administrationService = administrationService;
         }
 
         public async Task SaveTelemetry(string connectionDeviceId, TelemetryMessage telemetryMessage)
@@ -44,15 +46,16 @@ namespace SeniorConnect.Bussiness.Entities_Services
                 Second = telemetryMessage.Second,
                 Millis = telemetryMessage.Millis,
                 SensorDataJson = JsonConvert.SerializeObject(telemetryMessage.SensorData),
-                OpeningExpected = await CheckOpeningExpected(device.Id, telemetryMessage)
+                OpeningExpected = await CheckOpeningExpected(device.Id, telemetryMessage, device)
             };
 
             await _repository.AddAsync(telemetry);
         }
 
-        private async Task<bool> CheckOpeningExpected(int deviceId, TelemetryMessage telemetry)
+        private async Task<bool> CheckOpeningExpected(int deviceId, TelemetryMessage telemetry, Device device)
         {
             var medicineAssociations = await _medicineService.GetMedicinesAssociatedToDevice(deviceId);
+            var returnValue = false;
 
             foreach (var sensorData in telemetry.SensorData)
             {
@@ -73,10 +76,14 @@ namespace SeniorConnect.Bussiness.Entities_Services
                                         s.DaysOfWeek.Split(',').Any(d => d == ((int)telemetry.GetDayOfWeek()).ToString()));
 
                 if (scheduling != null)
-                    return true;
+                {
+                    var medicine = await _medicineService.GetMedicineById(medicineAssociated.MedicineId);
+                    await _administrationService.AddAdministration(medicine, scheduling, device);
+                    returnValue = true;
+                }
             }
 
-            return false;
+            return returnValue;
         }
     }
 }

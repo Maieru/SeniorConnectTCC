@@ -1,11 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SeniorConnect.Bussiness.Entities;
 using SeniorConnect.Domain.Entities;
 using SeniorConnect.Infrastructure.FluentApi;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SeniorConnect.Infrastructure.Context
 {
@@ -29,6 +25,8 @@ namespace SeniorConnect.Infrastructure.Context
 
         public DbSet<Telemetry> Telemetry { get; set; }
 
+        public DbSet<Administration> Administrations { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -41,6 +39,7 @@ namespace SeniorConnect.Infrastructure.Context
             modelBuilder.ApplyConfiguration(new SchedulingFluent());
             modelBuilder.ApplyConfiguration(new UserFluent());
             modelBuilder.ApplyConfiguration(new TelemetryFluent());
+            modelBuilder.ApplyConfiguration(new AdministrationFluent());
         }
     }
 }

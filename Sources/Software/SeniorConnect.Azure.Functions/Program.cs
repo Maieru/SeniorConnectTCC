@@ -2,6 +2,7 @@ using Microsoft.Azure.Functions.Worker;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using SeniorConnect.Bussiness.Entities;
 using SeniorConnect.Bussiness.Entities_Services;
 using SeniorConnect.Bussiness.Services;
 using SeniorConnect.Domain.Entities;
@@ -34,6 +35,7 @@ var host = new HostBuilder()
         services.AddScoped<IRepository<Medicine>, MedicineRepository>();
         services.AddScoped<IRepository<MedicineDeviceAssociation>, MedicineDeviceAssociationRepository>();
         services.AddScoped<IRepository<Scheduling>, SchedulingRepository>();
+        services.AddScoped<IRepository<Administration>, AdministrationRepository>();
         services.AddScoped<IRepository<Telemetry>, TelemetryRepository>();
 
         services.AddScoped<LogService>();
@@ -42,6 +44,7 @@ var host = new HostBuilder()
         services.AddScoped<UserService>();
         services.AddScoped<MedicineService>();
         services.AddScoped<SchedulingService>();
+        services.AddScoped<AdministrationService>();
         services.AddScoped<TelemetryService>();
 
         services.AddScoped<IIotHubMessageService, IoTHubMessageService>(iotHub => new IoTHubMessageService(iotHubConnectionString));
