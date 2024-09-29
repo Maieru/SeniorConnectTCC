@@ -6,6 +6,7 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using SeniorConnect.Bussiness.Entities_Services;
 using SeniorConnect.Bussiness.Services;
+using SeniorConnect.Domain.Interfaces;
 using SeniorConnect.Domain.TOs.Telemetry;
 
 namespace SeniorConnect.Azure.Functions
@@ -14,9 +15,9 @@ namespace SeniorConnect.Azure.Functions
     {
         private readonly LogService _logger;
         private readonly TelemetryService _telemetryService;
-        private readonly StorageService _storageService;
+        private readonly IStorageService _storageService;
 
-        public BigDataProcessingFunction(LogService logService, TelemetryService telemetryService, StorageService storageService)
+        public BigDataProcessingFunction(LogService logService, TelemetryService telemetryService, IStorageService storageService)
         {
             _logger = logService;
             _telemetryService = telemetryService;

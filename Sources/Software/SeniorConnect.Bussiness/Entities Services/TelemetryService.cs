@@ -15,11 +15,15 @@ namespace SeniorConnect.Bussiness.Entities_Services
     {
         private readonly IRepository<Telemetry> _repository;
         private readonly DeviceService _deviceService;
+        private readonly MedicineService _medicineService;
+        private readonly SchedulingService _schedulingService;
 
-        public TelemetryService(IRepository<Telemetry> repository, DeviceService deviceService)
+        public TelemetryService(IRepository<Telemetry> repository, DeviceService deviceService, MedicineService medicineService, SchedulingService schedulingService)
         {
             _repository = repository;
             _deviceService = deviceService;
+            _medicineService = medicineService;
+            _schedulingService = schedulingService;
         }
 
         public async Task SaveTelemetry(string connectionDeviceId, TelemetryMessage telemetryMessage)
@@ -39,10 +43,40 @@ namespace SeniorConnect.Bussiness.Entities_Services
                 Minute = telemetryMessage.Minute,
                 Second = telemetryMessage.Second,
                 Millis = telemetryMessage.Millis,
-                SensorDataJson = JsonConvert.SerializeObject(telemetryMessage.SensorData)
+                SensorDataJson = JsonConvert.SerializeObject(telemetryMessage.SensorData),
+                OpeningExpected = await CheckOpeningExpected(device.Id, telemetryMessage)
             };
 
             await _repository.AddAsync(telemetry);
+        }
+
+        private async Task<bool> CheckOpeningExpected(int deviceId, TelemetryMessage telemetry)
+        {
+            var medicineAssociations = await _medicineService.GetMedicinesAssociatedToDevice(deviceId);
+
+            foreach (var sensorData in telemetry.SensorData)
+            {
+                if (!sensorData.State)
+                    continue;
+
+                var medicineAssociated = medicineAssociations.FirstOrDefault(m => m.Position == sensorData.Number);
+
+                if (medicineAssociated == null)
+                    continue;
+
+                var schedulings = await _schedulingService.GetSchedulingsFromMedicine(medicineAssociated.MedicineId);
+
+                if (schedulings == null || !schedulings.Any())
+                    continue;
+
+                var scheduling = schedulings.FirstOrDefault(s => s.Hour == telemetry.Hour && s.Minute == telemetry.Minute &&
+                                        s.DaysOfWeek.Split(',').Any(d => d == ((int)telemetry.GetDayOfWeek()).ToString()));
+
+                if (scheduling != null)
+                    return true;
+            }
+
+            return false;
         }
     }
 }

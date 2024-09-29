@@ -9,5 +9,6 @@
 	[Minuto]			INT 			NOT NULL,
 	[Segundo]			INT				NOT NULL,
 	[Milis]				INT				NOT NULL,
-	[Status]            NVARCHAR(MAX)   NOT NULL
+	[Status]            NVARCHAR(MAX)   NOT NULL,
+	[AberturaIndevida]	BIT				NOT NULL DEFAULT(0)
 )
