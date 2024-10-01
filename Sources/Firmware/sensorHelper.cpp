@@ -23,7 +23,7 @@
 #define TELEMETRY_TYPE "telemetry"
 
 void initializeSensors() {
-  pinMode(SENSOR_INPUT, INPUT);
+  pinMode(SENSOR_INPUT, INPUT_PULLUP);
   pinMode(MULTIPLEX_SELECTOR_BIT_0, OUTPUT);
   pinMode(MULTIPLEX_SELECTOR_BIT_1, OUTPUT);
   pinMode(MULTIPLEX_SELECTOR_BIT_2, OUTPUT);
@@ -44,7 +44,7 @@ std::vector<bool> getSensorStatus() {
     digitalWrite(MULTIPLEX_SELECTOR_BIT_2, bitRead(i, 2));
     digitalWrite(MULTIPLEX_SELECTOR_BIT_3, bitRead(i, 3));
     
-    outputVector.push_back(digitalRead(SENSOR_INPUT));
+    outputVector.push_back(!digitalRead(SENSOR_INPUT));
   }
 
   return outputVector;

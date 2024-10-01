@@ -24,6 +24,7 @@ bool isWifiStarted = false;
 bool isTimeInitialized = false;
 state currentState = state::NORMAL;
 unsigned long resetMilis = 0;
+unsigned long heartBeatMilis = 0;
 unsigned long lastExecutionMillis = 0;
 std::vector<bool> lastSensorStatus;
 std::vector<int> lastAlertsToBeActived;
@@ -40,11 +41,9 @@ void setup() {
   pinMode(STATUS_LED_RED, OUTPUT);
   pinMode(STATUS_LED_GREEN, OUTPUT);
   pinMode(STATUS_LED_BLUE, OUTPUT);
-  pinMode(RESET_BUTTON, INPUT);
+  pinMode(RESET_BUTTON, INPUT_PULLUP);
 
   initializeSinalizationLeds();
-
-  // Pins used for debug
   initializeSensors();
 
   digitalWrite(POWER_LED, HIGH);
@@ -88,6 +87,7 @@ void setup() {
 void loop() {
   std::vector<bool> currentSensorStatus;
   unsigned long currentMillis = millis();
+  String heartBeatString = "";
   String telemetryMessage;
   std::vector<int> currentAlertsToBeActived;
 
@@ -98,6 +98,22 @@ void loop() {
         currentState = state::RESETING;
         Serial.println("Entering reset mode");
         return;
+      }
+
+      if (currentMillis - heartBeatMilis > 10000) {
+        heartBeatString = "";
+
+        for (int i = 0; i < lastSensorStatus.size(); i ++){
+          heartBeatString += lastSensorStatus[i];
+        }
+
+        int resetButtonState = digitalRead(RESET_BUTTON);
+        heartBeatString += (resetButtonState == HIGH) ? "HIGH" : "LOW";
+
+
+        Serial.println("I'm alive!");        
+        Serial.println(heartBeatString);
+        heartBeatMilis = currentMillis;
       }
 
       // This adds an 1 milisecond delay between executions
