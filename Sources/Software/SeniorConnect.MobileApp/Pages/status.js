@@ -40,6 +40,7 @@ export default function StatusScreen({ navigation }) {
     useEffect(() => {
         const fetchData = async () => {
             await listaMedicamentos();
+            await apiClient.getDevice()
         }
         fetchData();
 

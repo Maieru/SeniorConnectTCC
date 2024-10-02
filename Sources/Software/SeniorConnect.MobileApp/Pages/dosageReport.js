@@ -12,7 +12,6 @@ export default function DosageReportScreen({ navigation }) {
 
     const [report, setReport] = useState();
     const [days, setDays] = useState([]);
-    // await apiClient.get("/v1/Report/GetWeeklySchedulesReport?subscriptionId=" + apiClient.getSubscription());
 
     useEffect(() => {
         const fetchData = async () => {

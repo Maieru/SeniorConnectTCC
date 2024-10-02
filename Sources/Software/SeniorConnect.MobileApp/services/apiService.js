@@ -49,6 +49,24 @@ class ApiService {
         return this.subscription;
     }
 
+    async getDevice(){
+        try {
+            response = await apiClient.get(`/v1/Device/GetDevices?subscriptionId=${this.getSubscription()}`);
+            if (response) {
+                const deviceId = response.data[0].id;
+                console.log('device id: ' + deviceId);
+                return deviceId;
+            } else {
+                console.log(JSON.stringify(response));
+                console.error("Nenhum dispositivo encontrado.");
+                return null;
+            }
+        } catch (error) {
+            console.error("Erro ao buscar o deviceId:", error);
+            return null;
+        }
+    }
+
     getTokenConfiguration(token) {
         return {
             headers: { Authorization: `Bearer ${token}` }
