@@ -98,12 +98,10 @@ export default function StatusScreen({ navigation }) {
 
     return (
         <View style={styles.containerMenu}>
-            <Header title="Organização" navigation={navigation} />
-
             {!deviceId ? (
                 <TouchableOpacity
                     style={[styles.statusCadastrarDispositivo]}
-                    onPress={() => navigation.navigate('NovoDispositivo')}>
+                    onPress={() => navigation.navigate('Novo Dispositivo')}>
                     <Text >Cadastrar Dispositivo</Text>
                 </TouchableOpacity>
             ) : (

@@ -3,14 +3,11 @@ import { Text, View, TouchableOpacity, Image, ScrollView } from 'react-native';
 import styles from '../styles.js';
 import { Header, Footer, RemediosHome } from '../Layout.js';
 
-nomePlaceholder = "Usuário" //Linha apenas para questão de teste, deve ser substituido após integração das APIs
-
 export default function HomeScreen({ navigation }) {
   return (
     <View style={styles.containerMenu}>
-      <Header title="Home/Index" navigation={navigation} />
       <View style={styles.content}>
-        <Text style={styles.homeTitle}>Bem vindo, {nomePlaceholder}!</Text>
+        <Text style={styles.homeTitle}>Bem vindo!</Text>
         <View style={styles.container}>
           <Text style={styles.basicLabel}>Próximas Dosagens</Text>
           <ScrollView style={styles.basicScroll}>

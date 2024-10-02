@@ -112,7 +112,6 @@ export default function MedicineScreen({ navigation, route }) {
 
     return (
         <View style={styles.containerMenu}>
-            <HeaderReturn title="Novo Medicamento" navigation={navigation} returnPage={"Medicine"} />
             <View style={styles.content}>
                 <View style={styles.container}>
                     <View style={styles.sectionContainer}>
@@ -134,7 +133,7 @@ export default function MedicineScreen({ navigation, route }) {
                     <View style={styles.sectionContainer}>
                         <Text style={styles.basicLabel}>Horários</Text>
                         <TouchableOpacity
-                            onPress={() => navigation.navigate('HorariosMedicine', {medicine: medicamentoId})}
+                            onPress={() => navigation.navigate('Novo Horario', {medicine: medicamentoId})}
                             style={styles.newMedicineButton}>
                             <Text style={styles.basicButtonText}>Novo Horário/Dosagem</Text>
                         </TouchableOpacity>

@@ -7,7 +7,6 @@ import stylesAdherenceReport from '../stylesAdherenceReport.js';
 export default function AdherenceReportScreen({ navigation }) {
     return (
         <View style={styles.containerMenu}>
-            <HeaderReturn title="Voltar" returnPage="Reports" navigation={navigation} />
             <ScrollView contentContainerStyle={styles.scrollContent}>
                 {/* Title */}
                 <Text style={stylesAdherenceReport.reportTitle}>Relatório de Adesão</Text>

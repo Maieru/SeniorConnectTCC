@@ -7,10 +7,9 @@ import { Header, Footer } from '../Layout.js';
 export default function ReportsScreen({ navigation }) {
     return (
         <View style={styles.containerMenu}>
-            <Header title="Reports" navigation={navigation} />
             <View style={styles.content}>
                 <View style={styles.container}>
-                    <TouchableOpacity onPress={() => navigation.navigate('DosageReport')}>
+                    <TouchableOpacity onPress={() => navigation.navigate('Relatorio de Dosagem')}>
                         <View style={stylesReports.sectionContainer}>
                             <Text style={stylesReports.sectionTitle}>Relatório de Dosagem</Text>
                             <View style={stylesReports.divider} />
@@ -21,7 +20,7 @@ export default function ReportsScreen({ navigation }) {
                     </TouchableOpacity>
                 </View>
                 <View style={styles.container}>
-                    <TouchableOpacity onPress={() => navigation.navigate('AdherenceReport')}>
+                    <TouchableOpacity onPress={() => navigation.navigate('Relatorio de Adesão')}>
                         <View style={stylesReports.sectionContainer}>
                             <Text style={stylesReports.sectionTitle}>Relatório de Adesão</Text>
                             <View style={stylesReports.divider} />
