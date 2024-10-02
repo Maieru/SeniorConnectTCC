@@ -13,9 +13,10 @@ export default function StatusScreen({ navigation }) {
     const [selectedIndex, setSelectedIndex] = useState(null);
     const [gridData, setGridData] = useState(Array(9).fill(null));
     const [showDropdown, setShowDropdown] = useState(false);
+    const [deviceId, setDeviceId] = useState(false);
 
     async function listaMedicamentos() {
-        const responseGetAllAssociated = await apiClient.get("/v1/Medicine/GetMedicinesAssociatedToDevice?deviceId=2");
+        const responseGetAllAssociated = await apiClient.get("/v1/Medicine/GetMedicinesAssociatedToDevice?deviceId=" + await apiClient.getDevice());
         const medicamentosAssociados = responseGetAllAssociated.data;
 
         const responseGetMedicine = await apiClient.get("/v1/Medicine/GetAllFromSubscription?subscriptionId=" + apiClient.getSubscription());
@@ -40,7 +41,8 @@ export default function StatusScreen({ navigation }) {
     useEffect(() => {
         const fetchData = async () => {
             await listaMedicamentos();
-            await apiClient.getDevice()
+            const device = await apiClient.getDevice();
+            setDeviceId(device);
         }
         fetchData();
 
@@ -97,63 +99,73 @@ export default function StatusScreen({ navigation }) {
     return (
         <View style={styles.containerMenu}>
             <Header title="Organização" navigation={navigation} />
-            <TouchableOpacity
-                style={styles.content}
-                activeOpacity={1}
-                onPress={handleOutsideClick}
-            >
-                <View style={style.gridContainer}>
-                    {gridData.map((medicamento, index) => (
-                        <TouchableOpacity
-                            key={index}
-                            style={[
-                                style.gridItem,
-                                selectedIndex !== null && selectedIndex !== index ? style.blurredItem : {},
-                            ]}
-                            onPress={(e) => {
-                                e.stopPropagation();
-                                setSelectedIndex(index);
-                                setShowDropdown(true);
-                            }}
-                        >
-                            <Image
-                                source={require('../assets/medication.png')}
-                                style={style.gridItemImage}
-                            />
-                            <Text style={style.gridItemText}>
-                                {medicamento ? medicamento.name : '[Remédio]'}
-                            </Text>
-                            {showDropdown && selectedIndex === index && (
-                                <View style={style.dropdownContainer}>
-                                    <FlatList
-                                        data={medicamentos}
-                                        keyExtractor={(item) => item.id.toString()}
-                                        renderItem={({ item }) => (
+
+            {!deviceId ? (
+                <TouchableOpacity
+                    style={[styles.statusCadastrarDispositivo]}
+                    onPress={() => navigation.navigate('NovoDispositivo')}>
+                    <Text >Cadastrar Dispositivo</Text>
+                </TouchableOpacity>
+            ) : (
+                <TouchableOpacity
+                    style={styles.content}
+                    activeOpacity={1}
+                    onPress={handleOutsideClick}
+                >
+                    <View style={style.gridContainer}>
+                        {gridData.map((medicamento, index) => (
+                            <TouchableOpacity
+                                key={index}
+                                style={[
+                                    style.gridItem,
+                                    selectedIndex !== null && selectedIndex !== index ? style.blurredItem : {},
+                                ]}
+                                onPress={(e) => {
+                                    e.stopPropagation();
+                                    setSelectedIndex(index);
+                                    setShowDropdown(true);
+                                }}
+                            >
+                                <Image
+                                    source={require('../assets/medication.png')}
+                                    style={style.gridItemImage}
+                                />
+                                <Text style={style.gridItemText}>
+                                    {medicamento ? medicamento.name : '[Remédio]'}
+                                </Text>
+                                {showDropdown && selectedIndex === index && (
+                                    <View style={style.dropdownContainer}>
+                                        <FlatList
+                                            data={medicamentos}
+                                            keyExtractor={(item) => item.id.toString()}
+                                            renderItem={({ item }) => (
+                                                <TouchableOpacity
+                                                    style={styles.dropdownItem}
+                                                    onPress={() => selecionarMedicamento(item)}
+                                                >
+                                                    <Text style={styles.dropdownItemText}>
+                                                        {item.name}
+                                                    </Text>
+                                                </TouchableOpacity>
+                                            )}
+                                        />
+                                        {gridData[selectedIndex] && (
                                             <TouchableOpacity
-                                                style={styles.dropdownItem}
-                                                onPress={() => selecionarMedicamento(item)}
+                                                style={style.statusExcluirButton}
+                                                onPress={() => removerAssociacao(gridData[selectedIndex])}
                                             >
-                                                <Text style={styles.dropdownItemText}>
-                                                    {item.name}
-                                                </Text>
+                                                <Text style={style.statusExcluirButtonText}>Excluir Associação</Text>
                                             </TouchableOpacity>
                                         )}
-                                    />
-                                    {gridData[selectedIndex] && (
-                                        <TouchableOpacity
-                                            style={style.statusExcluirButton}
-                                            onPress={() => removerAssociacao(gridData[selectedIndex])}
-                                        >
-                                            <Text style={style.statusExcluirButtonText}>Excluir Associação</Text>
-                                        </TouchableOpacity>
-                                    )}
-                                </View>
-                            )}
-                        </TouchableOpacity>
-                    ))}
-                </View>
-            </TouchableOpacity>
-            <Footer navigation={navigation} style={selectedIndex !== null ? style.blurredItem : {}} />
+                                    </View>
+                                )}
+                            </TouchableOpacity>
+                        ))}
+                    </View>
+                </TouchableOpacity>
+            )}
+
+            <Footer navigation={navigation} />
         </View>
     );
 }
