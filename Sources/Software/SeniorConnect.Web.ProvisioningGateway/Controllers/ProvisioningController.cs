@@ -33,12 +33,14 @@ namespace Provisioning_Gateway.Controllers
             try
             {
                 var deviceId = await _deviceProvisioningService.CreateDevice();
+                var deviceSymetricKey = await _deviceProvisioningService.GetDevicePrimaryKey(deviceId);
 
                 var device = new Device()
                 {
                     DeviceName = deviceId,
                     SubscriptionId = subscriptionId,
-                    ModificationDate = DateTime.UtcNow
+                    ModificationDate = DateTime.UtcNow,
+                    DevicePrimaryKey = deviceSymetricKey
                 };
 
                 await _deviceService.AddDevice(device);

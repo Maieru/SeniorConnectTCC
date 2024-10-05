@@ -18,8 +18,9 @@
         "ASPNETCORE_ENVIRONMENT": "Development",
         "SqlServerDatabase": "data source=maieru\\SQLEXPRESS;initial catalog=SeniorConnect;trusted_connection=true;TrustServerCertificate=True",
         "KeyVaulUrl": "Remember to put this, please",
-        "DpsPrimaryKey": "Remember to put this, please",
-        "IdScope": "Remember to put this, please"
+        "DpsPrimaryKey": "jsEYllODO4hkJnBNUha0olQUhzTo9kbX7CYrXme5Swa3prAWcyTERhPAXulcMa68qEHfQj8KrXAZAIoT9naIvg==",
+        "IotHubRegistryConnectionString": "HostName=seniorconnectiothub.azure-devices.net;SharedAccessKeyName=registryRead;SharedAccessKey=IIi7IxLZpwWZ0xyk96XtcttraUKvH+dhUAIoTPCmqY4=",
+        "IdScope": "0ne00D4C9CB"
       }
     }
   }

@@ -1,4 +1,5 @@
-﻿using Microsoft.Azure.Devices.Provisioning.Client;
+﻿using Microsoft.Azure.Devices;
+using Microsoft.Azure.Devices.Provisioning.Client;
 using Microsoft.Azure.Devices.Provisioning.Client.Transport;
 using Microsoft.Azure.Devices.Shared;
 using SeniorConnect.Domain.Exceptions;
@@ -44,6 +45,15 @@ namespace SeniorConnect.Bussiness.Services
             catch
             {
                 return null;
+            }
+        }
+
+        public async Task<string> GetDevicePrimaryKey(string deviceName)
+        {
+            using (var registryManager = RegistryManager.CreateFromConnectionString("HostName=seniorconnectiothub.azure-devices.net;SharedAccessKeyName=registryRead;SharedAccessKey=IIi7IxLZpwWZ0xyk96XtcttraUKvH+dhUAIoTPCmqY4="))
+            {
+                var device = await registryManager.GetDeviceAsync(deviceName);
+                return device.Authentication.SymmetricKey.PrimaryKey;
             }
         }
 

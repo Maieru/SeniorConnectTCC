@@ -15,6 +15,7 @@ namespace SeniorConnect.Bussiness.Services
         private const string TOKEN_SIGNING_KEY = "TokenSigningKey";
         private const string STORAGE_CONNECTION_STRING = "StorageConnectionString";
         private const string IOT_HUB_CONNECTION_STRING = "IotHubConnectionString";
+        private const string IOT_HUB_REGISTRY_CONNECTION_STRING = "IotHubRegistryConnectionString";
 
         private string? _cachedEncryptionSalt;
         private int? _cachedWorkFactor;
@@ -27,6 +28,7 @@ namespace SeniorConnect.Bussiness.Services
         public async Task<string?> GetTokenSignignKey() => await keyVaultService.GetSecret(TOKEN_SIGNING_KEY);
         public async Task<string?> GetStorageConnectionString() => await keyVaultService.GetSecret(STORAGE_CONNECTION_STRING);
         public async Task<string?> GetIoTHubConnectionString() => await keyVaultService.GetSecret(IOT_HUB_CONNECTION_STRING);
+        public async Task<string?> GetIoTHubRegistryConnectionString() => await keyVaultService.GetSecret(IOT_HUB_REGISTRY_CONNECTION_STRING);
         
         public async Task<string?> GetEncryptionSalt()
         {

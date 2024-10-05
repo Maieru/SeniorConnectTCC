@@ -16,5 +16,6 @@ namespace SeniorConnect.Domain.Interfaces
         Task<string?> GetTokenSignignKey();
         Task<string?> GetStorageConnectionString();
         Task<string?> GetIoTHubConnectionString();
+        Task<string?> GetIoTHubRegistryConnectionString();
     }
 }

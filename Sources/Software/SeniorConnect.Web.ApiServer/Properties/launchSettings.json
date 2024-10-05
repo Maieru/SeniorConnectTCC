@@ -17,7 +17,7 @@
       "applicationUrl": "https://localhost:7120;http://localhost:5268",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "SqlServerDatabase": "data source=Notebook-Carol;initial catalog=SeniorConnect;trusted_connection=true;Encrypt=no",
+        "SqlServerDatabase": "data source=maieru\\SQLEXPRESS;initial catalog=SeniorConnect;trusted_connection=true;TrustServerCertificate=True",
         "KeyVaulUrl": "Remember to put this, please",
         "DpsPrimaryKey": "Remember to put this, please",
         "IdScope": "Remember to put this, please"

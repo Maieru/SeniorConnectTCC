@@ -19,6 +19,7 @@ namespace SeniorConnect.Infrastructure.FluentApi
             builder.Property(d => d.DeviceName).HasColumnName("NomeDispositivo").IsRequired().HasMaxLength(50);
             builder.Property(d => d.SubscriptionId).HasColumnName("AssinaturaId").IsRequired();
             builder.Property(d => d.ModificationDate).HasColumnName("DataAlteracao").IsRequired();
+            builder.Property(d => d.DevicePrimaryKey).HasColumnName("ChavePrimaria").IsRequired().HasMaxLength(50);
         }
     }
 }

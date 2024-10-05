@@ -9,9 +9,9 @@ namespace SeniorConnect.Bussiness.Services
 {
     public class LocalSecretManager : ISecretManager
     {
-        public async Task<string?> GetDpsIdScope() => "DPSIdScope";
+        public async Task<string?> GetDpsIdScope() => Environment.GetEnvironmentVariable("IdScope");
 
-        public async Task<string?> GetDpsPrimaryKey() => "DpsPrimaryKey";
+        public async Task<string?> GetDpsPrimaryKey() => Environment.GetEnvironmentVariable("DpsPrimaryKey");
 
         public async Task<string?> GetEncryptionSalt() => "EncryptionSalt";
 
@@ -24,5 +24,7 @@ namespace SeniorConnect.Bussiness.Services
         public async Task<string?> GetStorageConnectionString() => Environment.GetEnvironmentVariable("AzureWebJobsStorage");
 
         public async Task<string?> GetIoTHubConnectionString() => Environment.GetEnvironmentVariable("IotHubConnectionString");
+        
+        public async Task<string?> GetIoTHubRegistryConnectionString() => Environment.GetEnvironmentVariable("IotHubRegistryConnectionString");
     }
 }
