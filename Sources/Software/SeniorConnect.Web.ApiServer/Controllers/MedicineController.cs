@@ -6,6 +6,8 @@ using SeniorConnect.Bussiness.Services;
 using SeniorConnect.Domain.Entities;
 using SeniorConnect.Domain.Exceptions;
 using SeniorConnect.Domain.TOs.Medicine;
+using System.Net.WebSockets;
+using System.Security.AccessControl;
 
 namespace SeniorConnect.Web.ApiServer.Controllers
 {
@@ -14,11 +16,14 @@ namespace SeniorConnect.Web.ApiServer.Controllers
     {
         private readonly MedicineService _medicineService;
         private readonly LogService _logService;
-
-        public MedicineController(MedicineService medicineService, LogService logService)
+        private readonly AdministrationService _administrationService;
+        private readonly SchedulingService _schedulingService;
+        public MedicineController(MedicineService medicineService, LogService logService, AdministrationService administrationService, SchedulingService schedulingService)
         {
             _medicineService = medicineService;
             _logService = logService;
+            _administrationService = administrationService;
+            _schedulingService = schedulingService;
         }
 
         public override void OnActionExecuting(ActionExecutingContext context)
@@ -192,5 +197,47 @@ namespace SeniorConnect.Web.ApiServer.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
+
+        [HttpPost("PostManualAdministration")]
+        public async Task<IActionResult> AddManualAdministration(int medicineId, int scheduleId)
+        {
+            try
+            {
+                var medicine = await _medicineService.GetMedicineById(medicineId);
+                var scheduling = await _schedulingService.GetSchedulingById(scheduleId);
+
+                await _administrationService.AddManualAdministration(medicine, scheduling);
+                return Ok();
+            }
+            catch (InvalidDataProvidedException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                await _logService.LogException(ex, new { medicineId, scheduleId });
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpGet("GetUnadministeredSchedulings")]
+        public async Task<IActionResult> GetUnadministeredSchedulings()
+        {
+            try
+            {
+                // Constante de 24 horas para o período, porém precisamos definir o valor
+                var period = TimeSpan.FromHours(24);
+
+                var unadministeredSchedulings = await _schedulingService.GetUnadministeredSchedulings(period, LoggedUserSubscription);
+
+                return Ok(unadministeredSchedulings);
+            }
+            catch (Exception ex)
+            {
+                await _logService.LogException(ex);
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
     }
 }

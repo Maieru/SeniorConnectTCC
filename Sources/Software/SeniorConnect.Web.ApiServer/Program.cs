@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using SeniorConnect.Bussiness.Entities;
 using SeniorConnect.Bussiness.Entities_Services;
 using SeniorConnect.Bussiness.Services;
 using SeniorConnect.Domain.Entities;
@@ -39,12 +40,14 @@ builder.Services.AddScoped<IRepository<Subscription>, SubscriptionRepository>();
 builder.Services.AddScoped<IRepository<Medicine>, MedicineRepository>();
 builder.Services.AddScoped<IRepository<MedicineDeviceAssociation>, MedicineDeviceAssociationRepository>();
 builder.Services.AddScoped<IRepository<Scheduling>, SchedulingRepository>();
+builder.Services.AddScoped<IRepository<Administration>, AdministrationRepository>();
 
 builder.Services.AddScoped<LogService>();
 builder.Services.AddScoped<SubscriptionService>();
 builder.Services.AddScoped<DeviceService>();
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<BearerTokenService>();
+builder.Services.AddScoped<AdministrationService>();
 builder.Services.AddScoped<MedicineService>();
 builder.Services.AddScoped<SchedulingService>();
 builder.Services.AddScoped<ReportService>();

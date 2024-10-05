@@ -13,6 +13,7 @@ namespace SeniorConnect.Bussiness.Entities_Services
     {
         private readonly IRepository<Scheduling> _repository;
         private readonly MedicineService _medicineService;
+        private readonly AdministrationService _administrationService;
 
         private int? _currentSubscriptionId;
         public int? CurrentSubscriptionId 
@@ -25,10 +26,11 @@ namespace SeniorConnect.Bussiness.Entities_Services
             }
         }
 
-        public SchedulingService(IRepository<Scheduling> repository, MedicineService medicineService)
+        public SchedulingService(IRepository<Scheduling> repository, MedicineService medicineService, AdministrationService administrationService)
         {
             _repository = repository;
             _medicineService = medicineService;
+            _administrationService = administrationService;
         }
 
         public async Task AddScheduling(Scheduling scheduling)
@@ -152,6 +154,50 @@ namespace SeniorConnect.Bussiness.Entities_Services
                     return false;
 
             return true;
+        }
+
+        public async Task<List<Scheduling>> GetUnadministeredSchedulings(TimeSpan period, int subscriptionId)
+        {
+            var now = DateTime.UtcNow;
+            var endTime = now.Add(period);
+
+            var schedulings = await GetSchedulingsFromSubscription(subscriptionId);
+
+            var unadministeredSchedulings = new List<Scheduling>();
+
+            foreach (var scheduling in schedulings)
+            {
+                if (IsSchedulingWithinPeriod(scheduling, now, endTime))
+                {
+                    var hasAdministration = await _administrationService.GetAdministrationBySchedulingId(scheduling.Id);
+
+                    if (hasAdministration == null) // Se não tem administração
+                    {
+                        unadministeredSchedulings.Add(scheduling);
+                    }
+                }
+            }
+            return unadministeredSchedulings;
+        }
+
+        private bool IsSchedulingWithinPeriod(Scheduling scheduling, DateTime now, DateTime endTime)
+        {
+            // Constrói a data e hora do agendamento 
+            foreach (var dayOfWeek in scheduling.DaysOfWeek.Split(','))
+            {
+                if (Enum.TryParse(dayOfWeek, out DayOfWeek scheduledDay))
+                {
+                    var scheduledTime = new DateTime(now.Year, now.Month, now.Day, scheduling.Hour, scheduling.Minute, 0);
+                    scheduledTime = scheduledTime.AddDays((int)scheduledDay - (int)now.DayOfWeek);
+
+                    if (scheduledTime >= now && scheduledTime <= endTime)
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
         }
 
         private bool ValidateAccessToSubscription(int subscriptionId)

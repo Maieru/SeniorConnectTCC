@@ -1,11 +1,7 @@
-﻿using SeniorConnect.Domain.Entities;
+﻿using SeniorConnect.Bussiness.Entities;
+using SeniorConnect.Domain.Entities;
 using SeniorConnect.Domain.Exceptions;
 using SeniorConnect.Domain.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SeniorConnect.Bussiness.Entities_Services
 {
@@ -18,6 +14,7 @@ namespace SeniorConnect.Bussiness.Entities_Services
         private readonly SubscriptionService _subscriptionService;
         private readonly DeviceService _deviceService;
         private readonly IConfigurationChangeRegisterService _configurationChangeRegisterService;
+        private readonly AdministrationService _administrationService;
 
         private int? _currentSubscriptionId;
         public int? CurrentSubscriptionId
@@ -31,13 +28,17 @@ namespace SeniorConnect.Bussiness.Entities_Services
         }
 
         public MedicineService(IRepository<Medicine> medicineRepository, IRepository<MedicineDeviceAssociation> medicineAssociationRepository,
-                               SubscriptionService subscriptionService, DeviceService deviceService, IConfigurationChangeRegisterService configurationChangeRegisterService)
+                               DeviceService deviceService, IConfigurationChangeRegisterService configurationChangeRegisterService,
+                               AdministrationService administrationService,
+                               SubscriptionService subscriptionService)
         {
-            _subscriptionService = subscriptionService;
             _repository = medicineRepository;
             _deviceService = deviceService;
             _medicineAssociationRepository = medicineAssociationRepository;
             _configurationChangeRegisterService = configurationChangeRegisterService;
+            _administrationService = administrationService;
+            _subscriptionService = subscriptionService;
+
         }
 
         public async Task AddMedicine(Medicine medicine)

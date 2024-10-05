@@ -1,6 +1,7 @@
 ﻿using SeniorConnect.Bussiness.Entities;
 using SeniorConnect.Domain.Entities;
 using SeniorConnect.Domain.Enum;
+using SeniorConnect.Domain.Exceptions;
 using SeniorConnect.Domain.Interfaces;
 
 namespace SeniorConnect.Bussiness.Entities_Services
@@ -47,11 +48,19 @@ namespace SeniorConnect.Bussiness.Entities_Services
                 SubscriptionId = medicine.SubscriptionId,
                 MedicineId = medicine.Id,
                 SchedulingId = scheduling.Id,
-                DeviceId = device.Id,
+                DeviceId = device?.Id,
                 Reason = reason,
             };
 
             await _repository.AddAsync(administration);
+        }
+
+
+        public async Task<Administration> GetAdministrationBySchedulingId(int schedulingId)
+        {
+            var administration = await _repository.GetFirst(a => a.SchedulingId == schedulingId);
+
+            return administration;
         }
     }
 }
