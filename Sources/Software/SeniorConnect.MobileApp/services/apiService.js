@@ -1,12 +1,18 @@
 import axios from 'axios';
 
 class ApiService {
-    constructor(baseURL) {
+    constructor(baseURL, deviceGatewayUrl) {
         global.Buffer = require('buffer').Buffer;
 
         this.baseURL = baseURL;
+        this.deviceGatewayUrl = deviceGatewayUrl;
+
         this.axiousService = axios.create({
             baseURL: this.baseURL
+        });
+
+        this.axiousDeviceGatewayService = axios.create({
+            baseURL: this.deviceGatewayUrl
         });
 
         this.debug = false;
@@ -15,14 +21,14 @@ class ApiService {
     setCredentials(username, password) {
         this.token = undefined;
         this.expires = undefined;
+        this.device = undefined;
         this.username = username;
         this.password = password;
     }
 
     async getToken() {
-        if (!this.username || !this.password) {
+        if (!this.username || !this.password)
             return;
-        }
 
         if (!this.token || new Date() > new Date(this.expires)) {
             await this.axiousService.get('/v1/User/GetToken', {
@@ -49,15 +55,20 @@ class ApiService {
         return this.subscription;
     }
 
-    async getDevice(){
+    async getDevice() {
+        if (this.device != undefined)
+            return this.device;
+
         try {
-            response = await apiClient.get(`/v1/Device/GetDevices?subscriptionId=${this.getSubscription()}`);
+            response = await this.get(`/v1/Device/GetDevices?subscriptionId=${this.getSubscription()}`);
             if (response) {
-                const deviceId = response.data[0].id;
-                console.log('device id: ' + deviceId);
-                return deviceId;
+                const device = response.data[0];
+                console.log('device: ' + JSON.stringify(device));
+                this.device = device;
+                return this.device;
             } else {
                 console.log(JSON.stringify(response));
+                this.device = undefined;
                 console.error("Nenhum dispositivo encontrado.");
                 return null;
             }
@@ -65,6 +76,32 @@ class ApiService {
             console.error("Erro ao buscar o deviceId:", error);
             return null;
         }
+    }
+
+    async getDeviceId() {
+        if (this.device == undefined)
+            await this.getDevice();
+
+        return this.device.id;
+    }
+
+    async getDeviceName() {
+        if (this.device == undefined)
+            await this.getDevice();
+
+        return this.device.deviceName;
+    }
+
+    async getDevicePrimaryKey() {
+        if (this.device == undefined)
+            await this.getDevice();
+
+        return this.device.devicePrimaryKey;
+    }
+
+    async createNewDevice() {
+        let subscriptionId = this.getSubscription();
+        return await this.axiousDeviceGatewayService.post(`/v1/Provisioning/EnrollDevice?subscriptionId=${subscriptionId}`).catch(error => { this.trataErro(error) })
     }
 
     getTokenConfiguration(token) {
@@ -123,6 +160,6 @@ class ApiService {
     }
 }
 
-const apiClient = new ApiService('https://dev-seniorconnect-apiserver.azurewebsites.net');
+const apiClient = new ApiService('https://dev-seniorconnect-apiserver.azurewebsites.net', 'https://dev-seniorconnect-provisioninggateway.azurewebsites.net');
 
 export default apiClient;

@@ -33,6 +33,7 @@ const int TIME_TO_RESET = 3000;
 
 void setup() {
   Serial.begin(115200);
+  Serial.println("Starting...");
 
   initLittleFS();
 
@@ -100,7 +101,7 @@ void loop() {
         return;
       }
 
-      if (currentMillis - heartBeatMilis > 10000) {
+      if (currentMillis - heartBeatMilis > 500) {
         heartBeatString = "";
 
         for (int i = 0; i < lastSensorStatus.size(); i ++){

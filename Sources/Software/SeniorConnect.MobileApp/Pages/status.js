@@ -14,9 +14,11 @@ export default function StatusScreen({ navigation }) {
     const [gridData, setGridData] = useState(Array(9).fill(null));
     const [showDropdown, setShowDropdown] = useState(false);
     const [deviceId, setDeviceId] = useState(false);
+    const [deviceName, setDeviceName] = useState('');
+    const [devicePrimaryKey, setDevicePrimaryKey] = useState('');
 
     async function listaMedicamentos() {
-        const responseGetAllAssociated = await apiClient.get("/v1/Medicine/GetMedicinesAssociatedToDevice?deviceId=" + await apiClient.getDevice());
+        const responseGetAllAssociated = await apiClient.get("/v1/Medicine/GetMedicinesAssociatedToDevice?deviceId=" + await apiClient.getDeviceId());
         const medicamentosAssociados = responseGetAllAssociated.data;
 
         const responseGetMedicine = await apiClient.get("/v1/Medicine/GetAllFromSubscription?subscriptionId=" + apiClient.getSubscription());
@@ -41,8 +43,14 @@ export default function StatusScreen({ navigation }) {
     useEffect(() => {
         const fetchData = async () => {
             await listaMedicamentos();
-            const device = await apiClient.getDevice();
+
+            const device = await apiClient.getDeviceId();
+            const deviceName = await apiClient.getDeviceName();
+            const devicePrimaryKey = await apiClient.getDevicePrimaryKey();
+
             setDeviceId(device);
+            setDeviceName(deviceName);
+            setDevicePrimaryKey(devicePrimaryKey);
         }
         fetchData();
 
@@ -101,7 +109,7 @@ export default function StatusScreen({ navigation }) {
             {!deviceId ? (
                 <TouchableOpacity
                     style={[styles.statusCadastrarDispositivo]}
-                    onPress={() => navigation.navigate('Novo Dispositivo')}>
+                    onPress={() => navigation.navigate('Novo Dispositivo', { createNewDevice: true })}>
                     <Text >Cadastrar Dispositivo</Text>
                 </TouchableOpacity>
             ) : (
@@ -159,6 +167,18 @@ export default function StatusScreen({ navigation }) {
                                 )}
                             </TouchableOpacity>
                         ))}
+
+                        <TouchableOpacity
+                            style={[styles.statusCadastrarDispositivo]}
+                            onPress={() => navigation.navigate('Novo Dispositivo',
+                                {
+                                    createNewDevice: false,
+                                    deviceName: deviceName,
+                                    devicePrimaryKey: devicePrimaryKey
+                                })}
+                        >
+                            <Text>Reconfigurar Conexão</Text>
+                        </TouchableOpacity>
                     </View>
                 </TouchableOpacity>
             )}

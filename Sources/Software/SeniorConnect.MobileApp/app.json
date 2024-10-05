@@ -17,11 +17,19 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#ffffff",
+        "permissions": [
+          "ACCESS_WIFI_STATE",
+          "CHANGE_WIFI_STATE",
+          "ACCESS_FINE_LOCATION"
+        ]
       }
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "plugins": [
+      "react-native-wifi-reborn"
+    ]
   }
 }
