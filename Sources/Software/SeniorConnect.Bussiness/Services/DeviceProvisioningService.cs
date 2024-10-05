@@ -14,11 +14,13 @@ namespace SeniorConnect.Bussiness.Services
         private const string GLOBAL_ENDPOINT = "global.azure-devices-provisioning.net";
         private const string DEVICE_NAME_TEMPLATE = "seniorConnect-{0}";
 
+        private readonly LogService _logService;
         private readonly ISecretManager _secretManager;
 
-        public DeviceProvisioningService(ISecretManager secretManager)
+        public DeviceProvisioningService(ISecretManager secretManager, LogService logService)
         {
             _secretManager = secretManager;
+            _logService = logService;
         }
 
         public async Task<string> CreateDevice()
@@ -26,15 +28,15 @@ namespace SeniorConnect.Bussiness.Services
             var guid = Guid.NewGuid();
             var deviceName = string.Format(DEVICE_NAME_TEMPLATE, guid);
 
-            var deviceKey = ComputeDerivedSymmetricKey(Convert.FromBase64String(await _secretManager.GetDpsPrimaryKey()), deviceName);
-
-            using var security = new SecurityProviderSymmetricKey(deviceName, deviceKey, null);
-            using var transportHandler = GetTransportHandler();
-
-            var provClient = ProvisioningDeviceClient.Create(GLOBAL_ENDPOINT, await _secretManager.GetDpsIdScope(), security, transportHandler);
-
             try
             {
+                var deviceKey = ComputeDerivedSymmetricKey(Convert.FromBase64String(await _secretManager.GetDpsPrimaryKey()), deviceName);
+
+                using var security = new SecurityProviderSymmetricKey(deviceName, deviceKey, null);
+                using var transportHandler = GetTransportHandler();
+
+                var provClient = ProvisioningDeviceClient.Create(GLOBAL_ENDPOINT, await _secretManager.GetDpsIdScope(), security, transportHandler);
+
                 var result = await provClient.RegisterAsync();
 
                 if (result.Status != ProvisioningRegistrationStatusType.Assigned)
@@ -42,18 +44,27 @@ namespace SeniorConnect.Bussiness.Services
 
                 return result.DeviceId;
             }
-            catch
+            catch (Exception ex)
             {
+                await _logService.LogException(ex, new { deviceName });
                 return null;
             }
         }
 
         public async Task<string> GetDevicePrimaryKey(string deviceName)
         {
-            using (var registryManager = RegistryManager.CreateFromConnectionString("HostName=seniorconnectiothub.azure-devices.net;SharedAccessKeyName=registryRead;SharedAccessKey=IIi7IxLZpwWZ0xyk96XtcttraUKvH+dhUAIoTPCmqY4="))
+            try
             {
-                var device = await registryManager.GetDeviceAsync(deviceName);
-                return device.Authentication.SymmetricKey.PrimaryKey;
+                using (var registryManager = RegistryManager.CreateFromConnectionString(await _secretManager.GetIoTHubRegistryConnectionString()))
+                {
+                    var device = await registryManager.GetDeviceAsync(deviceName);
+                    return device.Authentication.SymmetricKey.PrimaryKey;
+                }
+            }
+            catch (Exception ex)
+            {
+                await _logService.LogException(ex, new { deviceName });
+                return null;
             }
         }
 
