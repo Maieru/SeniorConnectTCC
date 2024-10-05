@@ -15,6 +15,7 @@
 #define INCOMING_DATA_BUFFER_SIZE 32768
 #define MQTT_QOS1 1
 #define DO_NOT_RETAIN_MSG 0
+#define IOT_CONFIG_DEVICE_KEY returnDeviceKey()
 
 // Variables
 static az_iot_hub_client client;
@@ -28,14 +29,28 @@ static char mqtt_username[128];
 static char mqtt_password[200];
 static char telemetry_topic[128];
 static uint8_t sas_signature_buffer[256];
-static AzIoTSasToken sasToken(&client, AZ_SPAN_FROM_STR(IOT_CONFIG_DEVICE_KEY), AZ_SPAN_FROM_BUFFER(sas_signature_buffer), AZ_SPAN_FROM_BUFFER(mqtt_password));
+static az_span device_key_span;
+static AzIoTSasToken* sasToken;
 static char incoming_data[INCOMING_DATA_BUFFER_SIZE];
 
 void initializeIoTHubClient() {
   az_iot_hub_client_options options = az_iot_hub_client_options_default();
   options.user_agent = AZ_SPAN_FROM_STR(AZURE_SDK_CLIENT_USER_AGENT);
-  
+
   String device_id_string = returnDeviceName();
+
+  if (sasToken == nullptr) {
+    Serial.println("sasToken is not initialized.");
+  } else {
+    Serial.println("sasToken is initialized.");
+  }
+
+  if (sasToken == nullptr) {
+    Serial.println("Configuring new SAS TOKEN");
+    String deviceKeyString = returnDeviceKey();
+    az_span device_key_span = az_span_create((uint8_t*)deviceKeyString.c_str(), deviceKeyString.length());
+    sasToken = new AzIoTSasToken(&client, device_key_span, AZ_SPAN_FROM_BUFFER(sas_signature_buffer), AZ_SPAN_FROM_BUFFER(mqtt_password));
+  }
 
   char* device_id = new char[device_id_string.length() + 1];
   strcpy(device_id, device_id_string.c_str());
@@ -123,7 +138,7 @@ static esp_err_t mqtt_event_handler(esp_mqtt_event_handle_t event) {
 }
 
 int initializeMqttClient() {
-  if (sasToken.Generate(SAS_TOKEN_DURATION_IN_MINUTES) != 0) {
+  if (sasToken->Generate(SAS_TOKEN_DURATION_IN_MINUTES) != 0) {
     Serial.println("Failed generating SAS token");
     return 1;
   }
@@ -134,7 +149,7 @@ int initializeMqttClient() {
   mqtt_config.port = mqtt_port;
   mqtt_config.client_id = mqtt_client_id;
   mqtt_config.username = mqtt_username;
-  mqtt_config.password = (const char*)az_span_ptr(sasToken.Get());
+  mqtt_config.password = (const char*)az_span_ptr(sasToken->Get());
 
   mqtt_config.keepalive = 30;
   mqtt_config.disable_clean_session = 0;
