@@ -120,7 +120,6 @@ export default function HorariosMedicineScreen({ navigation, route }) {
 
     return (
         <View style={styles.containerMenu}>
-            <HeaderReturn title="Novo Horário" navigation={navigation} returnPage={"NewMedicine"} />
             <View style={styles.content}>
                 <View style={styles.container}>
                     <View style={stylesScheduling.timeContainer}>

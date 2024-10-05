@@ -13,24 +13,38 @@ import NewMedicineScreen from './Pages/newMedicine.js';
 import DosageReportScreen from './Pages/dosageReport.js';
 import AdherenceReportScreen from './Pages/adherenceReport.js';
 import HorariosMedicineScreen from './Pages/newScheduling.js';
+import NovoDispositivoScreen from './Pages/novoDispositivo.js';
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Login">
-        <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
-        <Stack.Screen name="Medicine" component={MedicineScreen} options={{ headerShown: false }} />
-        <Stack.Screen name="Status" component={StatusScreen} options={{ headerShown: false }} />
-        <Stack.Screen name="Reports" component={ReportsScreen} options={{ headerShown: false }} />
+      <Stack.Navigator initialRouteName="Login"
+        screenOptions={{
+          headerStyle: {
+            backgroundColor: '#5082FE',
+            height: 80,
+          },
+          headerTintColor: '#000',
+          headerTitleStyle: {
+            fontSize: 20,
+            fontWeight: 'bold', 
+            textAlign: 'center',
+          },
+        }}>
+        <Stack.Screen name="Home" component={HomeScreen} options={{ headerBackVisible: false}} />
+        <Stack.Screen name="Medicamentos" component={MedicineScreen} options={{ headerBackVisible: false}} />
+        <Stack.Screen name="Dispositivo" component={StatusScreen} options={{ headerBackVisible: false}} />
+        <Stack.Screen name="Relatorios" component={ReportsScreen} options={{ headerBackVisible: false}} />
         <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Cadastro" component={CadastroScreen} options={{ headerShown: false }} />
-        <Stack.Screen name="NewMedicine" component={NewMedicineScreen} options={{ headerShown: false }} />
-        <Stack.Screen name="DosageReport" component={DosageReportScreen} options={{ headerShown: false }} />
-        <Stack.Screen name="AdherenceReport" component={AdherenceReportScreen} options={{ headerShown: false }} />
-        <Stack.Screen name="HorariosMedicine" component={HorariosMedicineScreen} options={{ headerShown: false }} />
-        
+        <Stack.Screen name="Novo Medicamento" component={NewMedicineScreen}/>
+        <Stack.Screen name="Relatorio de Dosagem" component={DosageReportScreen} />
+        <Stack.Screen name="Relatorio de Adesão" component={AdherenceReportScreen} />
+        <Stack.Screen name="Novo Horario" component={HorariosMedicineScreen} />
+        <Stack.Screen name="Novo Dispositivo" component={NovoDispositivoScreen} />
+
       </Stack.Navigator>
     </NavigationContainer>
 

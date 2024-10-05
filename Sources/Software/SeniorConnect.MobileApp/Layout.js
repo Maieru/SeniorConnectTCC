@@ -65,7 +65,7 @@ function RemediosMedicine({ nome, id, navigation, medicine, onDelete }) {
       </View>
       <View style={styles.medicineScrollContainerEnd}>
         <TouchableOpacity
-          onPress={async () => await navigation.navigate('NewMedicine', { medicine })}
+          onPress={async () => await navigation.navigate('Novo Medicamento', { medicine })}
           style={styles.medicineActionsImage}>
           <Image
             source={require('./assets/edit.png')}
@@ -100,7 +100,7 @@ function HorariosMedicine({ horario, diasSemana, id, medicamentoId, navigation }
       <View style={stylesNewMedicine.actionsContainer}>
         <TouchableOpacity
           style={stylesNewMedicine.actionButton}
-          onPress={() => navigation.navigate('HorariosMedicine', { medicine: medicamentoId, scheduling: id })}
+          onPress={() => navigation.navigate('Novo Horario', { medicine: medicamentoId, scheduling: id })}
         >
           <Image
             source={require('./assets/edit.png')}
@@ -163,7 +163,7 @@ function Footer({ navigation }) {
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.footerItem}
-        onPress={() => navigation.navigate('Medicine')}>
+        onPress={() => navigation.navigate('Medicamentos')}>
         <View style={styles.iconContainer}>
           <Image
             source={require('./assets/Footer/medicine.png')}
@@ -173,7 +173,7 @@ function Footer({ navigation }) {
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.footerItem}
-        onPress={() => navigation.navigate('Status')}>
+        onPress={() => navigation.navigate('Dispositivo')}>
         <View style={styles.iconContainer}>
           <Image
             source={require('./assets/Footer/agenda.png')}
@@ -182,7 +182,7 @@ function Footer({ navigation }) {
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.footerItem}
-        onPress={() => navigation.navigate('Reports')}>
+        onPress={() => navigation.navigate('Relatorios')}>
         <View style={styles.iconContainer}>
           <Image
             source={require('./assets/Footer/chart.png')}

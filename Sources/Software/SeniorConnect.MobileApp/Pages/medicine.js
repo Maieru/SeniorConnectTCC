@@ -51,10 +51,9 @@ export default function MedicineScreen({ navigation }) {
 
   return (
     <View style={styles.containerMenu}>
-      <Header title="Medicamentos" navigation={navigation} />
       <View style={styles.content}>
         <TouchableOpacity
-          onPress={() => navigation.navigate('NewMedicine', { medicine: newMedicamentoModel })}
+          onPress={() => navigation.navigate('Novo Medicamento', { medicine: newMedicamentoModel })}
           style={styles.medicineButton}>
           <Text style={styles.basicButtonText}>Novo Medicamento</Text>
         </TouchableOpacity>

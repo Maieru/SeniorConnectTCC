@@ -175,9 +175,9 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingStart: 10,
     alignItems: 'stretch',
-    justifyContent:'space-around',
+    justifyContent: 'space-around',
   },
-  horarioMedicine:{
+  horarioMedicine: {
     fontSize: 15,
     alignSelf: 'left',
     color: '#333',
@@ -276,7 +276,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 10,
     marginHorizontal: '20%',
-    marginBottom: 30, // Aumenta o espaço inferior para evitar que o botão fique colado ao footer
+    marginBottom: 30,
   },
 
   exportButtonText: {
@@ -285,7 +285,7 @@ const styles = StyleSheet.create({
   },
   dropdownContainer: {
     position: 'absolute',
-    bottom: 110, 
+    bottom: 110,
     left: '50%',
     transform: [{ translateX: -50 }],
     backgroundColor: '#fff',
@@ -296,29 +296,34 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 5,
     elevation: 5,
-    maxHeight: 150, 
-    zIndex: 1, 
-},
-dropdownItem: {
+    maxHeight: 150,
+    zIndex: 1,
+  },
+  dropdownItem: {
     padding: 10,
     borderBottomWidth: 1,
     borderBottomColor: '#ccc',
-},
-dropdownItemText: {
+  },
+  dropdownItemText: {
     fontSize: 14,
     color: '#333',
-},
-statusExcluirButton: {
-  backgroundColor: '#ff4d4d',
-  padding: 10,
-  borderRadius: 5,
-  marginTop: 10,
-},
-statusExcluirButtonText: {
-  color: '#fff',
-  textAlign: 'center',
-  fontWeight: 'bold',
-},
+  },
+  statusExcluirButton: {
+    backgroundColor: '#ff4d4d',
+    padding: 10,
+    borderRadius: 5,
+    marginTop: 10,
+  },
+  statusExcluirButtonText: {
+    color: '#fff',
+    textAlign: 'center',
+    fontWeight: 'bold',
+  },
+  statusCadastrarDispositivo: {
+    backgroundColor: '#7DDA58',
+    padding: 20,
+    margin: 20
+  }
 });
 
 export default styles;
