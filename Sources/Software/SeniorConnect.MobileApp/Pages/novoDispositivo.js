@@ -10,11 +10,10 @@ import axios from 'axios';
 export default function NovoDispositivo({ navigation, route }) {
     const [ssid, setSsid] = useState('');
     const [password, setPassword] = useState('');
-    const [errorMessage, setErrorMessage] = useState('');
 
     const SENIOR_CONNECT_DEVICE_SSID = 'SENIOR_CONNECT_DEVICE';
     const SENIOR_CONNECT_DEVICE_AP_PASSWORD = 'SENIOR_CONNECT_750da811de3d4aa8bd8a78168f21fff9';
-    const SENIOR_CONNECT_DEVICE_DEFAULT_IP = "192.168.4.1";
+    const SENIOR_CONNECT_DEVICE_DEFAULT_IP = "http://192.168.4.1";
 
     useEffect(() => {
         if (Platform.OS === 'android') {
@@ -87,13 +86,18 @@ export default function NovoDispositivo({ navigation, route }) {
                     'Content-Type': 'multipart/form-data',
                 },
             }).then(response => {
-                setErrorMessage(JSON.stringify(response));
-                Alert.alert(response);
-                console.log(response);
-            }).catch(error => {
-                setErrorMessage(JSON.stringify(error));
-                console.log(error);
-                Alert.alert(JSON.stringify(error));
+                console.log(response.data);
+                navigation.navigate('Dispositivo');
+            }).catch(erro => {
+                var mensagemErro = ''
+                mensagemErro += erro.toString();
+        
+                if (erro.response)
+                    mensagemErro += ' - ' + erro.response.data;
+        
+                    mensagemErro += ' ---- Detalhes da Requisição ---- ' + JSON.stringify(erro.request);
+        
+                console.log(mensagemErro);
             });
         });
 
@@ -125,12 +129,6 @@ export default function NovoDispositivo({ navigation, route }) {
                 >
                     <Text style={stylesDispositivo.buttonText}>Cadastrar Dispositivo</Text>
                 </TouchableOpacity>
-                    <ScrollView>
-                        <Text style={stylesDispositivo.text}>
-                            Isso é um teste
-                            {errorMessage}
-                        </Text>
-                    </ScrollView>
             </View>
             <Footer navigation={navigation} />
         </View>

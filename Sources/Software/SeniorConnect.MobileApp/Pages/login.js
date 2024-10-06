@@ -11,7 +11,6 @@ export default function LoginScreen({ navigation }) {
 
 
   async function login() {
-
     let objUsuario = {
       username: usuario,
       password: senha,
@@ -19,11 +18,11 @@ export default function LoginScreen({ navigation }) {
 
     apiClient.setCredentials(usuario, senha);
     let token = await apiClient.getToken();
- 
+
     if (token != undefined) {
       navigation.navigate('Home')
 
-    }else{
+    } else {
       Alert.alert("Usuário Inválido!")
     }
   }

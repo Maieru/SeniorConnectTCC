@@ -29,17 +29,17 @@ export default function App() {
           headerTintColor: '#000',
           headerTitleStyle: {
             fontSize: 20,
-            fontWeight: 'bold', 
+            fontWeight: 'bold',
             textAlign: 'center',
           },
         }}>
-        <Stack.Screen name="Home" component={HomeScreen} options={{ headerBackVisible: false}} />
-        <Stack.Screen name="Medicamentos" component={MedicineScreen} options={{ headerBackVisible: false}} />
-        <Stack.Screen name="Dispositivo" component={StatusScreen} options={{ headerBackVisible: false}} />
-        <Stack.Screen name="Relatorios" component={ReportsScreen} options={{ headerBackVisible: false}} />
+        <Stack.Screen name="Home" component={HomeScreen} options={{ headerBackVisible: false }} />
+        <Stack.Screen name="Medicamentos" component={MedicineScreen} options={{ headerBackVisible: false }} />
+        <Stack.Screen name="Dispositivo" component={StatusScreen} options={{ headerBackVisible: false }} />
+        <Stack.Screen name="Relatorios" component={ReportsScreen} options={{ headerBackVisible: false }} />
         <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Cadastro" component={CadastroScreen} options={{ headerShown: false }} />
-        <Stack.Screen name="Novo Medicamento" component={NewMedicineScreen}/>
+        <Stack.Screen name="Novo Medicamento" component={NewMedicineScreen} />
         <Stack.Screen name="Relatorio de Dosagem" component={DosageReportScreen} />
         <Stack.Screen name="Relatorio de Adesão" component={AdherenceReportScreen} />
         <Stack.Screen name="Novo Horario" component={HorariosMedicineScreen} />
