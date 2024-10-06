@@ -1,3 +1,4 @@
+#include "HardwareSerial.h"
 // Includes
 #include "littleFSHelper.h"
 #include <LittleFS.h>
@@ -24,6 +25,10 @@ String readFile(fs::FS& fs, const char* path) {
     fileContent = file.readStringUntil('\n');
     break;
   }
+
+  Serial.println("File content: ");
+  Serial.println(fileContent);
+
   return fileContent;
 }
 

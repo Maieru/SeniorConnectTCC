@@ -11,5 +11,6 @@ bool initWiFi();
 void initWifiConfigurationAccessPoint();
 void resetWifiConfiguration();
 String returnDeviceName();
+String returnDeviceKey();
 
 #endif

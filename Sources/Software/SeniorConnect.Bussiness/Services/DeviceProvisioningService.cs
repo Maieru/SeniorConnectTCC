@@ -12,7 +12,9 @@ namespace SeniorConnect.Bussiness.Services
     public class DeviceProvisioningService
     {
         private const string GLOBAL_ENDPOINT = "global.azure-devices-provisioning.net";
-        private const string DEVICE_NAME_TEMPLATE = "seniorConnect-{0}";
+        private const string DEVICE_NAME_TEMPLATE = "SCD{0}";
+        private const int DEVICE_NAME_MAX_LENGHT = 14; // Odeio a Microsoft (brincadeira, me contrata). Por algum motivo, o SDK do Azure IoT Hub
+                                                       // não aceita nomes de dispositivos com mais de 14 caracteres.
 
         private readonly LogService _logService;
         private readonly ISecretManager _secretManager;
@@ -25,8 +27,8 @@ namespace SeniorConnect.Bussiness.Services
 
         public async Task<string> CreateDevice()
         {
-            var guid = Guid.NewGuid();
-            var deviceName = string.Format(DEVICE_NAME_TEMPLATE, guid);
+            var guid = Guid.NewGuid().ToString().Replace("-", "");
+            var deviceName = string.Format(DEVICE_NAME_TEMPLATE, guid).Substring(0, DEVICE_NAME_MAX_LENGHT);
 
             try
             {

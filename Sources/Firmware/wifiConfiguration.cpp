@@ -1,3 +1,4 @@
+#include "LittleFS.h"
 // Includes
 #include "wifiConfiguration.h"
 #include "littleFSHelper.h"
@@ -12,22 +13,26 @@ IPAddress localGateway;
 IPAddress subnet(255, 255, 0, 0);
 
 const char* CONFIGURATION_ACCESS_POINT_NAME = "SENIOR_CONNECT_DEVICE";
+const char* CONFIGURATION_ACCESS_POINT_PASSWORD = "SENIOR_CONNECT_750da811de3d4aa8bd8a78168f21fff9";
 bool configurationAccessPointStarted = false;
 
 // -- Wifi configuration
 String ssid;
 String pass;
 String deviceName;
+String primaryKey;
 
 // -- Configuration parameters
 const char* PARAM_SSID = "ssid";
 const char* PARAM_PASSWORD = "password";
 const char* PARAM_DEVICE_NAME = "deviceName";
+const char* PARAM_DEVICE_PRIMARY_KEY = "devicePrimaryKey";
 
 // -- Configuration files parameters
 const char* SSID_CONFIGURATION_FILE = "/ssid.txt";
 const char* PASSWORD_CONFIGURATION_FILE = "/password.txt";
 const char* DEVICE_NAME_CONFIGURATION_FILE = "/deviceName.txt";
+const char* DEVICE_PRIMARY_KEY_CONFIGURATION_FILE = "/primaryKey.txt";
 
 // -- Timing variables
 const long TIMEOUT_WIFI_CONNECTION = 10000;
@@ -75,7 +80,7 @@ void initWifiConfigurationAccessPoint() {
   }
 
   Serial.println("Setting AP (Access Point)");
-  WiFi.softAP(CONFIGURATION_ACCESS_POINT_NAME, NULL);
+  WiFi.softAP(CONFIGURATION_ACCESS_POINT_NAME, CONFIGURATION_ACCESS_POINT_PASSWORD);
 
   IPAddress IP = WiFi.softAPIP();
   Serial.print("AP IP address: ");
@@ -110,6 +115,14 @@ void initWifiConfigurationAccessPoint() {
           // Write file to save value
           writeFile(LittleFS, DEVICE_NAME_CONFIGURATION_FILE, deviceName.c_str());
         }
+
+        if (p->name() == PARAM_DEVICE_PRIMARY_KEY) {
+          primaryKey = p->value().c_str();
+          Serial.print("Primary key set to: ");
+          Serial.println(primaryKey);
+          // Write file to save value
+          writeFile(LittleFS, DEVICE_PRIMARY_KEY_CONFIGURATION_FILE, primaryKey.c_str());
+        }
       }
     }
     request->send(200, "text/plain", "Done. ESP will restart");
@@ -125,8 +138,13 @@ void resetWifiConfiguration() {
   LittleFS.remove(SSID_CONFIGURATION_FILE);
   LittleFS.remove(PASSWORD_CONFIGURATION_FILE);
   LittleFS.remove(DEVICE_NAME_CONFIGURATION_FILE);
+  LittleFS.remove(DEVICE_PRIMARY_KEY_CONFIGURATION_FILE);
 }
 
 String returnDeviceName() {
   return readFile(LittleFS, DEVICE_NAME_CONFIGURATION_FILE);
+}
+
+String returnDeviceKey(){
+  return readFile(LittleFS, DEVICE_PRIMARY_KEY_CONFIGURATION_FILE);
 }
