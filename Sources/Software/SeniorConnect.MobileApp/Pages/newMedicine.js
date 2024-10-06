@@ -129,6 +129,7 @@ export default function MedicineScreen({ navigation, route }) {
                         </TouchableOpacity>
                     </View>
                 </View>
+                {medicamentoId != null && (
                 <View style={styles.container}>
                     <View style={styles.sectionContainer}>
                         <Text style={styles.basicLabel}>Horários</Text>
@@ -151,6 +152,7 @@ export default function MedicineScreen({ navigation, route }) {
                         </ScrollView>
                     </View>
                 </View>
+                )}
             </View>
             <Footer navigation={navigation} />
         </View>
