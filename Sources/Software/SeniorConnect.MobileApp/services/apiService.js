@@ -15,7 +15,7 @@ class ApiService {
             baseURL: this.deviceGatewayUrl
         });
 
-        this.debug = false;
+        this.debug = true;
     }
 
     setCredentials(username, password) {

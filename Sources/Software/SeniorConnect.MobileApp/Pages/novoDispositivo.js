@@ -1,16 +1,20 @@
 import styles from '../styles.js';
 import stylesDispositivo from '../stylesNovoDispositivo.js'
-import { Text, View, TouchableOpacity, TextInput, Platform, PermissionsAndroid, Alert } from 'react-native';
+import { Text, View, TouchableOpacity, TextInput, Platform, PermissionsAndroid, Alert, ScrollView } from 'react-native';
 import { Footer } from '../Layout.js';
 import apiClient from '../services/apiService.js';
 import React, { useState, useEffect } from 'react';
 import WifiManager from 'react-native-wifi-reborn';
+import axios from 'axios';
 
 export default function NovoDispositivo({ navigation, route }) {
     const [ssid, setSsid] = useState('');
     const [password, setPassword] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
 
     const SENIOR_CONNECT_DEVICE_SSID = 'SENIOR_CONNECT_DEVICE';
+    const SENIOR_CONNECT_DEVICE_AP_PASSWORD = 'SENIOR_CONNECT_750da811de3d4aa8bd8a78168f21fff9';
+    const SENIOR_CONNECT_DEVICE_DEFAULT_IP = "192.168.4.1";
 
     useEffect(() => {
         if (Platform.OS === 'android') {
@@ -27,19 +31,6 @@ export default function NovoDispositivo({ navigation, route }) {
         } catch (err) {
             console.warn(err);
         }
-    };
-
-    const connectToWifi = () => {
-        const ssid = 'Your_SSID';
-        const password = 'Your_Password';
-
-        WifiManager.connectToProtectedSSID(ssid, password, false)
-            .then(() => {
-                console.log('Connected successfully!');
-            })
-            .catch((error) => {
-                console.log('Connection failed!', error);
-            });
     };
 
     const requestLocationPermission = async () => {
@@ -82,8 +73,28 @@ export default function NovoDispositivo({ navigation, route }) {
             deviceInformation.devicePrimaryKey = route.params.devicePrimaryKey;
         }
 
-        WifiManager.connectToSSID(SENIOR_CONNECT_DEVICE_SSID).then(() => {
-            console.log('Connected successfully!');    
+        await WifiManager.connectToProtectedSSID(SENIOR_CONNECT_DEVICE_SSID, SENIOR_CONNECT_DEVICE_AP_PASSWORD, false, false).then(async () => {
+            const formData = new FormData();
+            formData.append('ssid', deviceInformation.ssid);
+            formData.append('password', deviceInformation.password);
+            formData.append('deviceName', deviceInformation.deviceName);
+            formData.append('devicePrimaryKey', deviceInformation.devicePrimaryKey);
+
+            console.log(formData);
+
+            await axios.post(`${SENIOR_CONNECT_DEVICE_DEFAULT_IP}`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            }).then(response => {
+                setErrorMessage(JSON.stringify(response));
+                Alert.alert(response);
+                console.log(response);
+            }).catch(error => {
+                setErrorMessage(JSON.stringify(error));
+                console.log(error);
+                Alert.alert(JSON.stringify(error));
+            });
         });
 
         console.log(deviceInformation);
@@ -114,7 +125,12 @@ export default function NovoDispositivo({ navigation, route }) {
                 >
                     <Text style={stylesDispositivo.buttonText}>Cadastrar Dispositivo</Text>
                 </TouchableOpacity>
-
+                    <ScrollView>
+                        <Text style={stylesDispositivo.text}>
+                            Isso é um teste
+                            {errorMessage}
+                        </Text>
+                    </ScrollView>
             </View>
             <Footer navigation={navigation} />
         </View>

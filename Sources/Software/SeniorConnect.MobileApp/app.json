@@ -23,13 +23,22 @@
           "CHANGE_WIFI_STATE",
           "ACCESS_FINE_LOCATION"
         ]
-      }
+      },
+      "permissions": [
+        "android.permission.ACCESS_FINE_LOCATION"
+      ],
+      "package": "com.maierufaculdade.SeniorConnectApp"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
       "react-native-wifi-reborn"
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "e32c67b8-0c9d-460d-92e2-5855e5e9a5d4"
+      }
+    }
   }
 }
