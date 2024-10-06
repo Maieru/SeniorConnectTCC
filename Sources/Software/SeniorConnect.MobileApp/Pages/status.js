@@ -1,11 +1,12 @@
 // status.js
 import { StatusBar } from 'expo-status-bar';
 import { Text, View, TouchableOpacity, Image, Modal, FlatList } from 'react-native';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from '../styles.js';
 import style from '../stylesStatus.js';
 import { Header, Footer } from '../Layout.js';
 import apiClient from '../services/apiService.js';
+import { useFocusEffect } from '@react-navigation/native';
 
 export default function StatusScreen({ navigation }) {
     const [medicamentosAssociados, setMedicamentosAssociados] = useState([]);
@@ -69,12 +70,11 @@ export default function StatusScreen({ navigation }) {
 
         newGridData[selectedIndex] = medicamento;
         setGridData(newGridData);
-        await listaMedicamentos();
+        listaMedicamentos();
     }
 
 
     const criarObjetoMedicamento = (medicamento, position) => {
-        const deviceId = 2;
         return {
             medicineId: medicamento.id,
             deviceId: deviceId,
@@ -83,7 +83,6 @@ export default function StatusScreen({ navigation }) {
     };
 
     const criarObjetoMedicamentoRemoverAssociacao = (medicamento, position) => {
-        const deviceId = 2;
         return {
             medicineId: medicamento.medicineId,
             deviceId: deviceId,
