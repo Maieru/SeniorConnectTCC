@@ -13,17 +13,21 @@ namespace SeniorConnect.Bussiness.Services
     public class StorageService : IStorageService
     {
         private readonly string _connectionString;
-        
+
         public StorageService(string connectionString)
         {
-            _connectionString = connectionString;            
+            _connectionString = connectionString;
         }
 
         public async Task<bool> CreateEntryInQueue(string message)
         {
             try
             {
-                var queueServiceClient = new QueueServiceClient(_connectionString);
+                var queueServiceClient = new QueueServiceClient(_connectionString, new QueueClientOptions
+                {
+                    MessageEncoding = QueueMessageEncoding.Base64
+                });
+
                 var queueClient = queueServiceClient.GetQueueClient("configurationchangequeue");
                 await queueClient.CreateIfNotExistsAsync();
                 return await queueClient.SendMessageAsync(message) != null;
