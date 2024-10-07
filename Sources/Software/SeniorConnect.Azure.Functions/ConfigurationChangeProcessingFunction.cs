@@ -23,22 +23,30 @@ namespace SeniorConnect.Azure.Functions
         [Function(nameof(ConfigurationChangeProcessingFunction))]
         public async Task Run([QueueTrigger("configurationchangequeue")] QueueMessage message)
         {
-            if (message == null || message.Body == null)
+            try
             {
-                await _logger.LogInformation("Queue triggered with empty message.");
-                return;
+                if (message == null || message.Body == null)
+                {
+                    await _logger.LogInformation("Queue triggered with empty message.");
+                    return;
+                }
+
+                var content = message.Body.ToString();
+                var configurationChangeRequest = JsonConvert.DeserializeObject<ConfigurationChangeRequest>(content);
+
+                if (configurationChangeRequest == null)
+                {
+                    await _logger.LogInformation($"Failed to deserialize message. Message body: {content}");
+                    return;
+                }
+
+                await _configurationChangeService.ProcessConfigurationChangeRequest(configurationChangeRequest);
             }
-
-            var content = message.Body.ToString();
-            var configurationChangeRequest = JsonConvert.DeserializeObject<ConfigurationChangeRequest>(content);
-
-            if (configurationChangeRequest == null)
+            catch (Exception ex)
             {
-                await _logger.LogInformation($"Failed to deserialize message. Message body: {content}");
-                return;
+                await _logger.LogException(ex, message);
+                throw;
             }
-
-            await _configurationChangeService.ProcessConfigurationChangeRequest(configurationChangeRequest);
         }
     }
 }
