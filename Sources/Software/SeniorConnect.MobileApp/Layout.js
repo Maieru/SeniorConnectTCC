@@ -131,7 +131,7 @@ function deletaSchedule(id, navigation) {
       [
         {
           text: "OK",
-          onPress: () => navigation.navigate('Medicine')
+          onPress: () => navigation.navigate('Novo Medicamento')
         }
       ]
     );
@@ -142,7 +142,7 @@ function deletaSchedule(id, navigation) {
       [
         {
           text: "OK",
-          onPress: () => navigation.navigate('Medicine')
+          onPress: () => navigation.navigate('Novo Medicamento')
         }
       ]
     );

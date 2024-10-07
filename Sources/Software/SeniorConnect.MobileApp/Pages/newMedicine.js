@@ -14,7 +14,7 @@ export default function MedicineScreen({ navigation, route }) {
 
     async function listaHorarios() {
         const response = await apiClient.get("/v1/Scheduling/GetByMedicine?medicineId=" + medicine.id);
-        
+
         if (response && response.data) {
             setHorarios(response.data);
         } else {
@@ -24,12 +24,12 @@ export default function MedicineScreen({ navigation, route }) {
 
     useFocusEffect(
         React.useCallback(() => {
-          const fetchHorarios = async () => {
-            await listaHorarios();
-          };
-          fetchHorarios();
+            const fetchHorarios = async () => {
+                await listaHorarios();
+            };
+            fetchHorarios();
         }, [])
-      );
+    );
 
     let medicine = {};
     const [entidadeCarregada, setEntidadeCarregada] = useState(false);
@@ -67,7 +67,7 @@ export default function MedicineScreen({ navigation, route }) {
                 [
                     {
                         text: "OK",
-                        onPress: () => navigation.navigate('Medicine')
+                        onPress: () => navigation.navigate('Medicamentos')
                     }
                 ]
             );
@@ -81,7 +81,7 @@ export default function MedicineScreen({ navigation, route }) {
                 [
                     {
                         text: "OK",
-                        onPress: () => navigation.navigate('Medicine')
+                        onPress: () => navigation.navigate('Medicamentos')
                     }
                 ]
             );
@@ -129,11 +129,12 @@ export default function MedicineScreen({ navigation, route }) {
                         </TouchableOpacity>
                     </View>
                 </View>
+                {medicamentoId != null && (
                 <View style={styles.container}>
                     <View style={styles.sectionContainer}>
                         <Text style={styles.basicLabel}>Horários</Text>
                         <TouchableOpacity
-                            onPress={() => navigation.navigate('Novo Horario', {medicine: medicamentoId})}
+                            onPress={() => navigation.navigate('Novo Horario', { medicine: medicamentoId })}
                             style={styles.newMedicineButton}>
                             <Text style={styles.basicButtonText}>Novo Horário/Dosagem</Text>
                         </TouchableOpacity>
@@ -143,7 +144,7 @@ export default function MedicineScreen({ navigation, route }) {
                                     key={horario.id}
                                     horario={`${horario.hour}:${horario.minute < 10 ? '0' + horario.minute : horario.minute}`}
                                     diasSemana={formatarDiasSemana(horario.daysOfWeek)}
-                                    id ={horario.id}
+                                    id={horario.id}
                                     medicamentoId={medicamentoId}
                                     navigation={navigation}
                                 />
@@ -151,6 +152,7 @@ export default function MedicineScreen({ navigation, route }) {
                         </ScrollView>
                     </View>
                 </View>
+                )}
             </View>
             <Footer navigation={navigation} />
         </View>
