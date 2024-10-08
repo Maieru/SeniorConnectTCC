@@ -2,7 +2,6 @@ import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Image, Alert } from 'react-native';
 import CheckBox from 'expo-checkbox';
 import styles from './styles.js';
-import stylesNewMedicine from './stylesNewMedicine.js';
 import apiClient from './services/apiService.js';
 import { ScreenStackHeaderBackButtonImage } from 'react-native-screens';
 
@@ -84,71 +83,6 @@ function RemediosMedicine({ nome, id, navigation, medicine, onDelete }) {
   )
 }
 
-function HorariosMedicine({ horario, diasSemana, id, medicamentoId, navigation }) {
-  return (
-    <View style={stylesNewMedicine.scheduleContainer}>
-      <View style={stylesNewMedicine.horarioContainer}>
-        <Text style={stylesNewMedicine.horarioText}>{horario}</Text>
-      </View>
-      <View style={stylesNewMedicine.diasContainer}>
-        <View style={stylesNewMedicine.diasSemanaContainer}>
-          {diasSemana.split('').map((dia, index) => (
-            <Text key={index} style={stylesNewMedicine.diaSemana}>{dia}</Text>
-          ))}
-        </View>
-      </View>
-      <View style={stylesNewMedicine.actionsContainer}>
-        <TouchableOpacity
-          style={stylesNewMedicine.actionButton}
-          onPress={() => navigation.navigate('Novo Horario', { medicine: medicamentoId, scheduling: id })}
-        >
-          <Image
-            source={require('./assets/edit.png')}
-            style={stylesNewMedicine.actionIcon}
-          />
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={stylesNewMedicine.actionButton}
-          onPress={async () => await deletaSchedule(id, navigation)}
-        >
-          <Image
-            source={require('./assets/delete.png')}
-            style={stylesNewMedicine.actionIcon}
-          />
-        </TouchableOpacity>
-      </View>
-    </View>
-  )
-}
-
-function deletaSchedule(id, navigation) {
-  try {
-    apiClient.delete("/v1/Scheduling/Delete?schedulingId=" + id)
-    Alert.alert(
-      "Feito!",
-      "Horário deletado como solicitado!",
-      [
-        {
-          text: "OK",
-          onPress: () => navigation.navigate('Novo Medicamento')
-        }
-      ]
-    );
-  } catch {
-    Alert.alert(
-      "Atenção!",
-      "Houve um erro inesperado, favor contatar o grupo!",
-      [
-        {
-          text: "OK",
-          onPress: () => navigation.navigate('Novo Medicamento')
-        }
-      ]
-    );
-  }
-}
-
 function Footer({ navigation }) {
   return (
     <View style={styles.footer}>
@@ -193,4 +127,4 @@ function Footer({ navigation }) {
   )
 }
 
-export { Header, Footer, HeaderReturn, RemediosHome, RemediosMedicine, HorariosMedicine };
+export { Header, Footer, HeaderReturn, RemediosHome, RemediosMedicine };

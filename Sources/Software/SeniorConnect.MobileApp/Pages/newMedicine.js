@@ -1,10 +1,11 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView, TextInput, Alert } from 'react-native';
 import styles from '../styles.js';
-import { HeaderReturn, Footer, HorariosMedicine } from '../Layout.js';
+import { HeaderReturn, Footer} from '../Layout.js';
 import React, { useState, useEffect } from 'react';
 import apiClient from '../services/apiService.js';
 import { useFocusEffect } from '@react-navigation/native';
+import stylesNewMedicine from '../stylesNewMedicine.js';
 
 export default function MedicineScreen({ navigation, route }) {
     const [medicamentoId, setMedicamentoId] = useState();
@@ -82,6 +83,73 @@ export default function MedicineScreen({ navigation, route }) {
                     {
                         text: "OK",
                         onPress: () => navigation.navigate('Medicamentos')
+                    }
+                ]
+            );
+        }
+    }
+
+    function HorariosMedicine({ horario, diasSemana, id, medicamentoId, navigation }) {
+        return (
+          <View style={stylesNewMedicine.scheduleContainer}>
+            <View style={stylesNewMedicine.horarioContainer}>
+              <Text style={stylesNewMedicine.horarioText}>{horario}</Text>
+            </View>
+            <View style={stylesNewMedicine.diasContainer}>
+              <View style={stylesNewMedicine.diasSemanaContainer}>
+                {diasSemana.split('').map((dia, index) => (
+                  <Text key={index} style={stylesNewMedicine.diaSemana}>{dia}</Text>
+                ))}
+              </View>
+            </View>
+            <View style={stylesNewMedicine.actionsContainer}>
+              <TouchableOpacity
+                style={stylesNewMedicine.actionButton}
+                onPress={() => navigation.navigate('Novo Horario', { medicine: medicamentoId, scheduling: id })}
+              >
+                <Image
+                  source={require('../assets/edit.png')}
+                  style={stylesNewMedicine.actionIcon}
+                />
+              </TouchableOpacity>
+      
+              <TouchableOpacity
+                style={stylesNewMedicine.actionButton}
+                onPress={async () => await deletaSchedule(id, navigation)}
+              >
+                <Image
+                  source={require('../assets/delete.png')}
+                  style={stylesNewMedicine.actionIcon}
+                />
+              </TouchableOpacity>
+            </View>
+          </View>
+        )
+      }
+      
+      async function deletaSchedule(id) {
+        try {
+            setHorarios((prevHorarios) => prevHorarios.filter((horario) => horario.id !== id));
+            
+            await apiClient.delete("/v1/Scheduling/Delete?schedulingId=" + id);
+            
+            Alert.alert(
+                "Feito!",
+                "Horário deletado como solicitado!",
+                [
+                    {
+                        text: "OK",
+                        onPress: () => listaHorarios() 
+                    }
+                ]
+            );
+        } catch {
+            Alert.alert(
+                "Atenção!",
+                "Houve um erro inesperado, favor contatar o grupo!",
+                [
+                    {
+                        text: "OK"
                     }
                 ]
             );
