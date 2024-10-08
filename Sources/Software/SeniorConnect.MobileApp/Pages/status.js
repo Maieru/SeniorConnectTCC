@@ -1,6 +1,6 @@
 // status.js
 import { StatusBar } from 'expo-status-bar';
-import { Text, View, TouchableOpacity, Image, Modal, FlatList, ScrollView } from 'react-native';
+import { Text, View, TouchableOpacity, Image, Modal, FlatList, ScrollView, TouchableWithoutFeedback } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import styles from '../styles.js';
 import style from '../stylesStatus.js';
@@ -109,48 +109,47 @@ export default function StatusScreen({ navigation }) {
                 <TouchableOpacity
                     style={[styles.statusCadastrarDispositivo]}
                     onPress={() => navigation.navigate('Novo Dispositivo', { createNewDevice: true })}>
-                    <Text >Cadastrar Dispositivo</Text>
+                    <Text>Cadastrar Dispositivo</Text>
                 </TouchableOpacity>
             ) : (
-                <TouchableOpacity
-                    style={styles.content}
-                    activeOpacity={1}
-                    onPress={handleOutsideClick}
-                >
-                    <View style={style.gridContainer}>
-                        {gridData.map((medicamento, index) => (
-                            <TouchableOpacity
-                                key={index}
-                                style={[
-                                    style.gridItem,
-                                    selectedIndex !== null && selectedIndex !== index ? style.blurredItem : {},
-                                ]}
-                                onPress={(e) => {
-                                    e.stopPropagation();
-                                    setSelectedIndex(index);
-                                    setShowDropdown(true);
-                                }}
-                            >
-                                <Image
-                                    source={require('../assets/medication.png')}
-                                    style={style.gridItemImage}
-                                />
-                                <Text style={style.gridItemText}>
-                                    {medicamento ? medicamento.name : '[Remédio]'}
-                                </Text>
-                                {showDropdown && selectedIndex === index && (
-                                    <View style={style.dropdownContainer}>
-                                        {gridData[selectedIndex] ? (
-                                            <TouchableOpacity
-                                                style={style.statusExcluirButton}
-                                                onPress={() => removerAssociacao(gridData[selectedIndex])}
-                                            >
-                                                <Text style={style.statusExcluirButtonText}>Excluir Associação</Text>
-                                            </TouchableOpacity>
-                                        ) : (
-                                            <ScrollView style={styles.basicScroll}>
-                                                {medicamentos.map((item) => {
-                                                    return (
+                <TouchableWithoutFeedback onPress={handleOutsideClick}>
+                    <View style={styles.content}>
+                        <View style={style.gridContainer}>
+                            {gridData.map((medicamento, index) => (
+                                <View key={index} style={style.gridItemWrapper}>
+                                    <TouchableOpacity
+                                        style={[
+                                            style.gridItem,
+                                            selectedIndex !== null && selectedIndex !== index ? style.blurredItem : {},
+                                        ]}
+                                        onPress={() => {
+                                            setSelectedIndex(index);
+                                            setShowDropdown(true);
+                                        }}
+                                    >
+                                        <Image
+                                            source={require('../assets/medication.png')}
+                                            style={style.gridItemImage}
+                                        />
+                                        <Text style={style.gridItemText}>
+                                            {medicamento ? medicamento.name : '[Remédio]'}
+                                        </Text>
+                                    </TouchableOpacity>
+
+                                    {showDropdown && selectedIndex === index && (
+                                        <View style={[style.dropdownContainer, { maxHeight: 200 }]}>
+                                            {gridData[selectedIndex] ? (
+                                                <TouchableOpacity
+                                                    style={style.statusExcluirButton}
+                                                    onPress={() => removerAssociacao(gridData[selectedIndex])}
+                                                >
+                                                    <Text style={style.statusExcluirButtonText}>Excluir Associação</Text>
+                                                </TouchableOpacity>
+                                            ) : (
+                                                <FlatList
+                                                    data={medicamentos}
+                                                    keyExtractor={(item) => item.id.toString()}
+                                                    renderItem={({ item }) => (
                                                         <TouchableOpacity
                                                             style={styles.dropdownItem}
                                                             onPress={() => selecionarMedicamento(item)}
@@ -159,29 +158,20 @@ export default function StatusScreen({ navigation }) {
                                                                 {item.name}
                                                             </Text>
                                                         </TouchableOpacity>
-                                                    )
-                                                })}
-                                            </ScrollView>)}
-                                    </View>
-                                )}
-                            </TouchableOpacity>
-                        ))}
-
-                        <TouchableOpacity
-                            style={[styles.statusCadastrarDispositivo]}
-                            onPress={() => navigation.navigate('Novo Dispositivo',
-                                {
-                                    createNewDevice: false,
-                                    deviceName: deviceName,
-                                    devicePrimaryKey: devicePrimaryKey
-                                })}
-                        >
-                            <Text>Reconfigurar Conexão</Text>
-                        </TouchableOpacity>
+                                                    )}
+                                                    style={styles.basicFlatList}
+                                                    contentContainerStyle={{ flexGrow: 1 }}
+                                                    showsVerticalScrollIndicator={true}
+                                                />
+                                            )}
+                                        </View>
+                                    )}
+                                </View>
+                            ))}
+                        </View>
                     </View>
-                </TouchableOpacity>
+                </TouchableWithoutFeedback>
             )}
-
             <Footer navigation={navigation} />
         </View>
     );

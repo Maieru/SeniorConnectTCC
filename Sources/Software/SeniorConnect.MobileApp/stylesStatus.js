@@ -5,18 +5,26 @@ const stylesStatus = StyleSheet.create({
   gridContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
+    alignItems: 'flex-end',
     padding: 10,
-  },
+},
   gridItem: {
-    width: '30%',
-    height: 100,
-    margin: 5,
+    width: '100%',
+    height: '100%',
     backgroundColor: '#ccc',
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 10,
   },
+  gridItemWrapper: {
+    width: '30%',
+    height: 100,
+    alignItems: 'center',
+    justifyContent: 'center',
+},
+  
+  
   gridItemImage: {
     width: 40,
     height: 40,
@@ -69,9 +77,8 @@ const stylesStatus = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 5,
     elevation: 5,
-    maxHeight: 150, // Definir uma altura máxima para permitir a rolagem
-    zIndex: 1,
-    width: '100%', // Largura para caber corretamente na tela
+    maxHeight: 150,
+    width: '100%',
   },
   dropdownItem: {
     padding: 10,
@@ -93,6 +100,12 @@ const stylesStatus = StyleSheet.create({
     textAlign: 'center',
     fontWeight: 'bold',
   },
+  basicFlatList: {
+    flexGrow: 1,
+    backgroundColor: '#FFF',
+    borderRadius: 8,
+    paddingHorizontal: 8,
+},
 });
 
 export default stylesStatus;
