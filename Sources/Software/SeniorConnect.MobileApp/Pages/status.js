@@ -8,6 +8,7 @@ import { Header, Footer } from '../Layout.js';
 import apiClient from '../services/apiService.js';
 import { useFocusEffect } from '@react-navigation/native';
 
+
 export default function StatusScreen({ navigation }) {
     const [medicamentosAssociados, setMedicamentosAssociados] = useState([]);
     const [medicamentos, setMedicamentos] = useState([]);
@@ -17,6 +18,7 @@ export default function StatusScreen({ navigation }) {
     const [deviceId, setDeviceId] = useState(false);
     const [deviceName, setDeviceName] = useState('');
     const [devicePrimaryKey, setDevicePrimaryKey] = useState('');
+
 
     async function listaMedicamentos() {
         const responseGetAllAssociated = await apiClient.get("/v1/Medicine/GetMedicinesAssociatedToDevice?deviceId=" + await apiClient.getDeviceId());
@@ -143,7 +145,11 @@ export default function StatusScreen({ navigation }) {
                                     </TouchableOpacity>
 
                                     {showDropdown && selectedIndex === index && (
-                                        <View style={[style.dropdownContainer, { maxHeight: 200 }]}>
+                                        <View style={[style.dropdownContainer,
+                                        {
+                                            maxHeight: 200,
+                                            top: index <= 6 ? -50 : 50,
+                                        }]}>
                                             {gridData[selectedIndex] ? (
                                                 <TouchableOpacity
                                                     style={style.statusExcluirButton}

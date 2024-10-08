@@ -66,8 +66,8 @@ const stylesStatus = StyleSheet.create({
   },
   dropdownContainer: {
     position: 'absolute',
-    bottom: 110,
     left: '40%',
+    top: '100%',
     transform: [{ translateX: -50 }],
     backgroundColor: '#fff',
     borderRadius: 5,
@@ -77,8 +77,8 @@ const stylesStatus = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 5,
     elevation: 5,
-    maxHeight: 150,
     width: '100%',
+    zIndex: 10,
   },
   dropdownItem: {
     padding: 10,
