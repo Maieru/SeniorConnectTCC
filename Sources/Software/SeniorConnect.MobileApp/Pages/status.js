@@ -1,6 +1,6 @@
 // status.js
 import { StatusBar } from 'expo-status-bar';
-import { Text, View, TouchableOpacity, Image, Modal, FlatList } from 'react-native';
+import { Text, View, TouchableOpacity, Image, Modal, FlatList, ScrollView } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import styles from '../styles.js';
 import style from '../stylesStatus.js';
@@ -140,28 +140,28 @@ export default function StatusScreen({ navigation }) {
                                 </Text>
                                 {showDropdown && selectedIndex === index && (
                                     <View style={style.dropdownContainer}>
-                                        <FlatList
-                                            data={medicamentos}
-                                            keyExtractor={(item) => item.id.toString()}
-                                            renderItem={({ item }) => (
-                                                <TouchableOpacity
-                                                    style={styles.dropdownItem}
-                                                    onPress={() => selecionarMedicamento(item)}
-                                                >
-                                                    <Text style={styles.dropdownItemText}>
-                                                        {item.name}
-                                                    </Text>
-                                                </TouchableOpacity>
-                                            )}
-                                        />
-                                        {gridData[selectedIndex] && (
+                                        { gridData[selectedIndex] ? (
                                             <TouchableOpacity
                                                 style={style.statusExcluirButton}
                                                 onPress={() => removerAssociacao(gridData[selectedIndex])}
                                             >
                                                 <Text style={style.statusExcluirButtonText}>Excluir Associação</Text>
                                             </TouchableOpacity>
-                                        )}
+                                        ) : (
+                                        <ScrollView style={styles.basicScroll}>
+                                            {medicamentos.map((item) => {
+                                                return (
+                                                    <TouchableOpacity
+                                                        style={styles.dropdownItem}
+                                                        onPress={() => selecionarMedicamento(item)}
+                                                    >
+                                                        <Text style={styles.dropdownItemText}>
+                                                            {item.name}
+                                                        </Text>
+                                                    </TouchableOpacity>
+                                                )
+                                            })}
+                                        </ScrollView>)}
                                     </View>
                                 )}
                             </TouchableOpacity>
