@@ -104,7 +104,7 @@ export default function HorariosMedicineScreen({ navigation, route }) {
                 [
                     {
                         text: "OK",
-                        onPress: () => navigation.navigate('NewMedicine')
+                        onPress: () => navigation.navigate('Novo Medicamento')
                     }
                 ]
             );
