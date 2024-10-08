@@ -28,8 +28,8 @@ export default function StatusScreen({ navigation }) {
         const newGridData = [...gridData];
 
         medicamentosAssociados.forEach(medicamento => {
-            if (medicamento.position !== null && medicamento.position <= 9) {
-                newGridData[medicamento.position - 1] = medicamento;
+            if (medicamento.position !== null && medicamento.position < 9) {
+                newGridData[medicamento.position] = medicamento;
             }
         });
         setMedicamentosAssociados(medicamentosAssociados);
@@ -61,16 +61,22 @@ export default function StatusScreen({ navigation }) {
 
     async function selecionarMedicamento(medicamento) {
         const position = selectedIndex;
-        const newGridData = [...gridData];
         const objetoMedicamento = criarObjetoMedicamento(medicamento, position);
         console.log(objetoMedicamento);
 
         //está horrendo, ver com o João dps
         apiClient.post(`/v1/Medicine/AssociateToDevice?medicineId=${objetoMedicamento.medicineId}&deviceId=${objetoMedicamento.deviceId}&medicinePosition=${objetoMedicamento.medicinePosition}`);
 
-        newGridData[selectedIndex] = medicamento;
+        const newGridData = [...gridData];
+        newGridData[position] = {
+            ...medicamento,
+            medicineId: medicamento.id,
+            position: position
+        };
+
         setGridData(newGridData);
-        listaMedicamentos();
+        setShowDropdown(false);
+
     }
 
 
@@ -98,9 +104,9 @@ export default function StatusScreen({ navigation }) {
         console.log("Associação removida:", response.data);
 
         const newGridData = [...gridData];
-        newGridData[position - 1] = null;
-        setGridData(newGridData);
-        setShowDropdown(false);
+        newGridData[position] = null;
+        await setGridData(newGridData);
+        await setShowDropdown(false);
     };
 
     return (
@@ -115,7 +121,7 @@ export default function StatusScreen({ navigation }) {
                 <TouchableWithoutFeedback onPress={handleOutsideClick}>
                     <View style={styles.content}>
                         <View style={style.gridContainer}>
-                            {gridData.map((medicamento, index) => (
+                            {[6, 7, 8, 3, 4, 5, 0, 1, 2].map((index) => (
                                 <View key={index} style={style.gridItemWrapper}>
                                     <TouchableOpacity
                                         style={[
@@ -132,7 +138,7 @@ export default function StatusScreen({ navigation }) {
                                             style={style.gridItemImage}
                                         />
                                         <Text style={style.gridItemText}>
-                                            {medicamento ? medicamento.name : '[Remédio]'}
+                                            {gridData[index] ? gridData[index].name : '[Remédio]'}
                                         </Text>
                                     </TouchableOpacity>
 
