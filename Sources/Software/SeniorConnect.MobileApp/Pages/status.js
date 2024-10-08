@@ -60,7 +60,7 @@ export default function StatusScreen({ navigation }) {
     )
 
     async function selecionarMedicamento(medicamento) {
-        const position = selectedIndex + 1;
+        const position = selectedIndex;
         const newGridData = [...gridData];
         const objetoMedicamento = criarObjetoMedicamento(medicamento, position);
         console.log(objetoMedicamento);
@@ -91,7 +91,7 @@ export default function StatusScreen({ navigation }) {
     };
 
     const removerAssociacao = async (medicamento) => {
-        const position = selectedIndex + 1;
+        const position = selectedIndex;
         const objetoMedicamento = criarObjetoMedicamentoRemoverAssociacao(medicamento, position);
         console.log(objetoMedicamento);
         const response = await apiClient.post(`/v1/Medicine/DessasociateFromDevice?medicineId=${objetoMedicamento.medicineId}&deviceId=${objetoMedicamento.deviceId}&medicinePosition=${objetoMedicamento.medicinePosition}`);
@@ -140,7 +140,7 @@ export default function StatusScreen({ navigation }) {
                                 </Text>
                                 {showDropdown && selectedIndex === index && (
                                     <View style={style.dropdownContainer}>
-                                        { gridData[selectedIndex] ? (
+                                        {gridData[selectedIndex] ? (
                                             <TouchableOpacity
                                                 style={style.statusExcluirButton}
                                                 onPress={() => removerAssociacao(gridData[selectedIndex])}
@@ -148,20 +148,20 @@ export default function StatusScreen({ navigation }) {
                                                 <Text style={style.statusExcluirButtonText}>Excluir Associação</Text>
                                             </TouchableOpacity>
                                         ) : (
-                                        <ScrollView style={styles.basicScroll}>
-                                            {medicamentos.map((item) => {
-                                                return (
-                                                    <TouchableOpacity
-                                                        style={styles.dropdownItem}
-                                                        onPress={() => selecionarMedicamento(item)}
-                                                    >
-                                                        <Text style={styles.dropdownItemText}>
-                                                            {item.name}
-                                                        </Text>
-                                                    </TouchableOpacity>
-                                                )
-                                            })}
-                                        </ScrollView>)}
+                                            <ScrollView style={styles.basicScroll}>
+                                                {medicamentos.map((item) => {
+                                                    return (
+                                                        <TouchableOpacity
+                                                            style={styles.dropdownItem}
+                                                            onPress={() => selecionarMedicamento(item)}
+                                                        >
+                                                            <Text style={styles.dropdownItemText}>
+                                                                {item.name}
+                                                            </Text>
+                                                        </TouchableOpacity>
+                                                    )
+                                                })}
+                                            </ScrollView>)}
                                     </View>
                                 )}
                             </TouchableOpacity>
