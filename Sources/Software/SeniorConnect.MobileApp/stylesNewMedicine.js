@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
       diasContainer:{
         backgroundColor: '#ddd',
         alignSelf: 'flex-start',
-        width: '65%',
+        width: '50%',
         marginHorizontal: 2,
       },
       actionsContainer:{
