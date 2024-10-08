@@ -59,7 +59,7 @@ const stylesStatus = StyleSheet.create({
   dropdownContainer: {
     position: 'absolute',
     bottom: 110,
-    left: '50%',
+    left: '40%',
     transform: [{ translateX: -50 }],
     backgroundColor: '#fff',
     borderRadius: 5,
@@ -69,29 +69,30 @@ const stylesStatus = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 5,
     elevation: 5,
-    maxHeight: 150,
+    maxHeight: 150, // Definir uma altura máxima para permitir a rolagem
     zIndex: 1,
-},
-dropdownItem: {
+    width: '100%', // Largura para caber corretamente na tela
+  },
+  dropdownItem: {
     padding: 10,
     borderBottomWidth: 1,
     borderBottomColor: '#ccc',
-},
-dropdownItemText: {
+  },
+  dropdownItemText: {
     fontSize: 14,
     color: '#333',
-},
-statusExcluirButton: {
+  },
+  statusExcluirButton: {
     backgroundColor: '#ff4d4d',
     padding: 10,
     borderRadius: 5,
     marginTop: 10,
-},
-statusExcluirButtonText: {
+  },
+  statusExcluirButtonText: {
     color: '#fff',
     textAlign: 'center',
     fontWeight: 'bold',
-},
+  },
 });
 
 export default stylesStatus;
