@@ -45,7 +45,7 @@ export default function DosageReportScreen({ navigation }) {
     }
 
     async function buildDaysData(reportData) {
-        const daysOfWeek = ["Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado", "Domingo"];
+        const daysOfWeek = ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"];
         const daysData = [];
 
         for (let i = 0; i < 7; i++) {

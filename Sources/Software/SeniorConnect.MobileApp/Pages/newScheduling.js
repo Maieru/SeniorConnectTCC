@@ -10,13 +10,13 @@ export default function HorariosMedicineScreen({ navigation, route }) {
     const [hora, setHora] = useState('');
     const [minuto, setMinuto] = useState('');
     const [diasSelecionados, setDiasSelecionados] = useState({
+        domingo: false,
         segunda: false,
         terca: false,
         quarta: false,
         quinta: false,
         sexta: false,
         sabado: false,
-        domingo: false,
     });
     const [medicineId, setMedicineId] = useState(0);
     const [schedulingId, setSchedulingId] = useState(0);
