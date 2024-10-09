@@ -7,6 +7,7 @@ const stylesStatus = StyleSheet.create({
     flexWrap: 'wrap',
     justifyContent: 'space-between',
     alignItems: 'flex-end',
+    rowGap: 20,
     padding: 10,
 },
   gridItem: {

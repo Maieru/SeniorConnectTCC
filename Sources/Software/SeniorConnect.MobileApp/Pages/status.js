@@ -181,6 +181,17 @@ export default function StatusScreen({ navigation }) {
                                 </View>
                             ))}
                         </View>
+                        <TouchableOpacity
+                            style={[styles.statusCadastrarDispositivo]}
+                            onPress={() => navigation.navigate('Novo Dispositivo',
+                                {
+                                    createNewDevice: false,
+                                    deviceName: deviceName,
+                                    devicePrimaryKey: devicePrimaryKey
+                                })}
+                        >
+                            <Text>Reconfigurar Conexão</Text>
+                        </TouchableOpacity>
                     </View>
                 </TouchableWithoutFeedback>
             )}
