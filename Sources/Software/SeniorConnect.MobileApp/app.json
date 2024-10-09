@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "SeniorConnectApp",
-    "slug": "SeniorConnectApp",
+    "name": "Senior Connect",
+    "slug": "Senior Connect",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -17,16 +17,17 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff",
-        "permissions": [
-          "ACCESS_WIFI_STATE",
-          "CHANGE_WIFI_STATE",
-          "ACCESS_FINE_LOCATION"
-        ]
+        "backgroundColor": "#ffffff"
       },
       "permissions": [
-        "android.permission.ACCESS_FINE_LOCATION"
-      ]
+        "ACCESS_WIFI_STATE",
+        "CHANGE_WIFI_STATE",
+        "ACCESS_FINE_LOCATION"
+      ],
+      "statusBar": {
+        "backgroundColor": "#000000",
+        "barStyle": "light-content"
+      }
     },
     "web": {
       "favicon": "./assets/favicon.png"
