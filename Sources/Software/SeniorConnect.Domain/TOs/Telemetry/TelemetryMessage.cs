@@ -36,7 +36,7 @@ namespace SeniorConnect.Domain.TOs.Telemetry
         [JsonPropertyName("sensorData")]
         public List<SensorData> SensorData { get; set; }
 
-        public DateTime GetDateTime() => new DateTime(Year, Month, Day, Hour, Minute, Second, Millis);
+        public DateTime GetDateTime() => new DateTime(Year, Month, Day, Hour, Minute, Second);
 
         public DayOfWeek GetDayOfWeek() => GetDateTime().DayOfWeek;
     }
