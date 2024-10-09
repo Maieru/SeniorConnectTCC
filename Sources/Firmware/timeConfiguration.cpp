@@ -69,6 +69,10 @@ void setTimeConfiguration(String configurationMessage) {
   currentTimeConfiguration = timeConfigurationArray;
 }
 
+void deleteTimeConfiguration() {
+  LittleFS.remove(TIME_CONFIGURATION_FILE);
+}
+
 std::vector<int> getActiveMedicationAlerts() {
   std::vector<int> activeAlerts;
 
@@ -107,7 +111,7 @@ void deactivateSchedulesOfOpenDrawners(std::vector<bool> drawners) {
   for (int i = 0; i < drawners.size(); i++) {
     if (drawners[i]) {
       for (int j = 0; j < currentTimeConfiguration.length(); j++) {
-        if ((int)currentTimeConfiguration[j][COMPARTIMENT_NUMBER_PROPERTY] == i) {          
+        if ((int)currentTimeConfiguration[j][COMPARTIMENT_NUMBER_PROPERTY] == i) {
           if (checkIfTimeIsBetweenScheduled(timeinfo, currentTimeConfiguration[j])) {
             currentTimeConfiguration[j][LAST_TIME_ALERT_WAS_TRIGGERED_PROPERTY] = timeinfo.tm_mday;
             Serial.print("Detected the opening of the drawner ");

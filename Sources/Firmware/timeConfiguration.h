@@ -10,5 +10,6 @@ void readTimeConfiguration();
 std::vector<int> getActiveMedicationAlerts();
 void deactivateSchedulesOfOpenDrawners(std::vector<bool> drawners);
 bool checkIfTimeIsBetweenScheduled(struct tm timeInfo, JSONVar schedule);
+void deleteTimeConfiguration();
 
 #endif

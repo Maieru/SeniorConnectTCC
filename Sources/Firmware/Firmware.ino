@@ -163,6 +163,7 @@ void loop() {
 
       if (millis() - resetMilis > TIME_TO_RESET) {
         resetWifiConfiguration();
+        deleteTimeConfiguration();
         ESP.restart();
       }
       break;
