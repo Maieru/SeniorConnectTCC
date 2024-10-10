@@ -98,7 +98,7 @@ void loop() {
   String heartBeatString = "";
   String telemetryMessage;
   std::vector<int> currentAlertsToBeActived;
-  playSong();
+  //playSong();
 
   switch (currentState) {
     case NORMAL:
@@ -170,6 +170,7 @@ void loop() {
       if (millis() - resetMilis > TIME_TO_RESET) {
         resetWifiConfiguration();
         deleteTimeConfiguration();
+        deactivateLeds();
         ESP.restart();
       }
       break;

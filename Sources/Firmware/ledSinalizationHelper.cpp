@@ -57,9 +57,14 @@ void activateLeds(std::vector<int> ledsToBeActivated) {
     if (ledStateSecondRegister[i] == '1') {
       digitalWrite(REGISTER_2_INPUT, HIGH);
     }
-    
+
     digitalWrite(REGISTER_CLOCK, HIGH);
   }
 
-   digitalWrite(REGISTER_CLOCK, LOW);
+  digitalWrite(REGISTER_CLOCK, LOW);
+}
+
+void deactivateLeds() {
+  digitalWrite(REGISTER_CLEAR, LOW);
+  digitalWrite(REGISTER_CLEAR, HIGH);
 }
