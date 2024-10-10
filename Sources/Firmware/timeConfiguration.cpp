@@ -67,6 +67,7 @@ void setTimeConfiguration(String configurationMessage) {
   Serial.println(timeConfigurationString);
 
   currentTimeConfiguration = timeConfigurationArray;
+  isCurrentConfigurationValid = true;
 }
 
 void deleteTimeConfiguration() {

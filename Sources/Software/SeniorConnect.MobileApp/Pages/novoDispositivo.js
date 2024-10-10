@@ -72,6 +72,8 @@ export default function NovoDispositivo({ navigation, route }) {
             deviceInformation.devicePrimaryKey = route.params.devicePrimaryKey;
         }
 
+        console.log('Cadastrei o dispositivo');
+
         await WifiManager.connectToProtectedSSID(SENIOR_CONNECT_DEVICE_SSID, SENIOR_CONNECT_DEVICE_AP_PASSWORD, false, false).then(async () => {
             const formData = new FormData();
             formData.append('ssid', deviceInformation.ssid);
