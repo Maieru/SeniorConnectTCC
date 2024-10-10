@@ -10,6 +10,7 @@
 #define STATUS_LED_GREEN 2
 #define STATUS_LED_BLUE 4
 #define RESET_BUTTON 39
+#define BUZZER_PIN 25
 
 // Register pins
 #define REGISTER_CLEAR 27

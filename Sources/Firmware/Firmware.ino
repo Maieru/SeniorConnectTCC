@@ -10,6 +10,7 @@
 #include "timeConfiguration.h"
 #include "ledSinalizationHelper.h"
 #include "hardwareConstants.h"
+#include "buzzerHelper.h"
 
 // Defines
 #define STATUS_LED_BLINK_TIME 500
@@ -48,6 +49,10 @@ void setup() {
 
   initializeSinalizationLeds();
   initializeSensors();
+  initializeBuzzer();
+
+  playSong();
+  stopSong();
 
   digitalWrite(POWER_LED, HIGH);
   setRGBLed(ledColor::OFF, STATUS_LED_RED, STATUS_LED_GREEN, STATUS_LED_BLUE);
@@ -62,17 +67,17 @@ void setup() {
 
       setRGBLed(ledColor::OFF, STATUS_LED_RED, STATUS_LED_GREEN, STATUS_LED_BLUE);
       delay(STATUS_LED_BLINK_TIME);
-      setRGBLed(ledColor::CYAN, STATUS_LED_RED, STATUS_LED_GREEN, STATUS_LED_BLUE);
+      setRGBLed(ledColor::WHITE, STATUS_LED_RED, STATUS_LED_GREEN, STATUS_LED_BLUE);
 
       initializeTime();
       setRGBLed(ledColor::OFF, STATUS_LED_RED, STATUS_LED_GREEN, STATUS_LED_BLUE);
       delay(STATUS_LED_BLINK_TIME);
-      setRGBLed(ledColor::CYAN, STATUS_LED_RED, STATUS_LED_GREEN, STATUS_LED_BLUE);
+      setRGBLed(ledColor::WHITE, STATUS_LED_RED, STATUS_LED_GREEN, STATUS_LED_BLUE);
 
       initializeIoTHubClient();
       setRGBLed(ledColor::OFF, STATUS_LED_RED, STATUS_LED_GREEN, STATUS_LED_BLUE);
       delay(STATUS_LED_BLINK_TIME);
-      setRGBLed(ledColor::CYAN, STATUS_LED_RED, STATUS_LED_GREEN, STATUS_LED_BLUE);
+      setRGBLed(ledColor::WHITE, STATUS_LED_RED, STATUS_LED_GREEN, STATUS_LED_BLUE);
 
       (void)initializeMqttClient();
       readTimeConfiguration();
@@ -93,6 +98,7 @@ void loop() {
   String heartBeatString = "";
   String telemetryMessage;
   std::vector<int> currentAlertsToBeActived;
+  playSong();
 
   switch (currentState) {
     case NORMAL:
