@@ -106,5 +106,11 @@ namespace SeniorConnect.Bussiness.Entities_Services
             var user = await GetUser(username, password);
             return _bearerTokenService.CreateAccessToken(user);
         }
+
+        public async Task DeleteUser(int userId)
+        {
+            await _userRepository.DeleteByIdAsync(userId);
+        }
+
     }
 }
