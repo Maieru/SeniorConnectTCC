@@ -13,18 +13,18 @@ const styles = StyleSheet.create({
       horarioContainer: {
         backgroundColor: '#ddd',
         justifyContent: 'flex-start',
-        width: '15%',
+        flex: 1,        
       },
       diasContainer:{
         backgroundColor: '#ddd',
         alignSelf: 'flex-start',
-        width: '50%',
+        flex: 3,
         marginHorizontal: 2,
       },
       actionsContainer:{
         backgroundColor: '#ddd',
         justifyContent: 'flex-start',
-        width: '20%',
+        flex: 1,
         flexDirection: 'row',
       },
       horarioText: {
