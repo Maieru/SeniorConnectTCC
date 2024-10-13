@@ -6,6 +6,8 @@ import apiClient from '../services/apiService.js';
 import React, { useState, useEffect } from 'react';
 import WifiManager from 'react-native-wifi-reborn';
 import axios from 'axios';
+import NetInfo from '@react-native-community/netinfo';
+import * as Location from 'expo-location';
 
 export default function NovoDispositivo({ navigation, route }) {
     const [ssid, setSsid] = useState('');
@@ -19,6 +21,9 @@ export default function NovoDispositivo({ navigation, route }) {
         if (Platform.OS === 'android') {
             checkLocationPermission();
         }
+
+        checkWifiConnection();
+        checkLocationEnabled();
     }, []);
 
     const checkLocationPermission = async () => {
@@ -51,6 +56,31 @@ export default function NovoDispositivo({ navigation, route }) {
             }
         } catch (err) {
             console.warn(err);
+        }
+    };
+
+    const checkWifiConnection = () => {
+        NetInfo.fetch().then(state => {
+            if (!(state.type === 'wifi' && state.isConnected)) {
+                Alert.alert('Wi-Fi Desligado', 'Para realizar a configuração de um dispositivo, é necessário que o Wi-Fi e a localização estejam ativas.');
+                navigation.goBack();
+            }
+        });
+    };
+
+    const checkLocationEnabled = async () => {
+        let { status } = await Location.requestForegroundPermissionsAsync();
+        if (status !== 'granted') {
+            Alert.alert('Permissão de Localização', 'Permissão de localização negada.');
+            navigation.goBack();
+            return;
+        }
+
+        let locationServicesEnabled = await Location.hasServicesEnabledAsync();
+        if (!locationServicesEnabled) {
+            Alert.alert('Localização Desligada', 'Para realizar a configuração de um dispositivo, é necessário que o Wi-Fi e a localização estejam ativas.');
+            navigation.goBack();
+            return;
         }
     };
 
@@ -93,12 +123,12 @@ export default function NovoDispositivo({ navigation, route }) {
             }).catch(erro => {
                 var mensagemErro = ''
                 mensagemErro += erro.toString();
-        
+
                 if (erro.response)
                     mensagemErro += ' - ' + erro.response.data;
-        
-                    mensagemErro += ' ---- Detalhes da Requisição ---- ' + JSON.stringify(erro.request);
-        
+
+                mensagemErro += ' ---- Detalhes da Requisição ---- ' + JSON.stringify(erro.request);
+
                 console.log(mensagemErro);
             });
         });
