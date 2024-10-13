@@ -153,6 +153,8 @@ static esp_err_t mqtt_event_handler(esp_mqtt_event_handle_t event) {
 int initializeMqttClient() {
   if (sasToken->Generate(SAS_TOKEN_DURATION_IN_MINUTES) != 0) {
     Serial.println("Failed generating SAS token");
+    ESP.restart();
+    
     return 1;
   }
 
