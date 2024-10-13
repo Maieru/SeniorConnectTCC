@@ -102,8 +102,6 @@ void loop() {
 
   switch (currentState) {
     case NORMAL:
-      checkSASToken();
-
       if (digitalRead(RESET_BUTTON) == HIGH) {
         if (currentMillis - resetStartMilis > 1) {
           resetCount++;
@@ -140,6 +138,7 @@ void loop() {
         return;
       }
 
+      checkSASToken();
       lastExecutionMillis = currentMillis;
 
       currentSensorStatus = getSensorStatus();
