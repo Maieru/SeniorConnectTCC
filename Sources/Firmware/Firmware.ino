@@ -133,6 +133,10 @@ void loop() {
         heartBeatMilis = currentMillis;
       }
 
+      if (!isWifiStarted) {
+        return;
+      }
+
       // This adds an 1 milisecond delay between executions
       if (currentMillis - lastExecutionMillis < 1) {
         return;
