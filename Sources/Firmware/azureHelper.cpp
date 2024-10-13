@@ -49,7 +49,11 @@ void initializeIoTHubClient() {
   if (sasToken == nullptr) {
     Serial.println("Configuring new SAS TOKEN");
     String deviceKeyString = returnDeviceKey();
-    az_span device_key_span = az_span_create((uint8_t*)deviceKeyString.c_str(), deviceKeyString.length());
+    az_span device_key_span = az_span_create((uint8_t*)deviceKeyString.c_str(), strlen(deviceKeyString.c_str()));
+
+    Serial.println("Using the following device key");
+    Serial.println(deviceKeyString);
+
     sasToken = new AzIoTSasToken(&client, device_key_span, AZ_SPAN_FROM_BUFFER(sas_signature_buffer), AZ_SPAN_FROM_BUFFER(mqtt_password));
   }
 
