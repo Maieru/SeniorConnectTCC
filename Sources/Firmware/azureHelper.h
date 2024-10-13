@@ -4,5 +4,6 @@
 void initializeIoTHubClient();
 int initializeMqttClient();
 void sendTelemetry(String telemetry_payload);
+void checkSASToken();
 
 #endif

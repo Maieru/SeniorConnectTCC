@@ -7,11 +7,12 @@
 #include "iot_config.h"
 #include "wifiConfiguration.h"
 #include "timeConfiguration.h"
+#include "azureHelper.h"
 
 // Defines
 #define AZURE_SDK_CLIENT_USER_AGENT "c%2F" AZ_SDK_VERSION_STRING "(ard;esp32)"
 #define sizeofarray(a) (sizeof(a) / sizeof(a[0]))
-#define SAS_TOKEN_DURATION_IN_MINUTES 60
+#define SAS_TOKEN_DURATION_IN_MINUTES 1440
 #define INCOMING_DATA_BUFFER_SIZE 32768
 #define MQTT_QOS1 1
 #define DO_NOT_RETAIN_MSG 0
@@ -73,6 +74,14 @@ void initializeIoTHubClient() {
 
   Serial.println("Client ID: " + String(mqtt_client_id));
   Serial.println("Username: " + String(mqtt_username));
+}
+
+void checkSASToken() {
+  if (sasToken->IsExpired()) {
+    Serial.println("SAS token expired; reconnecting with a new one.");
+    (void)esp_mqtt_client_destroy(mqtt_client);
+    initializeMqttClient();
+  }
 }
 
 static esp_err_t mqtt_event_handler(esp_mqtt_event_handle_t event) {
