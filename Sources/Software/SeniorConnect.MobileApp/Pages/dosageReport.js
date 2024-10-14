@@ -63,15 +63,6 @@ export default function DosageReportScreen({ navigation }) {
 
         return daysData;
     }
-    {/**    const days = [
-    { day: "Segunda", medications: [{ name: "[Medicamento 1]", dosage: "HH:MM" }, { name: "[Medicamento 2]", dosage: "HH:MM" }] },
-    { day: "Terça", medications: [{ name: "[Medicamento 1]", dosage: "HH:MM" }, { name: "[Medicamento 2]", dosage: "HH:MM" }] },
-    { day: "Quarta", medications: [{ name: "[Medicamento 1]", dosage: "HH:MM" }, { name: "[Medicamento 2]", dosage: "HH:MM" }] },
-    { day: "Quinta", medications: [{ name: "[Medicamento 1]", dosage: "HH:MM" }, { name: "[Medicamento 2]", dosage: "HH:MM" }] },
-    { day: "Sexta", medications: [{ name: "[Medicamento 1]", dosage: "HH:MM" }, { name: "[Medicamento 2]", dosage: "HH:MM" }] },
-    { day: "Sábado", medications: [{ name: "[Medicamento 1]", dosage: "HH:MM" }, { name: "[Medicamento 2]", dosage: "HH:MM" }] },
-    { day: "Domingo", medications: [{ name: "[Medicamento 1]", dosage: "HH:MM" }, { name: "[Medicamento 2]", dosage: "HH:MM" }] },
-];*/}
 
 
     return (
@@ -86,12 +77,18 @@ export default function DosageReportScreen({ navigation }) {
                     {days.map((dayData, index) => (
                         <View key={index} style={[stylesDosageReport.dayBlock, { width: width * 0.85, height: height * 0.6 }]}>
                             <Text style={stylesDosageReport.dayLabel}>{dayData.day}</Text>
-                            {dayData.medications.map((medication, idx) => (
-                                <View key={idx} style={stylesDosageReport.medicineSlot}>
-                                    <Text style={stylesDosageReport.medicineInfo}>{medication.name}</Text>
-                                    <Text style={stylesDosageReport.medicineInfo}>Dosagem: {medication.dosage}</Text>
-                                </View>
-                            ))}
+                            <ScrollView
+                                style={stylesDosageReport.medicineScroll}
+                                contentContainerStyle={{ flexGrow: 1, alignItems: 'center' }} // Centraliza o conteúdo horizontalmente
+                                showsVerticalScrollIndicator={true}
+                            >
+                                {dayData.medications.map((medication, idx) => (
+                                    <View key={idx} style={stylesDosageReport.medicineSlot}>
+                                        <Text style={stylesDosageReport.medicineInfo}>{medication.name}</Text>
+                                        <Text style={stylesDosageReport.medicineInfo}>Dosagem: {medication.dosage}</Text>
+                                    </View>
+                                ))}
+                            </ScrollView>
                         </View>
                     ))}
                 </ScrollView>

@@ -27,17 +27,24 @@ const stylesDosageReport = StyleSheet.create({
         textAlign: 'center',
     },
     medicineSlot: {
-        width: '95%',
+        width: '100%',
         backgroundColor: '#ccc',
         padding: 15,
         borderRadius: 5,
         marginBottom: 15,
+        justifyContent: 'center',
         alignItems: 'center',
     },
     medicineInfo: {
         fontSize: 20,
         color: '#000',
         textAlign: 'center',
+    },
+    medicineScroll: {
+        flexGrow: 1,
+        paddingVertical: 10,
+        width: '100%', 
+        paddingHorizontal: 10,
     },
 });
 
