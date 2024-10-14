@@ -32,6 +32,58 @@ export default function HorariosMedicineScreen({ navigation, route }) {
         };
     }
 
+    function validaCampos() {
+        // Validação de Hora
+        const horaNum = parseInt(hora, 10);
+        const minutoNum = parseInt(minuto, 10);
+
+        if (isNaN(horaNum) || horaNum < 0 || horaNum > 24) {
+            Alert.alert(
+                "Horário inválido!",
+                "A hora deve estar entre 00 e 23.",
+                [
+                    {
+                        text: "OK",
+                    }
+                ]
+            );
+            return false;
+        }
+
+        if (isNaN(minutoNum) || minutoNum < 0 || minutoNum > 60) {
+            Alert.alert(
+                "Horário inválido!",
+                "Os minutos devem estar entre 00 e 59.",
+                [
+                    {
+                        text: "OK",
+                    }
+                ]
+            );
+            return false;
+        }
+
+        const diasSelecionadosArray = Object.values(diasSelecionados);
+        const algumDiaSelecionado = diasSelecionadosArray.some((dia) => dia === true);
+
+        if (!algumDiaSelecionado) {
+            Alert.alert(
+                "Nenhum dia selecionado!",
+                "Você deve selecionar pelo menos um dia da semana.",
+                [
+                    {
+                        text: "OK",
+                    }
+                ]
+            );
+            return false;
+        }
+
+        return true;
+    }
+
+
+
     function createUpdateSchedulingModel() {
         return {
             id: schedulingId,
@@ -79,6 +131,12 @@ export default function HorariosMedicineScreen({ navigation, route }) {
 
     function salvaScheduling() {
         console.log(schedulingId)
+
+        if (!validaCampos()) {
+            console.log("Campos inválidos");
+            return;
+        }
+
         if (schedulingId == undefined) {
             console.log("Criando Scheduling.")
             console.log(createSchedulingModel())
@@ -130,7 +188,7 @@ export default function HorariosMedicineScreen({ navigation, route }) {
                             keyboardType="numeric"
                             maxLength={2}
                             onChangeText={setHora}
-                            
+
                         />
                         <Text style={stylesScheduling.timeSeparator}>:</Text>
                         <TextInput
