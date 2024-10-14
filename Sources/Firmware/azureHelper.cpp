@@ -13,7 +13,7 @@
 #define AZURE_SDK_CLIENT_USER_AGENT "c%2F" AZ_SDK_VERSION_STRING "(ard;esp32)"
 #define sizeofarray(a) (sizeof(a) / sizeof(a[0]))
 #define SAS_TOKEN_DURATION_IN_MINUTES 1440
-#define INCOMING_DATA_BUFFER_SIZE 32768
+#define INCOMING_DATA_BUFFER_SIZE 65536
 #define MQTT_QOS1 1
 #define DO_NOT_RETAIN_MSG 0
 #define IOT_CONFIG_DEVICE_KEY returnDeviceKey()
@@ -33,6 +33,7 @@ static uint8_t sas_signature_buffer[256];
 static az_span device_key_span;
 static AzIoTSasToken* sasToken;
 static char incoming_data[INCOMING_DATA_BUFFER_SIZE];
+static int writed_data_size = 0;
 
 void initializeIoTHubClient() {
   az_iot_hub_client_options options = az_iot_hub_client_options_default();
@@ -122,21 +123,27 @@ static esp_err_t mqtt_event_handler(esp_mqtt_event_handle_t event) {
       Serial.println("MQTT event MQTT_EVENT_PUBLISHED");
       break;
     case MQTT_EVENT_DATA:
-      Serial.println("MQTT event MQTT_EVENT_DATA");
+      Serial.println("MQTT event MQTT_EVENT_DATA. Message size: ");
+
+      Serial.print(event->data_len);
 
       for (i = 0; i < (INCOMING_DATA_BUFFER_SIZE - 1) && i < event->topic_len; i++) {
-        incoming_data[i] = event->topic[i];
+        incoming_data[i + event->current_data_offset] = event->topic[i];
       }
-      incoming_data[i] = '\0';
+      incoming_data[i + event->current_data_offset] = '\0';
       Serial.println("Topic: " + String(incoming_data));
 
       for (i = 0; i < (INCOMING_DATA_BUFFER_SIZE - 1) && i < event->data_len; i++) {
-        incoming_data[i] = event->data[i];
+        incoming_data[i + event->current_data_offset] = event->data[i];
       }
-      incoming_data[i] = '\0';
+      writed_data_size += event->data_len;
+      incoming_data[i + event->current_data_offset] = '\0';
 
-      Serial.println("Data: " + String(incoming_data));
-      setTimeConfiguration(String(incoming_data));
+      if (writed_data_size == event->total_data_len) {
+        Serial.println("Data: " + String(incoming_data));
+        writed_data_size = 0;
+        setTimeConfiguration(String(incoming_data));
+      }
 
       break;
     case MQTT_EVENT_BEFORE_CONNECT:
@@ -154,7 +161,7 @@ int initializeMqttClient() {
   if (sasToken->Generate(SAS_TOKEN_DURATION_IN_MINUTES) != 0) {
     Serial.println("Failed generating SAS token");
     ESP.restart();
-    
+
     return 1;
   }
 
