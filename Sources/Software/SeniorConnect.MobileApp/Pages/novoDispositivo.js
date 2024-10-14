@@ -119,7 +119,7 @@ export default function NovoDispositivo({ navigation, route }) {
                 },
             }).then(response => {
                 console.log(response.data);
-                navigation.navigate('Dispositivo');
+                navigation.navigate('Dispositivo', { update: true });
             }).catch(erro => {
                 var mensagemErro = ''
                 mensagemErro += erro.toString();

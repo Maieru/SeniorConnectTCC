@@ -9,7 +9,7 @@ import apiClient from '../services/apiService.js';
 import { useFocusEffect } from '@react-navigation/native';
 
 
-export default function StatusScreen({ navigation }) {
+export default function StatusScreen({ navigation, route }) {
     const [medicamentosAssociados, setMedicamentosAssociados] = useState([]);
     const [medicamentos, setMedicamentos] = useState([]);
     const [selectedIndex, setSelectedIndex] = useState(null);
@@ -46,20 +46,33 @@ export default function StatusScreen({ navigation }) {
     useEffect(() => {
         const fetchData = async () => {
             await listaMedicamentos();
-
-            const device = await apiClient.getDeviceId();
-            const deviceName = await apiClient.getDeviceName();
-            const devicePrimaryKey = await apiClient.getDevicePrimaryKey();
-
-            setDeviceId(device);
-            setDeviceName(deviceName);
-            setDevicePrimaryKey(devicePrimaryKey);
+            await constroiTela();
         }
         fetchData();
 
         return () => { };
     }, []
     )
+
+    async function constroiTela() {
+
+        const device = await apiClient.getDeviceId();
+        const deviceName = await apiClient.getDeviceName();
+        const devicePrimaryKey = await apiClient.getDevicePrimaryKey();
+
+        setDeviceId(device);
+        setDeviceName(deviceName);
+        setDevicePrimaryKey(devicePrimaryKey);
+
+    }
+
+    useEffect(() => {
+        if (route.params?.update) {
+            listaMedicamentos();
+            constroiTela();
+
+        }
+    }, [route.params?.update]);
 
     async function selecionarMedicamento(medicamento) {
         const position = selectedIndex;
