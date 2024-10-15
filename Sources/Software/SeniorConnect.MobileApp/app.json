@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Senior Connect",
-    "slug": "Senior Connect",
+    "slug": "senior-connect",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -17,7 +17,7 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#5082FE"
       },
       "permissions": [
         "ACCESS_WIFI_STATE",
