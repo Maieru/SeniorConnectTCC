@@ -3,6 +3,8 @@
 #include <Arduino_JSON.h>
 #include "littleFSHelper.h"
 #include <vector>
+#include "rgbLedHelper.h"
+#include "hardwareConstants.h"
 
 // Defines
 #define CONFIGURATION_MEDICATION_SCHEDULE_PROPERTY "medicationSchedule"
@@ -68,6 +70,11 @@ void setTimeConfiguration(String configurationMessage) {
 
   currentTimeConfiguration = timeConfigurationArray;
   isCurrentConfigurationValid = true;
+
+  ledColor lastStatusLedColor = getLastColor();
+  setRGBLed(ledColor::BLUE, STATUS_LED_RED, STATUS_LED_GREEN, STATUS_LED_BLUE);
+  delay(200);
+  setRGBLed(lastStatusLedColor, STATUS_LED_RED, STATUS_LED_GREEN, STATUS_LED_BLUE);
 }
 
 void deleteTimeConfiguration() {

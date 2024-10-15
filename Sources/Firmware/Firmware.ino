@@ -98,7 +98,6 @@ void loop() {
   String heartBeatString = "";
   String telemetryMessage;
   std::vector<int> currentAlertsToBeActived;
-  //playSong();
 
   switch (currentState) {
     case NORMAL:
@@ -160,6 +159,12 @@ void loop() {
 
       if (!vectorsAreEqual(currentAlertsToBeActived, lastAlertsToBeActived)) {
         activateLeds(currentAlertsToBeActived);
+      }
+
+      if (!currentAlertsToBeActived.empty()) {
+        playSong();
+      } else {
+        stopSong();
       }
 
       lastAlertsToBeActived = currentAlertsToBeActived;

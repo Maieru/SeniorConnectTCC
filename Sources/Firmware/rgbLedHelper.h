@@ -13,5 +13,6 @@ enum ledColor {
 };
 
 void setRGBLed(enum ledColor, int pinRed, int pinGreen, int pinBlue);
+ledColor getLastColor();
 
 #endif
