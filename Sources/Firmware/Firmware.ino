@@ -19,6 +19,7 @@
 enum state {
   NORMAL,
   RESETING,
+  WIFI_OFFILNE,
 };
 
 bool isWifiStarted = false;
@@ -85,6 +86,7 @@ void setup() {
       setRGBLed(ledColor::GREEN, STATUS_LED_RED, STATUS_LED_GREEN, STATUS_LED_BLUE);
     } else {
       setRGBLed(ledColor::RED, STATUS_LED_RED, STATUS_LED_GREEN, STATUS_LED_BLUE);
+      currentState = state::WIFI_OFFILNE;
     }
   } else {
     initWifiConfigurationAccessPoint();
@@ -136,6 +138,11 @@ void loop() {
         return;
       }
 
+      if (WiFi.status() != WL_CONNECTED) {
+        currentState = state::WIFI_OFFILNE;
+        return;
+      }
+
       // This adds an 1 milisecond delay between executions
       if (currentMillis - lastExecutionMillis < 1) {
         return;
@@ -183,6 +190,34 @@ void loop() {
         deactivateLeds();
         ESP.restart();
       }
+      
+      break;
+
+    case WIFI_OFFILNE:
+      if (digitalRead(RESET_BUTTON) == HIGH) {
+        if (currentMillis - resetStartMilis > 1) {
+          resetCount++;
+        }
+
+        if (resetCount > 500) {
+          resetMilis = millis();
+          currentState = state::RESETING;
+          Serial.println("Entering reset mode");
+          return;
+        }
+      } else {
+        resetCount = 0;
+        resetStartMilis = 0;
+
+        if (WiFi.status() != WL_CONNECTED) {
+          setRGBLed(ledColor::RED, STATUS_LED_RED, STATUS_LED_GREEN, STATUS_LED_BLUE);
+          delay(200);
+          WiFi.reconnect();
+        } else {
+          ESP.restart();
+        }
+      }
+
       break;
   }
 }
