@@ -9,6 +9,7 @@ namespace SeniorConnect.Bussiness.Entities_Services
     {
         private readonly MedicineService _medicineService;
         private readonly SchedulingService _schedulingService;
+        private readonly AdministrationService _administrationService;
 
         private int? _currentSubscriptionId;
         public int? CurrentSubscriptionId
@@ -22,10 +23,11 @@ namespace SeniorConnect.Bussiness.Entities_Services
             }
         }
 
-        public ReportService(MedicineService medicineService, SchedulingService schedulingService)
+        public ReportService(MedicineService medicineService, SchedulingService schedulingService, AdministrationService administrationService)
         {
             _schedulingService = schedulingService;
             _medicineService = medicineService;
+            _administrationService = administrationService;
         }
 
         public async Task<List<DailyMedicineSchedulesTO>> GetWeeklyScheduleReport(int subscriptionId)
@@ -55,6 +57,28 @@ namespace SeniorConnect.Bussiness.Entities_Services
             return schedulesOfTheWeek;
         }
 
+        public async Task<AdhesionReportTO> GetAdhesionReport(int subscriptionId, int daysToBeEvaluated = 7)
+        {
+            var medicines = await _medicineService.GetMedicinesFromSubscription(subscriptionId);
+
+            var adhesionReport = new AdhesionReportTO
+            {
+                MedicinesAdhesion = new List<MedicineAdhesionTO>()
+            };
+
+            if (medicines.Count == 0)
+                return adhesionReport;
+
+            foreach (var medicine in medicines)
+                adhesionReport.MedicinesAdhesion.Add(await CalculateMedicineAdhesion(medicine, daysToBeEvaluated));
+
+            adhesionReport.TotalSchedulings = adhesionReport.MedicinesAdhesion.Sum(m => m.TotalSchedulings);
+            adhesionReport.TotalAdhesion = adhesionReport.MedicinesAdhesion.Sum(m => m.Adhesion) / adhesionReport.MedicinesAdhesion.Count;
+            adhesionReport.MissedDosesPercentage = 100 - adhesionReport.TotalAdhesion;
+
+            return adhesionReport;
+        }
+
         private async Task<DailyMedicineScheduleTO> CreateDailyMedicineScheduleTO(int medicineId, List<Scheduling> schedules)
         {
             var medicine = await _medicineService.GetMedicineById(medicineId);
@@ -69,6 +93,48 @@ namespace SeniorConnect.Bussiness.Entities_Services
                     Minute = s.Minute
                 }).ToList()
             };
+        }
+
+        private async Task<MedicineAdhesionTO> CalculateMedicineAdhesion(Medicine medicine, int daysToBeEvaluated)
+        {
+            var administrations = await _administrationService.GetAdministrationsFromMedicine(medicine.Id, daysToBeEvaluated);
+            var schedulings = await _schedulingService.GetSchedulingsFromMedicine(medicine.Id);
+            var medicineAdhesionTO = new MedicineAdhesionTO
+            {
+                MedicineId = medicine.Id,
+                MedicineName = medicine.Name,
+                MissedSchedulings = new List<MissedSchedulingTO>()
+            };
+
+            foreach (var scheduling in schedulings)
+            {
+                var administrationsOfScheduling = administrations.Where(a => a.SchedulingId == scheduling.Id).ToList();
+
+                foreach (var day in scheduling.DaysOfWeekList)
+                {
+                    var weekDayOffset = (int)DateTime.UtcNow.DayOfWeek - (int)day;
+                    var dayToEvaluate = DateTime.UtcNow.AddDays(-weekDayOffset);
+
+                    var administrationsOfSchedulingOnDay = administrationsOfScheduling.Where(a => a.Date.Date == dayToEvaluate.Date).FirstOrDefault();
+
+                    if (administrationsOfSchedulingOnDay == null)
+                    {
+                        medicineAdhesionTO.MissedSchedulings.Add(new MissedSchedulingTO
+                        {
+                            DayOfWeek = (int)day,
+                            Hour = scheduling.Hour,
+                            Minute = scheduling.Minute,
+                            Day = dayToEvaluate.Day,
+                            Month = dayToEvaluate.Month
+                        });
+                    }
+
+                    medicineAdhesionTO.TotalSchedulings++;
+                }
+            }
+
+            medicineAdhesionTO.Adhesion = (1 - (medicineAdhesionTO.MissedSchedulings.Count / medicineAdhesionTO.TotalSchedulings)) * 100;
+            return medicineAdhesionTO;
         }
 
         private bool ValidateAccessToSubscription(int subscriptionId)

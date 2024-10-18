@@ -62,5 +62,10 @@ namespace SeniorConnect.Bussiness.Entities_Services
 
             return administration;
         }
+
+        public async Task<List<Administration>> GetAdministrationsFromMedicine(int medicineId, int daysToBeEvaluated)
+        {
+            return await _repository.GetAllAsync(a => a.MedicineId == medicineId && a.Date >= DateTime.UtcNow.AddDays(-daysToBeEvaluated));
+        }
     }
 }

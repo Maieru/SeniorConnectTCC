@@ -43,5 +43,23 @@ namespace SeniorConnect.Web.ApiServer.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
+
+        [HttpGet("GetAdhesionReport")]
+        public async Task<IActionResult> GetAdhesionReport(int subscriptionId)
+        {
+            try
+            {
+                return Ok(await _reportService.GetAdhesionReport(subscriptionId));
+            }
+            catch (InvalidDataProvidedException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                await _logService.LogException(ex, subscriptionId);
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
     }
 }

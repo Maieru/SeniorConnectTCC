@@ -14,5 +14,16 @@ namespace SeniorConnect.Domain.Entities
         public int Hour { get; set; }
         public int Minute { get; set; }
         public string DaysOfWeek { get; set; }
+
+        public List<DayOfWeek> DaysOfWeekList
+        {
+            get
+            {
+                if (DaysOfWeek == null)
+                    return new List<DayOfWeek>();
+
+                return DaysOfWeek.Split(',').Select(d => (DayOfWeek)Convert.ToInt32(d)).ToList();
+            }
+        }
     }
 }
