@@ -70,6 +70,12 @@ const stylesAdherenceReport = StyleSheet.create({
     adherenceItemText: {
         fontSize: 18,
         color: '#000',
+        flex: 5,
+    },
+    adherenceItemPercentage: {
+        fontSize: 18,
+        flex: 1,
+        color: '#000',
     },
 });
 
