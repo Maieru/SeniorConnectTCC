@@ -13,6 +13,8 @@ namespace SeniorConnect.Bussiness.Entities_Services
 {
     public class TelemetryService
     {
+        private const int ADMINISTRATION_WINDOW = 15;
+
         private readonly IRepository<Telemetry> _repository;
         private readonly DeviceService _deviceService;
         private readonly MedicineService _medicineService;
@@ -72,11 +74,17 @@ namespace SeniorConnect.Bussiness.Entities_Services
 
                 var schedulings = await _schedulingService.GetSchedulingsFromMedicine(medicineAssociated.MedicineId);
 
-                if (schedulings == null || !schedulings.Any())
+                if (schedulings == null || schedulings.Count == 0)
                     continue;
 
-                var scheduling = schedulings.FirstOrDefault(s => s.Hour == telemetry.Hour && s.Minute == telemetry.Minute &&
-                                        s.DaysOfWeek.Split(',').Any(d => d == ((int)telemetry.GetDayOfWeek()).ToString()));
+                var telemetryMinute = telemetry.Hour * 60 + telemetry.Minute;
+
+                var scheduling = schedulings.FirstOrDefault(s =>
+                {
+                    var schedulingMinute = s.Hour * 60 + s.Minute;
+                    return telemetryMinute > schedulingMinute - ADMINISTRATION_WINDOW && telemetryMinute < schedulingMinute + ADMINISTRATION_WINDOW &&
+                           s.DaysOfWeek.Split(',').Any(d => d == ((int)telemetry.GetDayOfWeek()).ToString());
+                });
 
                 if (scheduling != null)
                 {
