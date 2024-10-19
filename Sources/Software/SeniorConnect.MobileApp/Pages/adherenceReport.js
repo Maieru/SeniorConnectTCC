@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, ScrollView, Image } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView, Image, TouchableWithoutFeedback } from 'react-native';
 import styles from '../styles.js'; // Import the styles
 import { HeaderReturn, Footer } from '../Layout.js'; // Import Header with return button and footer
 import stylesAdherenceReport from '../stylesAdherenceReport.js';
@@ -13,11 +13,11 @@ export default function AdherenceReportScreen({ navigation }) {
         const fetchData = async () => {
             const response = await apiClient.get("/v1/Report/GetAdhesionReport?subscriptionId=" + apiClient.getSubscription());
 
-            if (response != undefined){
+            if (response != undefined) {
                 setReportData(response.data);
                 console.log(JSON.stringify(response.data));
             }
-            else{
+            else {
                 console.log('Falha ao recuperar os dados do relatório de adesão');
             }
 
@@ -48,25 +48,28 @@ export default function AdherenceReportScreen({ navigation }) {
                     <ScrollView style={stylesAdherenceReport.adherenceList}>
                         {
                             reportData == null ? null : reportData.medicinesAdhesion.map((item, index) =>
-                            (<View key={index} style={stylesAdherenceReport.adherenceItem}>
-                                <Image
-                                    source={require('../assets/medication.png')}
-                                    style={stylesAdherenceReport.adherenceItemImage}
-                                />
-                                <Text style={stylesAdherenceReport.adherenceItemText}>{item.medicineName} </Text>
-                                <Text style={stylesAdherenceReport.adherenceItemPercentage}>{Math.round(item.adhesion)}%</Text>
-                                <Image
-                                    source={require('../assets/setaPraDireita.png')}
-                                    style={stylesAdherenceReport.adherenceItemImage}
-                                />
+                            (<View key={index}>
+                                <TouchableWithoutFeedback onPress={() => {
+                                    navigation.navigate('Detalhes de Adesão', { detalhesDeAdministracao: item });
+                                }}>
+                                    <View style={stylesAdherenceReport.adherenceItem}>
+                                        <Image
+                                            source={require('../assets/medication.png')}
+                                            style={stylesAdherenceReport.adherenceItemImage}
+                                        />
+                                        <Text style={stylesAdherenceReport.adherenceItemText}>{item.medicineName} </Text>
+                                        <Text style={stylesAdherenceReport.adherenceItemPercentage}>{Math.round(item.adhesion)}%</Text>
+                                        <Image
+                                            source={require('../assets/setaPraDireita.png')}
+                                            style={stylesAdherenceReport.adherenceItemImage}
+                                        />
+                                    </View>
+                                </TouchableWithoutFeedback>
                             </View>
+
                             ))}
                     </ScrollView>
                 </View>
-
-                <TouchableOpacity style={styles.exportButton} onPress={() => { /* Add export functionality here */ }}>
-                    <Text style={styles.exportButtonText}>Exportar</Text>
-                </TouchableOpacity>
             </ScrollView>
             <Footer navigation={navigation} />
         </View>

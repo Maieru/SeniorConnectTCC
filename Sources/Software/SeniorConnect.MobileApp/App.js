@@ -14,6 +14,7 @@ import DosageReportScreen from './Pages/dosageReport.js';
 import AdherenceReportScreen from './Pages/adherenceReport.js';
 import HorariosMedicineScreen from './Pages/newScheduling.js';
 import NovoDispositivoScreen from './Pages/novoDispositivo.js';
+import AdherenceReportDetailScreen from './Pages/adherenceReportDetail.js';
 
 const Stack = createNativeStackNavigator();
 
@@ -44,6 +45,7 @@ export default function App() {
         <Stack.Screen name="Relatorio de Adesão" component={AdherenceReportScreen} />
         <Stack.Screen name="Novo Horario" component={HorariosMedicineScreen} />
         <Stack.Screen name="Novo Dispositivo" component={NovoDispositivoScreen} />
+        <Stack.Screen name="Detalhes de Adesão" component={AdherenceReportDetailScreen} />
 
       </Stack.Navigator>
     </NavigationContainer>
