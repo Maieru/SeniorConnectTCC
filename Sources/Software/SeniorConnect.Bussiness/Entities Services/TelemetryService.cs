@@ -46,7 +46,7 @@ namespace SeniorConnect.Bussiness.Entities_Services
                 Second = telemetryMessage.Second,
                 Millis = telemetryMessage.Millis,
                 SensorDataJson = JsonConvert.SerializeObject(telemetryMessage.SensorData),
-                OpeningExpected = await CheckOpeningExpected(device.Id, telemetryMessage, device)
+                UndueOpening = await CheckOpeningExpected(device.Id, telemetryMessage, device)
             };
 
             await _repository.AddAsync(telemetry);
@@ -55,7 +55,10 @@ namespace SeniorConnect.Bussiness.Entities_Services
         private async Task<bool> CheckOpeningExpected(int deviceId, TelemetryMessage telemetry, Device device)
         {
             var medicineAssociations = await _medicineService.GetMedicinesAssociatedToDevice(deviceId);
-            var returnValue = false;
+            var returnValue = true;
+
+            if (telemetry.SensorData.All(d => !d.State))
+                return returnValue; // No sensor is open
 
             foreach (var sensorData in telemetry.SensorData)
             {
@@ -79,7 +82,7 @@ namespace SeniorConnect.Bussiness.Entities_Services
                 {
                     var medicine = await _medicineService.GetMedicineById(medicineAssociated.MedicineId);
                     await _administrationService.AddAdministration(medicine, scheduling, device);
-                    returnValue = true;
+                    returnValue = false;
                 }
             }
 

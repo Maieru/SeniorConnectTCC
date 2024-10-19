@@ -25,7 +25,7 @@ namespace SeniorConnect.Infrastructure.FluentApi
             builder.Property(d => d.Second).HasColumnName("Segundo").IsRequired();
             builder.Property(d => d.Millis).HasColumnName("Milis").IsRequired();
             builder.Property(d => d.SensorDataJson).HasColumnName("Status").IsRequired();          
-            builder.Property(d => d.OpeningExpected).HasColumnName("AberturaIndevida").IsRequired();
+            builder.Property(d => d.UndueOpening).HasColumnName("AberturaIndevida").IsRequired();
         }
     }
 }

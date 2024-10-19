@@ -20,6 +20,6 @@ namespace SeniorConnect.Domain.Entities
         public int Second { get; set; }
         public int Millis { get; set; }
         public string SensorDataJson { get; set; }
-        public bool OpeningExpected { get; set; }
+        public bool UndueOpening { get; set; }
     }
 }
