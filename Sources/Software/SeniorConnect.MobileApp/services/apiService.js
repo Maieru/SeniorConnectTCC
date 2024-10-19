@@ -82,7 +82,7 @@ class ApiService {
         if (this.device == undefined)
             await this.getDevice();
 
-        return this.device.id;
+        return this.device != undefined ? this.device.id : undefined;
     }
 
     async getDeviceName() {

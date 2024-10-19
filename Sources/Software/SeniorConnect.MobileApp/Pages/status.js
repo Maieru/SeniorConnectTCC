@@ -21,6 +21,9 @@ export default function StatusScreen({ navigation, route }) {
 
 
     async function listaMedicamentos() {
+        if (await apiClient.getDeviceId() == undefined)
+            return;
+
         const responseGetAllAssociated = await apiClient.get("/v1/Medicine/GetMedicinesAssociatedToDevice?deviceId=" + await apiClient.getDeviceId());
         const medicamentosAssociados = responseGetAllAssociated.data;
 
@@ -126,7 +129,7 @@ export default function StatusScreen({ navigation, route }) {
 
     return (
         <View style={styles.containerMenu}>
-            {!deviceId ? (
+            {deviceId == undefined ? (
                 <TouchableOpacity
                     style={[styles.statusCadastrarDispositivo]}
                     onPress={() => navigation.navigate('Novo Dispositivo', { createNewDevice: true })}>
