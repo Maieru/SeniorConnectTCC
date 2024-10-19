@@ -58,7 +58,7 @@ namespace SeniorConnect.Bussiness.Entities_Services
             var returnValue = true;
 
             if (telemetry.SensorData.All(d => !d.State))
-                return returnValue; // No sensor is open
+                return false; // No sensor is open
 
             foreach (var sensorData in telemetry.SensorData)
             {
