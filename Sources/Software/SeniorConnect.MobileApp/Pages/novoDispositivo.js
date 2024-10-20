@@ -106,34 +106,34 @@ export default function NovoDispositivo({ navigation, route }) {
             deviceInformation.devicePrimaryKey = route.params.devicePrimaryKey;
         }
 
-        // await WifiManager.connectToProtectedSSID(SENIOR_CONNECT_DEVICE_SSID, SENIOR_CONNECT_DEVICE_AP_PASSWORD, false, false).then(async () => {
-        //     const formData = new FormData();
-        //     formData.append('ssid', deviceInformation.ssid);
-        //     formData.append('password', deviceInformation.password);
-        //     formData.append('deviceName', deviceInformation.deviceName);
-        //     formData.append('devicePrimaryKey', deviceInformation.devicePrimaryKey);
+        await WifiManager.connectToProtectedSSID(SENIOR_CONNECT_DEVICE_SSID, SENIOR_CONNECT_DEVICE_AP_PASSWORD, false, false).then(async () => {
+            const formData = new FormData();
+            formData.append('ssid', deviceInformation.ssid);
+            formData.append('password', deviceInformation.password);
+            formData.append('deviceName', deviceInformation.deviceName);
+            formData.append('devicePrimaryKey', deviceInformation.devicePrimaryKey);
 
-        //     console.log(formData);
+            console.log(formData);
 
-        //     await axios.post(`${SENIOR_CONNECT_DEVICE_DEFAULT_IP}`, formData, {
-        //         headers: {
-        //             'Content-Type': 'multipart/form-data',
-        //         },
-        //     }).then(response => {
-        //         console.log(response.data);
-        //         navigation.navigate('Dispositivo', { update: true });
-        //     }).catch(erro => {
-        //         var mensagemErro = ''
-        //         mensagemErro += erro.toString();
+            await axios.post(`${SENIOR_CONNECT_DEVICE_DEFAULT_IP}`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            }).then(response => {
+                console.log(response.data);
+                navigation.navigate('Dispositivo', { update: true });
+            }).catch(erro => {
+                var mensagemErro = ''
+                mensagemErro += erro.toString();
 
-        //         if (erro.response)
-        //             mensagemErro += ' - ' + erro.response.data;
+                if (erro.response)
+                    mensagemErro += ' - ' + erro.response.data;
 
-        //         mensagemErro += ' ---- Detalhes da Requisição ---- ' + JSON.stringify(erro.request);
+                mensagemErro += ' ---- Detalhes da Requisição ---- ' + JSON.stringify(erro.request);
 
-        //         console.log(mensagemErro);
-        //     });
-        // });
+                console.log(mensagemErro);
+            });
+        });
 
 
         navigation.navigate('Dispositivo', { update: true });
@@ -162,7 +162,7 @@ export default function NovoDispositivo({ navigation, route }) {
                         placeholderTextColor="#888"
                         secureTextEntry
                     />
-    
+
                     <TouchableOpacity
                         style={stylesDispositivo.button}
                         onPress={cadastrarDispositivo}
@@ -171,11 +171,11 @@ export default function NovoDispositivo({ navigation, route }) {
                     </TouchableOpacity>
                 </View>
             </View>
-    
-            
-                <Footer navigation={navigation} />
-         
-    
+
+
+            <Footer navigation={navigation} />
+
+
             {isLoading && (
                 <View style={stylesDispositivo.overlay}>
                     <ActivityIndicator size="large" color="#0000ff" />
