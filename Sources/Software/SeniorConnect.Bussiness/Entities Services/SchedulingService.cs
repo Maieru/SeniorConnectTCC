@@ -1,6 +1,7 @@
 ﻿using SeniorConnect.Domain.Entities;
 using SeniorConnect.Domain.Exceptions;
 using SeniorConnect.Domain.Interfaces;
+using SeniorConnect.Domain.TOs.Medicine;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -161,14 +162,14 @@ namespace SeniorConnect.Bussiness.Entities_Services
             return true;
         }
 
-        public async Task<List<Scheduling>> GetUnadministeredSchedulings(TimeSpan period, int subscriptionId)
+        public async Task<List<UnadministeredSchedulingsTO>> GetUnadministeredSchedulings(TimeSpan period, int subscriptionId)
         {
             var now = DateTime.UtcNow;
             var endTime = now.Add(period);
 
             var schedulings = await GetSchedulingsFromSubscription(subscriptionId);
 
-            var unadministeredSchedulings = new List<Scheduling>();
+            var unadministeredSchedulings = new List<UnadministeredSchedulingsTO>();
 
             foreach (var scheduling in schedulings)
             {
@@ -178,7 +179,17 @@ namespace SeniorConnect.Bussiness.Entities_Services
 
                     if (hasAdministration == null) // Se não tem administração
                     {
-                        unadministeredSchedulings.Add(scheduling);
+                        var medicine = await _medicineService.GetMedicineById(scheduling.MedicineId);
+
+                        unadministeredSchedulings.Add(new UnadministeredSchedulingsTO()
+                        {
+                            DaysOfWeek = scheduling.DaysOfWeek,
+                            Hour = scheduling.Hour,
+                            Minute = scheduling.Minute,
+                            MedicineId = scheduling.MedicineId,
+                            SchedulingId = scheduling.Id,
+                            MedicineName = medicine.Name
+                        });
                     }
                 }
             }
@@ -194,6 +205,8 @@ namespace SeniorConnect.Bussiness.Entities_Services
                 {
                     var scheduledTime = new DateTime(now.Year, now.Month, now.Day, scheduling.Hour, scheduling.Minute, 0);
                     scheduledTime = scheduledTime.AddDays((int)scheduledDay - (int)now.DayOfWeek);
+
+                    now = now.AddHours(-3); // May God forgive me
 
                     if (scheduledTime >= now && scheduledTime <= endTime)
                     {
