@@ -16,6 +16,7 @@ import HorariosMedicineScreen from './Pages/newScheduling.js';
 import NovoDispositivoScreen from './Pages/novoDispositivo.js';
 import AdherenceReportDetailScreen from './Pages/adherenceReportDetail.js';
 import TermoDeUsoScreen from './Pages/termoDeUso.js';
+import UserAreaScreen from './Pages/userArea.js';
 
 
 const Stack = createNativeStackNavigator();
@@ -49,7 +50,8 @@ export default function App() {
         <Stack.Screen name="Novo Dispositivo" component={NovoDispositivoScreen} />
         <Stack.Screen name="Detalhes de Adesão" component={AdherenceReportDetailScreen} />
         <Stack.Screen name="TermsOfUse" component={TermoDeUsoScreen} options={{ title: 'Termos de Uso' }} />
-
+        <Stack.Screen name="UserArea" component={UserAreaScreen} options={{ title: 'Area do Usuário' }} />
+        
       </Stack.Navigator>
     </NavigationContainer>
 

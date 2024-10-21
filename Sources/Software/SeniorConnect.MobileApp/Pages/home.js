@@ -50,13 +50,11 @@ export default function HomeScreen({ navigation }) {
               <Text style={styles.basicLabel}>Mensalidade em Dia!</Text>
             </View>
             <Text style={styles.basicLabel}>Status: </Text>
-            <Text style={styles.basicLabel}>[ativo]</Text>
-            <Text style={styles.basicLabel}>Válido até:</Text>
-            <Text style={styles.basicLabel}>[15/09/24]</Text>
+            <Text style={styles.basicLabel}>ativo</Text>
             <TouchableOpacity
-              onPress={() => navigation.navigate('Home')}
+              onPress={() => navigation.navigate('UserArea')}
               style={styles.homeButton}>
-              <Text style={styles.basicButtonText}>Histórico</Text>
+              <Text style={styles.basicButtonText}>Área do Usuário</Text>
             </TouchableOpacity>
           </View>
         </View>

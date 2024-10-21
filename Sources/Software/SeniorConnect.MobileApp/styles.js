@@ -220,6 +220,7 @@ const styles = StyleSheet.create({
     padding: 15,
     height: '100%',
     alignItems: 'center',
+    justifyContent: 'center',
   },
   homeMedicineContainer: {
     backgroundColor: '#ccc',
@@ -264,6 +265,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#7DDA58',
     paddingVertical: 7,
     alignSelf: 'center',
+    alignItems: 'center',
   },
   basicScroll: {
     width: '100%',
