@@ -21,7 +21,15 @@ export default function MedicineScreen({ navigation, route }) {
         } else {
             console.log("Por algum motivo, essa api demora, mas não da problema...");
         }
+
+        const schedulesWithNames = await Promise.all(firstFiveSchedules.map(async (schedule) => {
+            const medicineResponse = await apiClient.get(`/v1/Scheduling/GetByMedicine?medicineId=${schedule.medicineId}`);
+            const medicineName = medicineResponse.data.medicineName || `Medicamento ${schedule.medicineId}`;
+            return { ...schedule, medicineName };
+          }));
     }
+
+    
 
     useFocusEffect(
         React.useCallback(() => {

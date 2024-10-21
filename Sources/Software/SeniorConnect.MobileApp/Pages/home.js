@@ -2,8 +2,25 @@ import { StatusBar } from 'expo-status-bar';
 import { Text, View, TouchableOpacity, Image, ScrollView } from 'react-native';
 import styles from '../styles.js';
 import { Header, Footer, RemediosHome } from '../Layout.js';
+import { useEffect, useState } from 'react';
+import apiClient from '../services/apiService.js';
 
 export default function HomeScreen({ navigation }) {
+  const [schedules, setSchedules] = useState([]);
+
+  const proximasDosagens = async () => {
+    const response = await apiClient.get('/v1/Medicine/GetUnadministeredSchedulings');
+    const dezPrimeiros = response.data.slice(0, 10);
+
+    console.log('Resposta da API:', response.data);
+
+    setSchedules(dezPrimeiros);
+  };
+
+  useEffect(() => {
+    proximasDosagens();
+  }, []);
+
   return (
     <View style={styles.containerMenu}>
       <View style={styles.content}>
@@ -12,11 +29,17 @@ export default function HomeScreen({ navigation }) {
           <Text style={styles.basicLabel}>Próximas Dosagens</Text>
           <ScrollView style={styles.basicScroll}>
             <View style={styles.sectionContainer}>
-              <RemediosHome nome="Medicamento 1" horario="1:00" />
-              <RemediosHome nome="Medicamento 2" horario="2:00" />
-              <RemediosHome nome="Medicamento 3" horario="3:00" />
-              <RemediosHome nome="Medicamento 4" horario="4:00" />
-              <RemediosHome nome="Medicamento 5" horario="5:00" />
+              {schedules.length > 0 ? (
+                schedules.map((schedule, index) => (
+                  <RemediosHome
+                    key={index}
+                    nome={'Medicamento: ' + schedule.medicineId}
+                    horario={`${schedule.hour}:${schedule.minute < 10 ? '0' + schedule.minute : schedule.minute}`}
+                  />
+                ))
+              ) : (
+                <Text>Nenhuma dosagem pendente</Text>
+              )}
             </View>
           </ScrollView>
         </View>
@@ -27,13 +50,11 @@ export default function HomeScreen({ navigation }) {
               <Text style={styles.basicLabel}>Mensalidade em Dia!</Text>
             </View>
             <Text style={styles.basicLabel}>Status: </Text>
-            <Text style={styles.basicLabel}>[ativo]</Text>
-            <Text style={styles.basicLabel}>Válido até:</Text>
-            <Text style={styles.basicLabel}>[15/09/24]</Text>
+            <Text style={styles.basicLabel}>ativo</Text>
             <TouchableOpacity
-              onPress={() => navigation.navigate('Home')}
+              onPress={() => navigation.navigate('UserArea')}
               style={styles.homeButton}>
-              <Text style={styles.basicButtonText}>Histórico</Text>
+              <Text style={styles.basicButtonText}>Área do Usuário</Text>
             </TouchableOpacity>
           </View>
         </View>

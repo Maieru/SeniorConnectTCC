@@ -1,29 +1,37 @@
-import React from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Alert } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, TextInput, TouchableOpacity, Image, Alert } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import styles from '../styles.js';
 import apiClient from '../services/apiService.js';
-import { useState } from 'react';
 
 export default function LoginScreen({ navigation }) {
-
   const [usuario, setUsuario] = useState('');
   const [senha, setSenha] = useState('');
 
-
   async function login() {
-    let objUsuario = {
-      username: usuario,
-      password: senha,
-    }
+    try {
+      let objUsuario = {
+        username: usuario,
+        password: senha,
+      };
 
-    apiClient.setCredentials(usuario, senha);
-    let token = await apiClient.getToken();
+      apiClient.setCredentials(usuario, senha);
+      let token = await apiClient.getToken();
 
-    if (token != undefined) {
-      navigation.navigate('Home')
+      if (token) {
+        const accepted = await AsyncStorage.getItem(`termsAccepted_${usuario}`);
+        console.log('Termos aceitos:', accepted);
 
-    } else {
-      Alert.alert("Usuário Inválido!")
+        if (accepted === 'true') {
+          navigation.navigate('Home');
+        } else {
+          navigation.navigate('TermsOfUse', { usuario });
+        }
+      } else {
+        Alert.alert('Usuário Inválido!');
+      }
+    } catch (error) {
+      Alert.alert('Erro', 'Ocorreu um erro durante o login. Tente novamente.');
     }
   }
 
@@ -51,9 +59,7 @@ export default function LoginScreen({ navigation }) {
         secureTextEntry={true}
       />
 
-      <TouchableOpacity
-        onPress={() => login()}
-        style={styles.basicButton}>
+      <TouchableOpacity onPress={login} style={styles.basicButton}>
         <Text style={styles.basicButtonText}>Entrar</Text>
       </TouchableOpacity>
 
@@ -65,4 +71,3 @@ export default function LoginScreen({ navigation }) {
     </View>
   );
 }
-

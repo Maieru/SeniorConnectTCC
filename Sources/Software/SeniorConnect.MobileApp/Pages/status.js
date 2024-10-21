@@ -129,7 +129,7 @@ export default function StatusScreen({ navigation, route }) {
 
     return (
         <View style={styles.containerMenu}>
-            {deviceId == undefined ? (
+            {!deviceId ? (
                 <TouchableOpacity
                     style={[styles.statusCadastrarDispositivo]}
                     onPress={() => navigation.navigate('Novo Dispositivo', { createNewDevice: true })}>
