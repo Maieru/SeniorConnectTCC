@@ -16,7 +16,7 @@ namespace SeniorConnect.Bussiness.Entities_Services
         private readonly AdministrationService _administrationService;
 
         private int? _currentSubscriptionId;
-        public int? CurrentSubscriptionId 
+        public int? CurrentSubscriptionId
         {
             get => _currentSubscriptionId;
             set
@@ -138,7 +138,7 @@ namespace SeniorConnect.Bussiness.Entities_Services
             var medicinesFromSubscription = await _medicineService.GetMedicinesFromSubscription(subscriptionId);
             var schedulings = new List<Scheduling>();
 
-            foreach(var medicine in medicinesFromSubscription)
+            foreach (var medicine in medicinesFromSubscription)
                 schedulings.AddRange(await _repository.GetAllAsync(s => s.MedicineId == medicine.Id));
 
             return schedulings;
@@ -203,6 +203,13 @@ namespace SeniorConnect.Bussiness.Entities_Services
             }
 
             return false;
+        }
+
+        public async Task UpdateLastAdministration(int schedulingId)
+        {
+            var scheduling = await GetSchedulingById(schedulingId);
+            scheduling.LastAdministration = DateTime.UtcNow;
+            await UpdateScheduling(scheduling);
         }
 
         private bool ValidateAccessToSubscription(int subscriptionId)

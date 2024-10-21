@@ -82,8 +82,11 @@ namespace SeniorConnect.Bussiness.Entities_Services
                 var scheduling = schedulings.FirstOrDefault(s =>
                 {
                     var schedulingMinute = s.Hour * 60 + s.Minute;
-                    return telemetryMinute > schedulingMinute - ADMINISTRATION_WINDOW && telemetryMinute < schedulingMinute + ADMINISTRATION_WINDOW &&
-                           s.DaysOfWeek.Split(',').Any(d => d == ((int)telemetry.GetDayOfWeek()).ToString());
+                    var withinTimeTolerance = Math.Abs(schedulingMinute - (telemetry.Hour * 60 + telemetry.Minute)) <= 15;
+                    var correctDayOfWeek = s.DaysOfWeek.Split(',').Any(d => d == ((int)telemetry.GetDayOfWeek()).ToString());
+                    var notAdministeredRecently = s.LastAdministration == null || (DateTime.UtcNow - s.LastAdministration.Value).TotalMinutes > 15;
+
+                    return withinTimeTolerance && correctDayOfWeek && notAdministeredRecently;
                 });
 
                 if (scheduling != null)

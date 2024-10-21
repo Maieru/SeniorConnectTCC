@@ -9,10 +9,12 @@ namespace SeniorConnect.Bussiness.Entities_Services
     public class AdministrationService
     {
         private readonly IRepository<Administration> _repository;
+        private readonly SchedulingService _schedulingService;
 
-        public AdministrationService(IRepository<Administration> repository)
+        public AdministrationService(IRepository<Administration> repository, SchedulingService schedulingService)
         {
             _repository = repository;
+            _schedulingService = schedulingService;
         }
 
         public async Task AddAdministration(Medicine medicine, Scheduling scheduling, Device device)
@@ -53,6 +55,7 @@ namespace SeniorConnect.Bussiness.Entities_Services
             };
 
             await _repository.AddAsync(administration);
+            await _schedulingService.UpdateLastAdministration(scheduling.Id);
         }
 
 
