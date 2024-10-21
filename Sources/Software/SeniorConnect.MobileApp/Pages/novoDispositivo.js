@@ -98,7 +98,10 @@ export default function NovoDispositivo({ navigation, route }) {
         let deviceInformation = { ssid, password };
 
         if (route.params.createNewDevice) {
+            console.log('Criando novo Dispositivo');
             let response = await apiClient.createNewDevice();
+            
+            console.log('Dispositivo criado');
             deviceInformation.deviceName = response.data.deviceName;
             deviceInformation.devicePrimaryKey = response.data.devicePrimaryKey;
         } else {
