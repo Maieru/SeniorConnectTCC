@@ -5,5 +5,8 @@
 	[Hora]					INT			NOT NULL,
 	[Minuto]				INT			NOT NULL,
 	[DiasDaSemana]			VARCHAR(20)	NOT NULL,
-	[Ativo]			        BIT	        NOT NULL
+	[Ativo]			        BIT	        NOT NULL,
+	[DataCriacao]			DATETIME	NOT NULL DEFAULT GETDATE(),
+	[DataUltimaEdicao]		DATETIME	NOT NULL DEFAUaLT GETDATE(),
+	[UltimaAdministracao]	DATETIME	NULL,
 )

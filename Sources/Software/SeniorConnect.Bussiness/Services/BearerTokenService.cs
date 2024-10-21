@@ -38,7 +38,7 @@ namespace SeniorConnect.Bussiness.Services
                 claims: claims,
                 issuer: JwtConfigurationOptions.Issuer,
                 audience: JwtConfigurationOptions.Audience,
-                expires: DateTime.Now.AddSeconds(JwtConfigurationOptions.ExpirationSeconds),
+                expires: DateTime.UtcNow.AddSeconds(JwtConfigurationOptions.ExpirationSeconds),
                 signingCredentials: signingCredentials);
 
             var rawToken = new JwtSecurityTokenHandler().WriteToken(token);

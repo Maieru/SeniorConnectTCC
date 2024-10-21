@@ -225,8 +225,8 @@ namespace SeniorConnect.Web.ApiServer.Controllers
         {
             try
             {
-                // Constante de 24 horas para o período, porém precisamos definir o valor
-                var period = TimeSpan.FromHours(24);
+                // Constante de 8 horas para o período, porém precisamos definir o valor
+                var period = TimeSpan.FromHours(8);
 
                 var unadministeredSchedulings = await _schedulingService.GetUnadministeredSchedulings(period, LoggedUserSubscription);
 

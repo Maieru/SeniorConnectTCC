@@ -51,6 +51,9 @@ namespace SeniorConnect.Bussiness.Entities_Services
             if (DaysOfWeekAreValid(scheduling.DaysOfWeek))
                 throw new InvalidDataProvidedException("Days of the week was invalid");
 
+            scheduling.Creation = DateTime.UtcNow;
+            scheduling.LastChange = DateTime.UtcNow;
+
             await _repository.AddAsync(scheduling);
             await _medicineService.NotifyMedicineChange(medicine.Id);
         }
@@ -78,6 +81,8 @@ namespace SeniorConnect.Bussiness.Entities_Services
             originalScheduling.Minute = scheduling.Minute;
             originalScheduling.DaysOfWeek = scheduling.DaysOfWeek;
             originalScheduling.Active = scheduling.Active;
+
+            originalScheduling.LastChange = DateTime.UtcNow;
 
             await _repository.UpdateAsync(originalScheduling);
             await _medicineService.NotifyMedicineChange(medicine.Id);

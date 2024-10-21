@@ -14,6 +14,9 @@ namespace SeniorConnect.Domain.Entities
         public int Hour { get; set; }
         public int Minute { get; set; }
         public string DaysOfWeek { get; set; }
+        public DateTime Creation { get; set; }
+        public DateTime LastChange { get; set; }
+        public DateTime? LastAdministration { get; set; }
 
         public List<DayOfWeek> DaysOfWeekList
         {

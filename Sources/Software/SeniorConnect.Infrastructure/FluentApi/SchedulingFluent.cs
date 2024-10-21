@@ -21,6 +21,9 @@ namespace SeniorConnect.Infrastructure.FluentApi
             builder.Property(d => d.DaysOfWeek).HasColumnName("DiasDaSemana").IsRequired().HasMaxLength(20);
             builder.Property(d => d.Active).HasColumnName("Ativo").IsRequired();
             builder.Property(d => d.MedicineId).HasColumnName("RemedioId").IsRequired();
+            builder.Property(d => d.Creation).HasColumnName("DataCriacao").IsRequired();
+            builder.Property(d => d.LastChange).HasColumnName("DataUltimaEdicao").IsRequired();
+            builder.Property(d => d.LastAdministration).HasColumnName("UltimaAdministracao");
         }
     }
 }
