@@ -41,11 +41,6 @@ function RemediosHome({ nome, horario, }) {
       source={require('./assets/medication.png')}
       style={styles.homeItemImage}
     />
-    <CheckBox
-      //value={teste}
-      //onValueChange={} métodoa ser programado
-      style={styles.basicCheckbox}
-    />
     <Text style={styles.homeMedicineText}>{nome}  </Text>
     <Text style={styles.homeMedicineText}>{horario}</Text>
   </View>

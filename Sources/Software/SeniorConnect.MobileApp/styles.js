@@ -129,7 +129,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   homeButton: {
-    width: '40%',
+    width: '70%',
     height: 50,
     backgroundColor: '#9C9EA7',
     justifyContent: 'center',
@@ -220,7 +220,7 @@ const styles = StyleSheet.create({
     padding: 15,
     height: '100%',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-around',
   },
   homeMedicineContainer: {
     backgroundColor: '#ccc',
@@ -250,6 +250,7 @@ const styles = StyleSheet.create({
   homeMedicineText: {
     fontSize: 20,
     color: '#000',
+    width: '45%',
   },
   homeItemImage: {
     width: 40,

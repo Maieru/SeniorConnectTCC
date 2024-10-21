@@ -33,7 +33,7 @@ export default function HomeScreen({ navigation }) {
                 schedules.map((schedule, index) => (
                   <RemediosHome
                     key={index}
-                    nome={'Medicamento: ' + schedule.medicineId}
+                    nome={schedule.medicineName}
                     horario={`${schedule.hour}:${schedule.minute < 10 ? '0' + schedule.minute : schedule.minute}`}
                   />
                 ))
@@ -43,14 +43,11 @@ export default function HomeScreen({ navigation }) {
             </View>
           </ScrollView>
         </View>
-        <Text style={styles.basicLabel}>Assinatura</Text>
         <View style={styles.container}>
           <View style={styles.sectionContainer}>
             <View style={styles.mensalidadeHome}>
-              <Text style={styles.basicLabel}>Mensalidade em Dia!</Text>
+              <Text style={styles.basicLabel}>Assinatura Ativa!</Text>
             </View>
-            <Text style={styles.basicLabel}>Status: </Text>
-            <Text style={styles.basicLabel}>ativo</Text>
             <TouchableOpacity
               onPress={() => navigation.navigate('UserArea')}
               style={styles.homeButton}>
