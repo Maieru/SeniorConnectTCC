@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Image, Alert } from 'react-native';
 import styles from '../styles.js';
 import stylesReports from '../stylesReports.js';
 import { Header, Footer } from '../Layout.js';
@@ -8,7 +8,25 @@ import apiClient from '../services/apiService.js';
 export default function UserAreaScreen({ navigation }) {
 
     async function deletaUsuario() {
-        console.log('Por enquanto não faz nada!');    
+        Alert.alert(
+            "Deletar Usuário",
+            "Você tem certeza que deseja realmente excluir seu usuário? Todos seus dados serão permanentemente exclúidos.",
+            [
+                {
+                    text: "Cancelar",
+                    style: "cancel"
+                },
+                {
+                    text: "Excluir",
+                    onPress: async () => {
+                        await apiClient.delete("/v1/User/DeleteUser");
+                        navigation.navigate('Login');
+                    },
+                    style: "destructive"
+                }
+            ],
+            { cancelable: true }
+        );
     }
 
     return (
