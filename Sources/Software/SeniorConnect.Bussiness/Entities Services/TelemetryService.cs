@@ -93,6 +93,7 @@ namespace SeniorConnect.Bussiness.Entities_Services
                 {
                     var medicine = await _medicineService.GetMedicineById(medicineAssociated.MedicineId);
                     await _administrationService.AddAdministration(medicine, scheduling, device);
+                    await _schedulingService.UpdateLastAdministration(scheduling.Id);
                     returnValue = false;
                 }
             }
