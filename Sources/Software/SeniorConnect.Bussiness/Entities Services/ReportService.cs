@@ -113,7 +113,10 @@ namespace SeniorConnect.Bussiness.Entities_Services
                 foreach (var day in scheduling.DaysOfWeekList)
                 {
                     var weekDayOffset = (int)DateTime.UtcNow.DayOfWeek - (int)day;
-                    var dayToEvaluate = DateTime.UtcNow.AddDays(-weekDayOffset);
+                    var dayToEvaluate = DateTime.UtcNow.AddDays(-weekDayOffset).Date.AddHours(scheduling.Hour).AddMinutes(scheduling.Minute);
+                    
+                    if (scheduling.LastChange > dayToEvaluate.AddHours(-3))
+                        continue;
 
                     var administrationsOfSchedulingOnDay = administrationsOfScheduling.Where(a => a.Date.Date == dayToEvaluate.Date).FirstOrDefault();
 
