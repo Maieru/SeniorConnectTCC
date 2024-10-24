@@ -114,8 +114,12 @@ namespace SeniorConnect.Bussiness.Entities_Services
                 {
                     medicineAdhesionTO.TotalSchedulings++;
 
-                    var weekDayOffset = daysToBeEvaluated + ((int)DateTime.UtcNow.AddHours(-3).DayOfWeek - (int)day) + 1;
-                    var dayToEvaluate = DateTime.UtcNow.AddDays(-weekDayOffset).Date.AddHours(scheduling.Hour).AddMinutes(scheduling.Minute);
+                    var weekDayOffset = (int)day - (int)DateTime.UtcNow.AddHours(-3).DayOfWeek;
+
+                    if (weekDayOffset > 0)
+                        weekDayOffset = -7 + weekDayOffset;
+
+                    var dayToEvaluate = DateTime.UtcNow.AddDays(weekDayOffset).Date.AddHours(scheduling.Hour).AddMinutes(scheduling.Minute);
 
                     if (scheduling.LastChange > dayToEvaluate.AddHours(3))
                         continue;
