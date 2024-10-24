@@ -112,10 +112,12 @@ namespace SeniorConnect.Bussiness.Entities_Services
 
                 foreach (var day in scheduling.DaysOfWeekList)
                 {
-                    var weekDayOffset = (int)DateTime.UtcNow.DayOfWeek - (int)day;
+                    medicineAdhesionTO.TotalSchedulings++;
+
+                    var weekDayOffset = daysToBeEvaluated + ((int)DateTime.UtcNow.AddHours(-3).DayOfWeek - (int)day) + 1;
                     var dayToEvaluate = DateTime.UtcNow.AddDays(-weekDayOffset).Date.AddHours(scheduling.Hour).AddMinutes(scheduling.Minute);
-                    
-                    if (scheduling.LastChange > dayToEvaluate.AddHours(-3))
+
+                    if (scheduling.LastChange > dayToEvaluate.AddHours(3))
                         continue;
 
                     var administrationsOfSchedulingOnDay = administrationsOfScheduling.Where(a => a.Date.Date == dayToEvaluate.Date).FirstOrDefault();
@@ -131,12 +133,14 @@ namespace SeniorConnect.Bussiness.Entities_Services
                             Month = dayToEvaluate.Month
                         });
                     }
-
-                    medicineAdhesionTO.TotalSchedulings++;
                 }
             }
 
-            medicineAdhesionTO.Adhesion = (1 - (medicineAdhesionTO.MissedSchedulings.Count / medicineAdhesionTO.TotalSchedulings)) * 100;
+            if (medicineAdhesionTO.MissedSchedulings.Count == 0)
+                medicineAdhesionTO.Adhesion = 100;
+            else
+                medicineAdhesionTO.Adhesion = (1 - (medicineAdhesionTO.MissedSchedulings.Count / medicineAdhesionTO.TotalSchedulings)) * 100;
+
             return medicineAdhesionTO;
         }
 
