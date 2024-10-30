@@ -1,9 +1,9 @@
 import { StatusBar } from 'expo-status-bar';
 import { Text, View, TouchableOpacity, Image, ScrollView } from 'react-native';
-import styles from '../styles.js';
-import { Header, Footer, RemediosHome } from '../Layout.js';
+import styles from './styles.js';
+import { Header, Footer, RemediosHome } from '../../Layout.js';
 import { useEffect, useState } from 'react';
-import apiClient from '../services/apiService.js';
+import apiClient from '../../services/apiService.js';
 
 export default function HomeScreen({ navigation }) {
   const [schedules, setSchedules] = useState([]);

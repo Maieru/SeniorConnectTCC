@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Image, Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import styles from '../styles.js';
-import apiClient from '../services/apiService.js';
+import styles from './styles.js';
+import apiClient from '../../services/apiService.js';
 
 export default function LoginScreen({ navigation }) {
   const [usuario, setUsuario] = useState('');
@@ -40,7 +40,7 @@ export default function LoginScreen({ navigation }) {
       <View style={styles.loginImage}>
         <Image
           style={styles.senniorLogo}
-          source={require('../assets/LogoConnect.png')}
+          source={require('../../assets/LogoConnect.png')}
         />
       </View>
 

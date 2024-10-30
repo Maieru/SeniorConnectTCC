@@ -1,9 +1,9 @@
 import React from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Alert } from 'react-native';
-import styles from '../styles.js';
-import { HeaderReturn } from '../Layout.js';
+import styles from './styles.js';
+import { HeaderReturn } from '../../Layout.js';
 import { useState } from 'react';
-import apiClient from '../services/apiService.js';
+import apiClient from '../../services/apiService.js';
 
 export default function CadastroScreen({ navigation }) {
     const [usuario, setUsuario] = useState('');
@@ -12,7 +12,6 @@ export default function CadastroScreen({ navigation }) {
     const [email, setEmail] = useState('');
 
     async function salva() {
-        // TODO 
         let objUsuario = {
             username: usuario,
             password: senha,
@@ -41,7 +40,6 @@ export default function CadastroScreen({ navigation }) {
 
     return (
         <View style={styles.containerMenu}>
-            <HeaderReturn title="Cadastro" returnPage="Login" navigation={navigation} />
             <View style={styles.content}>
                 <TextInput
                     style={styles.cadastroInput}

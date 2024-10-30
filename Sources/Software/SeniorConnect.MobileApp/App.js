@@ -4,11 +4,11 @@ import styles from './styles.js';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import MedicineScreen from './Pages/medicine.js';
-import HomeScreen from './Pages/home.js';
+import HomeScreen from './Pages/Home/home.js';
 import StatusScreen from './Pages/status.js';
 import ReportsScreen from './Pages/reports.js';
-import LoginScreen from './Pages/login.js';
-import CadastroScreen from './Pages/cadastro.js';
+import LoginScreen from './Pages/Login/login.js';
+import CadastroScreen from './Pages/Login/cadastro.js';
 import NewMedicineScreen from './Pages/newMedicine.js';
 import DosageReportScreen from './Pages/dosageReport.js';
 import AdherenceReportScreen from './Pages/adherenceReport.js';
@@ -42,7 +42,7 @@ export default function App() {
         <Stack.Screen name="Dispositivo" component={StatusScreen} options={{ headerBackVisible: false }} />
         <Stack.Screen name="Relatorios" component={ReportsScreen} options={{ headerBackVisible: false }} />
         <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
-        <Stack.Screen name="Cadastro" component={CadastroScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="Cadastro" component={CadastroScreen} options={{ title: 'Cadastro' }} />
         <Stack.Screen name="Novo Medicamento" component={NewMedicineScreen} />
         <Stack.Screen name="Relatorio de Dosagem" component={DosageReportScreen} />
         <Stack.Screen name="Relatorio de Adesão" component={AdherenceReportScreen} />
