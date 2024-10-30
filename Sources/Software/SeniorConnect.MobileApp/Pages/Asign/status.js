@@ -2,10 +2,9 @@
 import { StatusBar } from 'expo-status-bar';
 import { Text, View, TouchableOpacity, Image, Modal, FlatList, ScrollView, TouchableWithoutFeedback } from 'react-native';
 import React, { useState, useEffect } from 'react';
-import styles from '../styles.js';
-import style from '../stylesStatus.js';
-import { Header, Footer } from '../Layout.js';
-import apiClient from '../services/apiService.js';
+import styles from './styles.js';
+import { Header, Footer } from '../../Layout.js';
+import apiClient from '../../services/apiService.js';
 import { useFocusEffect } from '@react-navigation/native';
 
 
@@ -138,13 +137,13 @@ export default function StatusScreen({ navigation, route }) {
             ) : (
                 <TouchableWithoutFeedback onPress={handleOutsideClick}>
                     <View style={styles.content}>
-                        <View style={style.gridContainer}>
+                        <View style={styles.gridContainer}>
                             {[6, 7, 8, 3, 4, 5, 0, 1, 2].map((index) => (
-                                <View key={index} style={style.gridItemWrapper}>
+                                <View key={index} style={styles.gridItemWrapper}>
                                     <TouchableOpacity
                                         style={[
-                                            style.gridItem,
-                                            selectedIndex !== null && selectedIndex !== index ? style.blurredItem : {},
+                                            styles.gridItem,
+                                            selectedIndex !== null && selectedIndex !== index ? styles.blurredItem : {},
                                         ]}
                                         onPress={() => {
                                             setSelectedIndex(index);
@@ -152,26 +151,26 @@ export default function StatusScreen({ navigation, route }) {
                                         }}
                                     >
                                         <Image
-                                            source={require('../assets/medication.png')}
-                                            style={style.gridItemImage}
+                                            source={require('../../assets/medication.png')}
+                                            style={styles.gridItemImage}
                                         />
-                                        <Text style={style.gridItemText}>
+                                        <Text style={styles.gridItemText}>
                                             {gridData[index] ? gridData[index].name : '[Remédio]'}
                                         </Text>
                                     </TouchableOpacity>
 
                                     {showDropdown && selectedIndex === index && (
-                                        <View style={[style.dropdownContainer,
+                                        <View style={[styles.dropdownContainer,
                                         {
                                             maxHeight: 200,
                                             top: index <= 6 ? -50 : 50,
                                         }]}>
                                             {gridData[selectedIndex] ? (
                                                 <TouchableOpacity
-                                                    style={style.statusExcluirButton}
+                                                    style={styles.statusExcluirButton}
                                                     onPress={() => removerAssociacao(gridData[selectedIndex])}
                                                 >
-                                                    <Text style={style.statusExcluirButtonText}>Excluir Associação</Text>
+                                                    <Text style={styles.statusExcluirButtonText}>Excluir Associação</Text>
                                                 </TouchableOpacity>
                                             ) : (
                                                 <FlatList

@@ -5,7 +5,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import MedicineScreen from './Pages/Medicine/medicine.js';
 import HomeScreen from './Pages/Home/home.js';
-import StatusScreen from './Pages/status.js';
+import AsignScreen from './Pages/Asign/status.js';
 import ReportsScreen from './Pages/reports.js';
 import LoginScreen from './Pages/Login/login.js';
 import CadastroScreen from './Pages/Login/cadastro.js';
@@ -39,7 +39,7 @@ export default function App() {
         }}>
         <Stack.Screen name="Home" component={HomeScreen} options={{ headerBackVisible: false }} />
         <Stack.Screen name="Medicamentos" component={MedicineScreen} options={{ headerBackVisible: false }} />
-        <Stack.Screen name="Dispositivo" component={StatusScreen} options={{ headerBackVisible: false }} />
+        <Stack.Screen name="Dispositivo" component={AsignScreen} options={{ headerBackVisible: false }} />
         <Stack.Screen name="Relatorios" component={ReportsScreen} options={{ headerBackVisible: false }} />
         <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Cadastro" component={CadastroScreen} options={{ title: 'Cadastro' }} />
