@@ -221,14 +221,14 @@ namespace SeniorConnect.Web.ApiServer.Controllers
         }
 
         [HttpGet("GetUnadministeredSchedulings")]
-        public async Task<IActionResult> GetUnadministeredSchedulings()
+        public async Task<IActionResult> GetUnadministeredSchedulings(TimeSpan? period)
         {
             try
             {
-                // Constante de 8 horas para o período, porém precisamos definir o valor
-                var period = TimeSpan.FromHours(8);
+                if (!period.HasValue)
+                    period = TimeSpan.FromHours(8);
 
-                var unadministeredSchedulings = await _schedulingService.GetUnadministeredSchedulings(period, LoggedUserSubscription);
+                var unadministeredSchedulings = await _schedulingService.GetUnadministeredSchedulings(period.Value, LoggedUserSubscription);
 
                 return Ok(unadministeredSchedulings);
             }
