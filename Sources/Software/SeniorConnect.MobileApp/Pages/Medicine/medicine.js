@@ -1,9 +1,9 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView, Alert } from 'react-native';
-import styles from '../styles.js';
+import styles from './styles.js';
 import { useFocusEffect } from '@react-navigation/native';
-import { Header, Footer, RemediosMedicine } from '../Layout.js';
-import apiClient from '../services/apiService.js';
+import { Header, Footer, RemediosMedicine } from '../../Layout.js';
+import apiClient from '../../services/apiService.js';
 import React, { useEffect, useState } from 'react';
 
 export default function MedicineScreen({ navigation }) {

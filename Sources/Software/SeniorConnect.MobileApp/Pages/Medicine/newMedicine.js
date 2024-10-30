@@ -1,11 +1,10 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView, TextInput, Alert } from 'react-native';
-import styles from '../styles.js';
-import { HeaderReturn, Footer} from '../Layout.js';
+import { HeaderReturn, Footer} from '../../Layout.js';
 import React, { useState, useEffect } from 'react';
-import apiClient from '../services/apiService.js';
+import apiClient from '../../services/apiService.js';
 import { useFocusEffect } from '@react-navigation/native';
-import stylesNewMedicine from '../stylesNewMedicine.js';
+import styles from './stylesNewMedicine.js';
 
 export default function MedicineScreen({ navigation, route }) {
     const [medicamentoId, setMedicamentoId] = useState();
@@ -21,12 +20,6 @@ export default function MedicineScreen({ navigation, route }) {
         } else {
             console.log("Por algum motivo, essa api demora, mas não da problema...");
         }
-
-        const schedulesWithNames = await Promise.all(firstFiveSchedules.map(async (schedule) => {
-            const medicineResponse = await apiClient.get(`/v1/Scheduling/GetByMedicine?medicineId=${schedule.medicineId}`);
-            const medicineName = medicineResponse.data.medicineName || `Medicamento ${schedule.medicineId}`;
-            return { ...schedule, medicineName };
-          }));
     }
 
     
@@ -99,35 +92,35 @@ export default function MedicineScreen({ navigation, route }) {
 
     function HorariosMedicine({ horario, diasSemana, id, medicamentoId, navigation }) {
         return (
-          <View style={stylesNewMedicine.scheduleContainer}>
-            <View style={stylesNewMedicine.horarioContainer}>
-              <Text style={stylesNewMedicine.horarioText}>{horario}</Text>
+          <View style={styles.scheduleContainer}>
+            <View style={styles.horarioContainer}>
+              <Text style={styles.horarioText}>{horario}</Text>
             </View>
-            <View style={stylesNewMedicine.diasContainer}>
-              <View style={stylesNewMedicine.diasSemanaContainer}>
+            <View style={styles.diasContainer}>
+              <View style={styles.diasSemanaContainer}>
                 {diasSemana.split('').map((dia, index) => (
-                  <Text key={index} style={stylesNewMedicine.diaSemana}>{dia}</Text>
+                  <Text key={index} style={styles.diaSemana}>{dia}</Text>
                 ))}
               </View>
             </View>
-            <View style={stylesNewMedicine.actionsContainer}>
+            <View style={styles.actionsContainer}>
               <TouchableOpacity
-                style={stylesNewMedicine.actionButton}
+                style={styles.actionButton}
                 onPress={() => navigation.navigate('Novo Horario', { medicine: medicamentoId, scheduling: id })}
               >
                 <Image
-                  source={require('../assets/edit.png')}
-                  style={stylesNewMedicine.actionIcon}
+                  source={require('../../assets/edit.png')}
+                  style={styles.actionIcon}
                 />
               </TouchableOpacity>
       
               <TouchableOpacity
-                style={stylesNewMedicine.actionButton}
+                style={styles.actionButton}
                 onPress={async () => await deletaSchedule(id, navigation)}
               >
                 <Image
-                  source={require('../assets/delete.png')}
-                  style={stylesNewMedicine.actionIcon}
+                  source={require('../../assets/delete.png')}
+                  style={styles.actionIcon}
                 />
               </TouchableOpacity>
             </View>
