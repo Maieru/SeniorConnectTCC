@@ -14,7 +14,7 @@ import DosageReportScreen from './Pages/dosageReport.js';
 import AdherenceReportScreen from './Pages/adherenceReport/adherenceReport.js';
 import HorariosMedicineScreen from './Pages/newScheduling.js';
 import NovoDispositivoScreen from './Pages/novoDispositivo.js';
-import AdherenceReportDetailScreen from './Pages/adherenceReportDetail.js';
+import AdherenceReportDetailScreen from './Pages/adherenceReportDetails/adherenceReportDetail.js';
 import TermoDeUsoScreen from './Pages/termoDeUso.js';
 import UserAreaScreen from './Pages/userArea.js';
 

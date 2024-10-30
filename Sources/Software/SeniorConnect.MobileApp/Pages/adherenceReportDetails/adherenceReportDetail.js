@@ -1,8 +1,8 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, ScrollView, Image } from 'react-native';
-import styles from '../styles.js';
-import { HeaderReturn, Footer } from '../Layout.js';
-import stylesAdherenceReport from './adherenceReport/stylesAdherenceReport.js';
+import styles from './styles.js';
+import { HeaderReturn, Footer } from '../../Layout.js';
+import stylesAdherenceReport from '../adherenceReport/stylesAdherenceReport.js';
 import { useEffect, useState } from 'react';
 
 export default function AdherenceReportDetailScreen({ navigation, route }) {
