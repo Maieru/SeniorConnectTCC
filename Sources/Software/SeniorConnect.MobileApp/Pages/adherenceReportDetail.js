@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, ScrollView, Image } from 'react-native';
-import styles from '../styles.js'; // Import the styles
-import { HeaderReturn, Footer } from '../Layout.js'; // Import Header with return button and footer
+import styles from '../styles.js';
+import { HeaderReturn, Footer } from '../Layout.js';
 import stylesAdherenceReport from '../stylesAdherenceReport.js';
 import { useEffect, useState } from 'react';
 

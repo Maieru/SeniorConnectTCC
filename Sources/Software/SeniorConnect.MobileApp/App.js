@@ -6,7 +6,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import MedicineScreen from './Pages/Medicine/medicine.js';
 import HomeScreen from './Pages/Home/home.js';
 import AsignScreen from './Pages/Asign/status.js';
-import ReportsScreen from './Pages/reports.js';
+import ReportsScreen from './Pages/Reports/reports.js';
 import LoginScreen from './Pages/Login/login.js';
 import CadastroScreen from './Pages/Login/cadastro.js';
 import NewMedicineScreen from './Pages/Medicine/newMedicine.js';
