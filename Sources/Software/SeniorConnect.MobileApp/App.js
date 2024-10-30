@@ -11,7 +11,7 @@ import LoginScreen from './Pages/Login/login.js';
 import CadastroScreen from './Pages/Login/cadastro.js';
 import NewMedicineScreen from './Pages/Medicine/newMedicine.js';
 import DosageReportScreen from './Pages/dosageReport.js';
-import AdherenceReportScreen from './Pages/adherenceReport.js';
+import AdherenceReportScreen from './Pages/adherenceReport/adherenceReport.js';
 import HorariosMedicineScreen from './Pages/newScheduling.js';
 import NovoDispositivoScreen from './Pages/novoDispositivo.js';
 import AdherenceReportDetailScreen from './Pages/adherenceReportDetail.js';

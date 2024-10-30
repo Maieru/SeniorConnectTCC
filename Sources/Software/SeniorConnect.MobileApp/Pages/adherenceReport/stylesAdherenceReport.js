@@ -1,7 +1,16 @@
-// stylesAdherenceReport.js
 import { StyleSheet } from 'react-native';
 
 const stylesAdherenceReport = StyleSheet.create({
+    containerMenu: {
+        flex: 1,
+        justifyContent: 'space-between',
+        backgroundColor: '#fff',
+    },
+    scrollContent: {
+        flexGrow: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
     scrollContent: {
         flexGrow: 1,
         justifyContent: 'center',
