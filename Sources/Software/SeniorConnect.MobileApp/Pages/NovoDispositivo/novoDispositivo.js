@@ -1,11 +1,10 @@
-import styles from '../styles.js';
-import stylesDispositivo from '../stylesNovoDispositivo.js'
+import stylesDispositivo from './stylesNovoDispositivo.js'
 import {
     Text, View, TouchableOpacity, TextInput,
     Platform, PermissionsAndroid, Alert, ActivityIndicator
 } from 'react-native';
-import { Footer } from '../Layout.js';
-import apiClient from '../services/apiService.js';
+import { Footer } from '../../Layout.js';
+import apiClient from '../../services/apiService.js';
 import React, { useState, useEffect } from 'react';
 import WifiManager from 'react-native-wifi-reborn';
 import axios from 'axios';

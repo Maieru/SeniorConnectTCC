@@ -2,6 +2,24 @@ import { StyleSheet, Dimensions } from 'react-native';
 
 
 const stylesNewScheduling = StyleSheet.create({
+    containerMenu: {
+        flex: 1,
+        justifyContent: 'space-between',
+        backgroundColor: '#fff',
+    },
+    container: {
+        flex: 1,
+        width: '90%',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        backgroundColor: '#fff',
+        paddingVertical: 10,
+    },
+    content: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
     timeContainer: {
         flexDirection: 'row',
         alignItems: 'center',

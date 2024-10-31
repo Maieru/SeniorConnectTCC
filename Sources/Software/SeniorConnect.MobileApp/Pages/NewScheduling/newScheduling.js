@@ -1,10 +1,9 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView, TextInput, Alert } from 'react-native';
-import styles from '../styles.js';
-import stylesScheduling from '../stylesNewScheduling.js';
-import { HeaderReturn, Footer, HorariosMedicine } from '../Layout.js';
+import stylesScheduling from './stylesNewScheduling.js';
+import { HeaderReturn, Footer, HorariosMedicine } from '../../Layout.js';
 import { useState, useEffect } from 'react';
-import apiClient from '../services/apiService.js';
+import apiClient from '../../services/apiService.js';
 
 export default function HorariosMedicineScreen({ navigation, route }) {
     const [hora, setHora] = useState('');
@@ -177,9 +176,9 @@ export default function HorariosMedicineScreen({ navigation, route }) {
     };
 
     return (
-        <View style={styles.containerMenu}>
-            <View style={styles.content}>
-                <View style={styles.container}>
+        <View style={stylesScheduling.containerMenu}>
+            <View style={stylesScheduling.content}>
+                <View style={stylesScheduling.container}>
                     <View style={stylesScheduling.timeContainer}>
                         <TextInput
                             style={stylesScheduling.timeInput}
