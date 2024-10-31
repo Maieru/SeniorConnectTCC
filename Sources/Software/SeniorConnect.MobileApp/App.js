@@ -10,7 +10,7 @@ import ReportsScreen from './Pages/Reports/reports.js';
 import LoginScreen from './Pages/Login/login.js';
 import CadastroScreen from './Pages/Login/cadastro.js';
 import NewMedicineScreen from './Pages/Medicine/newMedicine.js';
-import DosageReportScreen from './Pages/dosageReport.js';
+import DosageReportScreen from './Pages/DosageReport/dosageReport.js';
 import AdherenceReportScreen from './Pages/adherenceReport/adherenceReport.js';
 import HorariosMedicineScreen from './Pages/newScheduling.js';
 import NovoDispositivoScreen from './Pages/novoDispositivo.js';

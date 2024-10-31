@@ -1,9 +1,8 @@
 import React from 'react';
 import { Text, View, ScrollView, Dimensions } from 'react-native';
-import { HeaderReturn, Footer } from '../Layout.js';
-import styles from '../styles.js';
-import stylesDosageReport from '../stylesDosageReport.js';
-import apiClient from '../services/apiService.js';
+import { HeaderReturn, Footer } from '../../Layout.js';
+import stylesDosageReport from './stylesDosageReport.js';
+import apiClient from '../../services/apiService.js';
 import { useEffect, useState } from 'react';
 
 const { width, height } = Dimensions.get('window');
@@ -66,8 +65,8 @@ export default function DosageReportScreen({ navigation }) {
 
 
     return (
-        <View style={styles.containerMenu}>
-            <View style={styles.content}>
+        <View style={stylesDosageReport.containerMenu}>
+            <View style={stylesDosageReport.content}>
                 <ScrollView
                     horizontal
                     pagingEnabled

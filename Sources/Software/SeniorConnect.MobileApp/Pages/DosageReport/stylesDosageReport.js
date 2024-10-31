@@ -4,6 +4,16 @@ import { StyleSheet, Dimensions } from 'react-native';
 const { width, height } = Dimensions.get('window');
 
 const stylesDosageReport = StyleSheet.create({
+    containerMenu: {
+        flex: 1,
+        justifyContent: 'space-between',
+        backgroundColor: '#fff',
+    },
+    content: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
     scrollContainer: {
         alignItems: 'center',
         paddingHorizontal: 0,
@@ -43,7 +53,7 @@ const stylesDosageReport = StyleSheet.create({
     medicineScroll: {
         flexGrow: 1,
         paddingVertical: 10,
-        width: '100%', 
+        width: '100%',
         paddingHorizontal: 10,
     },
 });
