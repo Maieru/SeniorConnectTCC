@@ -15,8 +15,8 @@ import AdherenceReportScreen from './Pages/adherenceReport/adherenceReport.js';
 import HorariosMedicineScreen from './Pages//NewScheduling/newScheduling.js';
 import NovoDispositivoScreen from './Pages/NovoDispositivo/novoDispositivo.js';
 import AdherenceReportDetailScreen from './Pages/adherenceReportDetails/adherenceReportDetail.js';
-import TermoDeUsoScreen from './Pages/termoDeUso.js';
-import UserAreaScreen from './Pages/userArea.js';
+import TermoDeUsoScreen from './Pages/TermosDeUso/termoDeUso.js';
+import UserAreaScreen from './Pages/AreaDoUsuario/userArea.js';
 
 
 const Stack = createNativeStackNavigator();

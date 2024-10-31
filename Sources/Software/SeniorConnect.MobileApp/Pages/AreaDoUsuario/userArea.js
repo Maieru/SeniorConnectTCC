@@ -1,9 +1,9 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, TouchableOpacity, Image, Alert } from 'react-native';
-import styles from '../styles.js';
-import stylesReports from '../stylesReports.js';
-import { Header, Footer } from '../Layout.js';
-import apiClient from '../services/apiService.js';
+import styles from './styles.js';
+import stylesReports from '../../stylesReports.js';
+import { Header, Footer } from '../../Layout.js';
+import apiClient from '../../services/apiService.js';
 
 export default function UserAreaScreen({ navigation }) {
 

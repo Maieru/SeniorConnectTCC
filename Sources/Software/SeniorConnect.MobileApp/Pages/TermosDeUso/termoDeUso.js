@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, Switch, TouchableOpacity, Alert, ScrollView } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import stylesTermoDeUso from '../stylesTemoDeUso.js';
+import stylesTermoDeUso from './stylesTemoDeUso.js';
 
 const TermsOfUse = ({ navigation, route }) => {
   const [isChecked, setIsChecked] = useState(false);
