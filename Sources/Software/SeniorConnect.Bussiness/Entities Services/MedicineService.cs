@@ -191,7 +191,7 @@ namespace SeniorConnect.Bussiness.Entities_Services
         {
             var medicineDeviceAssociations = await _medicineAssociationRepository.GetAllAsync(m => m.MedicineId == medicine);
 
-            foreach (var association in medicineDeviceAssociations)
+            foreach (var association in medicineDeviceAssociations.DistinctBy(d => d.DeviceId).ToList())
             {
                 var device = await _deviceService.GetDeviceById(association.DeviceId);
                 await _configurationChangeRegisterService.RegisterConfigurationChangeRequest(device.SubscriptionId, device.DeviceName);
