@@ -89,20 +89,24 @@ namespace SeniorConnect.Bussiness.Services
 
             var messageString = JsonConvert.SerializeObject(deviceConfiguration);
 
-            if (CheckIfDuplicatedMessage(messageString, device.DeviceName))
+            if (await CheckIfDuplicatedMessage(messageString, device.DeviceName))
                 return;
 
             await _logService.LogInformation($"Sending configuration message to device {device.DeviceName}. Configuration: {messageString}");
             await _iotHubMessageService.SendCloudToDeviceMessageAsync(device.DeviceName, messageString);
         }
 
-        private bool CheckIfDuplicatedMessage(string configurationToBeChecked, string deviceName)
+        private async Task<bool> CheckIfDuplicatedMessage(string configurationToBeChecked, string deviceName)
         {
             var configurationHash = ComputeHash(configurationToBeChecked);
+
+            await _logService.LogInformation($"Checking if configuration message is duplicated. Device: {deviceName}, Hash: {configurationHash}");
 
             if (_memoryCache.TryGetValue<string>(deviceName, out var storedConfiguration))
                 if (storedConfiguration == deviceName)
                     return true;
+
+            await _logService.LogInformation($"Configuration message is not duplicated. Device: {deviceName}, Hash: {configurationHash}. Saved Hash: {storedConfiguration}");
 
             _memoryCache.Set(deviceName, configurationHash, TimeSpan.FromMinutes(15));
             return false;
