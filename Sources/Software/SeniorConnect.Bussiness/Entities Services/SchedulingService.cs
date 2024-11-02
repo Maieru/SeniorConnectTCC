@@ -164,7 +164,7 @@ namespace SeniorConnect.Bussiness.Entities_Services
 
         public async Task<List<UnadministeredSchedulingsTO>> GetUnadministeredSchedulings(TimeSpan period, int subscriptionId)
         {
-            var now = DateTime.UtcNow;
+            var now = DateTime.UtcNow.AddHours(-3);
             var endTime = now.Add(period);
 
             var schedulings = await GetSchedulingsFromSubscription(subscriptionId);
@@ -173,7 +173,7 @@ namespace SeniorConnect.Bussiness.Entities_Services
 
             foreach (var scheduling in schedulings)
             {
-                if (IsSchedulingWithinPeriod(scheduling, now, endTime))
+                if (IsSchedulingWithinPeriod(scheduling, endTime))
                 {
                     var administration = await _administrationService.GetAdministrationBySchedulingId(scheduling.Id);
 
@@ -196,13 +196,15 @@ namespace SeniorConnect.Bussiness.Entities_Services
             return unadministeredSchedulings;
         }
 
-        private bool IsSchedulingWithinPeriod(Scheduling scheduling, DateTime now, DateTime endTime)
+        private bool IsSchedulingWithinPeriod(Scheduling scheduling, DateTime endTime)
         {
             // Constrói a data e hora do agendamento 
             foreach (var dayOfWeek in scheduling.DaysOfWeek.Split(','))
             {
                 if (Enum.TryParse(dayOfWeek, out DayOfWeek scheduledDay))
                 {
+                    var now = DateTime.UtcNow.AddHours(-3);
+
                     var scheduledTime = new DateTime(now.Year, now.Month, now.Day, scheduling.Hour, scheduling.Minute, 0);
                     scheduledTime = scheduledTime.AddDays((int)scheduledDay - (int)now.DayOfWeek);
 
