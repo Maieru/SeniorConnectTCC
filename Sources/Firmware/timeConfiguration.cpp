@@ -5,6 +5,7 @@
 #include <vector>
 #include "rgbLedHelper.h"
 #include "hardwareConstants.h"
+#include "buzzerHelper.h"
 
 // Defines
 #define CONFIGURATION_MEDICATION_SCHEDULE_PROPERTY "medicationSchedule"
@@ -73,8 +74,10 @@ void setTimeConfiguration(String configurationMessage) {
 
   ledColor lastStatusLedColor = getLastColor();
   setRGBLed(ledColor::BLUE, STATUS_LED_RED, STATUS_LED_GREEN, STATUS_LED_BLUE);
+  playSong();
   delay(200);
   setRGBLed(lastStatusLedColor, STATUS_LED_RED, STATUS_LED_GREEN, STATUS_LED_BLUE);
+  stopSong();
 }
 
 void deleteTimeConfiguration() {

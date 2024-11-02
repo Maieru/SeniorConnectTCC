@@ -207,9 +207,7 @@ namespace SeniorConnect.Bussiness.Entities_Services
                     scheduledTime = scheduledTime.AddDays((int)scheduledDay - (int)now.DayOfWeek);
 
                     if (scheduledTime >= now && scheduledTime <= endTime)
-                    {
                         return true;
-                    }
                 }
             }
 
