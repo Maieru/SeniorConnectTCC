@@ -175,9 +175,9 @@ namespace SeniorConnect.Bussiness.Entities_Services
             {
                 if (IsSchedulingWithinPeriod(scheduling, now, endTime))
                 {
-                    var hasAdministration = await _administrationService.GetAdministrationBySchedulingId(scheduling.Id);
+                    var administration = await _administrationService.GetAdministrationBySchedulingId(scheduling.Id);
 
-                    if (hasAdministration == null) // Se não tem administração
+                    if (administration == null || administration.Date.Day != now.Day) // Se não tem administração
                     {
                         var medicine = await _medicineService.GetMedicineById(scheduling.MedicineId);
 
@@ -205,8 +205,6 @@ namespace SeniorConnect.Bussiness.Entities_Services
                 {
                     var scheduledTime = new DateTime(now.Year, now.Month, now.Day, scheduling.Hour, scheduling.Minute, 0);
                     scheduledTime = scheduledTime.AddDays((int)scheduledDay - (int)now.DayOfWeek);
-
-                    now = now.AddHours(-3); // May God forgive me
 
                     if (scheduledTime >= now && scheduledTime <= endTime)
                     {
