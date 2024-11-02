@@ -31,6 +31,7 @@ namespace SeniorConnect.Bussiness.Services
             _medicineService = medicineService;
             _schedulingService = schedulingService;
             _iotHubMessageService = ioTHubMessageService;
+            _memoryCache = memoryCache;
         }
 
         public async Task ProcessConfigurationChangeRequest(ConfigurationChangeRequest configurationChangeRequest)
