@@ -27,6 +27,7 @@ var host = new HostBuilder()
         services.AddDbContext<DatabaseContext>(options => options.UseSqlServer(sqlServerConnectionString), ServiceLifetime.Scoped);
         services.AddScoped<IStorageService, StorageService>(secretManager => new StorageService(storageConnectionString));
         services.AddScoped<IConfigurationChangeRegisterService, ConfigurationChangeRegisterService>();
+        services.AddMemoryCache();
 
         services.AddScoped<IRepository<LogEntry>, LogRepository>();
         services.AddScoped<IRepository<Device>, DeviceRepository>();

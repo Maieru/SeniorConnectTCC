@@ -1,10 +1,12 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.Extensions.Caching.Memory;
+using Newtonsoft.Json;
 using SeniorConnect.Bussiness.Entities_Services;
 using SeniorConnect.Domain.Interfaces;
 using SeniorConnect.Domain.TOs.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -18,9 +20,10 @@ namespace SeniorConnect.Bussiness.Services
         private readonly MedicineService _medicineService;
         private readonly SchedulingService _schedulingService;
         private readonly IIotHubMessageService _iotHubMessageService;
+        private readonly IMemoryCache _memoryCache;
 
         public ConfigurationChangeService(SubscriptionService subscriptionService, DeviceService deviceService, LogService logService,
-            MedicineService medicineService, SchedulingService schedulingService, IIotHubMessageService ioTHubMessageService)
+            MedicineService medicineService, SchedulingService schedulingService, IIotHubMessageService ioTHubMessageService, IMemoryCache memoryCache)
         {
             _subscriptionService = subscriptionService;
             _deviceService = deviceService;
@@ -71,9 +74,9 @@ namespace SeniorConnect.Bussiness.Services
 
                 foreach (var schedule in schedules)
                 {
-                    var medicineConfiguration = new MedicineConfigurationSchedule() 
-                    { 
-                        CompartimentNumber = medicine.Position, 
+                    var medicineConfiguration = new MedicineConfigurationSchedule()
+                    {
+                        CompartimentNumber = medicine.Position,
                         DaysOfWeek = schedule.DaysOfWeek.Split(",").Select(int.Parse).ToList(),
                         Hour = schedule.Hour,
                         Minute = schedule.Minute
@@ -85,7 +88,33 @@ namespace SeniorConnect.Bussiness.Services
 
             var messageString = JsonConvert.SerializeObject(deviceConfiguration);
 
+            if (CheckIfDuplicatedMessage(messageString, device.DeviceName))
+                return;
+
+            await _logService.LogInformation($"Sending configuration message to device {device.DeviceName}. Configuration: {messageString}");
             await _iotHubMessageService.SendCloudToDeviceMessageAsync(device.DeviceName, messageString);
+        }
+
+        private bool CheckIfDuplicatedMessage(string configurationToBeChecked, string deviceName)
+        {
+            var configurationHash = ComputeHash(configurationToBeChecked);
+
+            if (_memoryCache.TryGetValue<string>(deviceName, out var storedConfiguration))
+                if (storedConfiguration == deviceName)
+                    return true;
+
+            _memoryCache.Set(deviceName, configurationHash, TimeSpan.FromMinutes(15));
+            return false;
+        }
+
+        private string ComputeHash(string json)
+        {
+            using (var sha256 = SHA256.Create())
+            {
+                var bytes = Encoding.UTF8.GetBytes(json);
+                var hashBytes = sha256.ComputeHash(bytes);
+                return BitConverter.ToString(hashBytes).Replace("-", "").ToLower();
+            }
         }
     }
 }

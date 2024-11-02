@@ -1,7 +1,7 @@
 using System;
 using Azure.Storage.Queues.Models;
 using Microsoft.Azure.Functions.Worker;
-using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Caching.Memory;
 using Newtonsoft.Json;
 using SeniorConnect.Bussiness.Services;
 using SeniorConnect.Domain.Interfaces;
@@ -13,8 +13,8 @@ namespace SeniorConnect.Azure.Functions
     {
         private readonly LogService _logger;
         private readonly IConfigurationChangeService _configurationChangeService;
-
-        public ConfigurationChangeProcessingFunction(LogService logService, IConfigurationChangeService configurationChangeService)
+        
+        public ConfigurationChangeProcessingFunction(LogService logService, IConfigurationChangeService configurationChangeService, IMemoryCache cache)
         {
             _logger = logService;
             _configurationChangeService = configurationChangeService;
