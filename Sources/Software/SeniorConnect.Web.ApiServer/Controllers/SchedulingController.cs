@@ -50,7 +50,7 @@ namespace SeniorConnect.Web.ApiServer.Controllers
         {
             try
             {
-                await _schedulingService.UpdateScheduling(scheduling);
+                await _schedulingService.UpdateScheduling(scheduling, true);
                 return Ok();
             }
             catch (InvalidDataProvidedException ex)

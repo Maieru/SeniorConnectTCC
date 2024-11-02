@@ -59,7 +59,7 @@ namespace SeniorConnect.Bussiness.Entities_Services
             await _medicineService.NotifyMedicineChange(medicine.Id);
         }
 
-        public async Task UpdateScheduling(Scheduling scheduling)
+        public async Task UpdateScheduling(Scheduling scheduling, bool notifyChange)
         {
             ArgumentNullException.ThrowIfNull(scheduling);
             var originalScheduling = await GetSchedulingById(scheduling.Id);
@@ -86,7 +86,9 @@ namespace SeniorConnect.Bussiness.Entities_Services
             originalScheduling.LastChange = DateTime.UtcNow;
 
             await _repository.UpdateAsync(originalScheduling);
-            await _medicineService.NotifyMedicineChange(medicine.Id);
+            
+            if (notifyChange)
+                await _medicineService.NotifyMedicineChange(medicine.Id);
         }
 
         public async Task DeleteScheduling(int schedulingId)
@@ -220,7 +222,7 @@ namespace SeniorConnect.Bussiness.Entities_Services
         {
             var scheduling = await GetSchedulingById(schedulingId);
             scheduling.LastAdministration = DateTime.UtcNow;
-            await UpdateScheduling(scheduling);
+            await UpdateScheduling(scheduling, false);
         }
 
         private bool ValidateAccessToSubscription(int subscriptionId)
