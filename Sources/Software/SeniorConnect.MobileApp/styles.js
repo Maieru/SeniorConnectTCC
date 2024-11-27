@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
   homeMedicineText: {
     fontSize: 20,
     color: '#000',
-    width: '45%',
+    width: '80%',
   },
   remediosMedicineContainer: {
     backgroundColor: '#ccc',
